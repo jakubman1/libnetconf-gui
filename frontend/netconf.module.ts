@@ -13,6 +13,7 @@ import {ToolsComponent} from "./components/tools/tools.component";
 import {NotificationsComponent} from "./components/notifications/notifications.component";
 import {ProfilesComponent} from "./components/profiles/profiles.component";
 import {AddDeviceFormComponent} from "./components/shared/add-device-form/add-device-form.component";
+import {DeviceListComponent} from "./components/devices/device-list/device-list.component";
 
 const routes: Routes = [{
     path: 'netconf',
@@ -62,7 +63,8 @@ const routes: Routes = [{
         ToolsComponent,
         NotificationsComponent,
         ProfilesComponent,
-        AddDeviceFormComponent
+        AddDeviceFormComponent,
+        DeviceListComponent
     ],
     providers: [
         SafePipe
