@@ -4,5 +4,4 @@ export class Device {
     port: number;
     username: string;
     password?: string;
-    notificationChannels?: string[];
 }
