@@ -21,11 +21,16 @@ const routes: Routes = [{
     canActivate: [AuthGuard],
         data: {
             role: 10,
-        name: 'NETCONF',
-        description: 'Configure your network devices using the NETCONF protocol',
-        icon: 'fa-server'
+            name: 'NETCONF',
+            description: 'Configure your network devices using the NETCONF protocol',
+            icon: 'fa-server'
     },
     children: [
+        {
+            path: '',
+            redirectTo: 'devices',
+            pathMatch: 'full'
+        },
         {
             path: 'devices',
             component: DevicesComponent,

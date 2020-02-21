@@ -12,6 +12,9 @@
         <li class="nc-nav-item">
             <a routerLink="/netconf/notifications" routerLinkActive="active" class="nc-nav-link">Notifications</a>
         </li>
+        <li class="nc-nav-item status-info" *ngIf="statusMessage">
+            {{statusMessage}} <i class="fa fa-spinner fa-pulse fa-fw"></i>
+        </li>
     </ul>
 </nav>
 <div class="nc-content">

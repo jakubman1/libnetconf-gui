@@ -31,11 +31,11 @@ export class ProfileService {
     /**
      * Get all devices from profile, that uses sets as a default profile
      */
-    getOnLoginProfile() {
-        this.getProfileDevices("default");
+    public getOnLoginProfile(): Observable<Device[]> {
+        return this.getProfileDevices("default");
     }
 
-    getProfileDevices(profileName: string): Observable<Device[]> {
+    public getProfileDevices(profileName: string): Observable<Device[]> {
         return of(this.exampleDevices);
     }
 }

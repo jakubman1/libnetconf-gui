@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {DeviceService} from "../../../services/device.service";
+import {Device} from "../../../classes/Device";
 
 @Component({
     selector: 'nc-device-list',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeviceListComponent implements OnInit {
 
-    constructor() { }
+    constructor(
+        private deviceService: DeviceService
+    ) { }
+
+    connectedDevices: {device: Device, status: string}[] = [];
 
     ngOnInit() {
+        this.connectedDevices = this.deviceService.connectedDevices;
+        this.deviceService.connectedDevicesChanged.subscribe(_ => {
+            this.connectedDevices = this.deviceService.connectedDevices;
+
+        });
     }
 
 }
