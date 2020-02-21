@@ -1,0 +1,12 @@
+<div class="notification-display-wrapper" *ngIf="displayedNotifications.length > 0">
+    <div class="clear-btn-wrapper">
+        <a href="#" class="clear-btn">Clear notifications</a>
+    </div>
+
+    <div *ngFor="let notification of displayedNotifications" class="notification-wrapper">
+        <h1>{{notification.title}}</h1>
+        <span class="time">{{notification.time}}</span>
+        <p *ngIf="notification.deviceName">Device: {{notification.deviceName}}</p>
+        <p *ngIf="notification.channel">Channel: {{notification.channel}}</p>
+    </div>
+</div>
