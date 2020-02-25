@@ -4,6 +4,7 @@ import { Routes, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AuthGuard } from 'app/utils/auth.guard';
 import { SafePipe, SafePipeModule } from 'app/utils/safe.pipe';
@@ -15,6 +16,7 @@ import {ProfilesComponent} from "./components/profiles/profiles.component";
 import {AddDeviceFormComponent} from "./components/shared/add-device-form/add-device-form.component";
 import {DeviceListComponent} from "./components/devices/device-list/device-list.component";
 import {NotificationDisplayComponent} from "./components/shared/notification-display/notification-display.component";
+import {NotificationInfoComponent} from "./components/shared/notification-info/notification-info.component";
 
 const routes: Routes = [{
     path: 'netconf',
@@ -62,6 +64,7 @@ const routes: Routes = [{
         SafePipeModule,
         RouterModule.forChild(routes),
         NgbModule,
+        BrowserAnimationsModule
     ],
     declarations: [
 	    NetconfComponent,
@@ -71,7 +74,8 @@ const routes: Routes = [{
         ProfilesComponent,
         AddDeviceFormComponent,
         DeviceListComponent,
-        NotificationDisplayComponent
+        NotificationDisplayComponent,
+        NotificationInfoComponent
     ],
     providers: [
         SafePipe

@@ -37,11 +37,6 @@ export class NetconfComponent implements OnInit {
             },
             err => {
                 this.statusMessage = "";
-                this.notificationService.sendNotification({
-                    id: this.notificationService.getNextAvailableId(),
-                    title: "Error while loading config!",
-                    time: NotificationService.getCurrentTime()
-                });
             }
         );
     }
@@ -52,32 +47,25 @@ export class NetconfComponent implements OnInit {
                 this.statusMessage = "";
                 this.deviceService.connectToMultipleDevices(devices);
                 setTimeout(() => {
-                    this.notificationService.sendNotification({
-                        id: this.notificationService.getNextAvailableId(),
-                        title: "Loaded devices!",
-                        time: NotificationService.getCurrentTime(),
-                        deviceName: "Internal",
-                        channel: "Channel 1"
-                    });
+                    this.notificationService.sendNotification(
+                        this.notificationService.createNotification("Notification 1", "Internal", "Channel 1")
+                    );
                 }, 250);
                 setTimeout(() => {
-                    this.notificationService.sendNotification({
-                        id: this.notificationService.getNextAvailableId(),
-                        title: "Loaded devices 2!",
-                        time: NotificationService.getCurrentTime(),
-                        deviceName: "Internal",
-                        channel: "Channel 1"
-                    });
+                    this.notificationService.sendNotification(
+                        this.notificationService.createNotification("Notification 2", "Internal", "Channel 1")
+                    );
                 }, 1500);
                 setTimeout(() => {
-                    this.notificationService.sendNotification({
-                        id: this.notificationService.getNextAvailableId(),
-                        title: "Loaded devices 3!",
-                        time: NotificationService.getCurrentTime(),
-                        deviceName: "Internal",
-                        channel: "Channel 1"
-                    });
+                    this.notificationService.sendNotification(
+                        this.notificationService.createNotification("Notification 3", "Internal", "Channel 1")
+                    );
                 }, 3000);
+                setTimeout(() => {
+                    this.notificationService.sendNotification(
+                        this.notificationService.createNotification("Notification 4", "Internal", "Channel 1")
+                    );
+                }, 5000);
 
 
             },

@@ -14,6 +14,17 @@ export class NotificationService {
 
     currentId = 0;
 
+    public createNotification(title: string, deviceName: string, channel: string): Notification {
+        return {
+            id: this.getNextAvailableId(),
+            title,
+            time: NotificationService.getCurrentTime(),
+            deviceName,
+            channel
+        }
+    };
+
+
     public sendNotification(notification: Notification) {
         this.onNewNotification.emit(notification);
     }
