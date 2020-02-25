@@ -36,10 +36,6 @@ export class NotificationInfoComponent implements OnInit {
 
 
     ngOnInit() {
-        /*this.currentState = "initial";
-        setTimeout(() => {
-            this.currentState = "final";
-        }, 2000);*/
     }
 
     removeSelf() {

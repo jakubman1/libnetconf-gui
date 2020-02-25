@@ -29,8 +29,11 @@ export class NotificationDisplayComponent implements OnInit {
     addNotification(notification: Notification) {
         this.displayedNotifications.push({notification, state: "initial"});
         if (this.displayedNotifications.length > 3) {
-            this.toRemove.push(this.displayedNotifications[0].notification.id);
-            this.displayedNotifications[0].state = "final"
+            for(let i = 0; i < this.displayedNotifications.length - 3; i++) {
+                this.toRemove.push(this.displayedNotifications[i].notification.id);
+                this.displayedNotifications[i].state = "final"
+            }
+
         }
     }
 
@@ -39,7 +42,6 @@ export class NotificationDisplayComponent implements OnInit {
     }
 
     removeNotification(notificationId: number) {
-        console.log(notificationId);
         if (this.toRemove.indexOf(notificationId) > -1) {
             this.displayedNotifications = this.displayedNotifications.filter(
                 notification => notification.notification.id !== notificationId);
