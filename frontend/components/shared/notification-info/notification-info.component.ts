@@ -27,18 +27,23 @@ export class NotificationInfoComponent implements OnInit {
         private notificationService: NotificationService
     ) {
     }
-
+    @Input() currentState: string;
     @Input() notification: Notification;
 
-    @Output() remove: EventEmitter<number> = new EventEmitter<number>();
+    @Output() timedRemove: EventEmitter<number> = new EventEmitter<number>();
+    @Output() forceRemove: EventEmitter<number> = new EventEmitter<number>();
 
-    @Input() currentState: string;
+
 
 
     ngOnInit() {
     }
 
     removeSelf() {
-        this.remove.emit(this.notification.id);
+        this.timedRemove.emit(this.notification.id);
+    }
+
+    forceRemoveSelf() {
+        this.forceRemove.emit(this.notification.id);
     }
 }

@@ -1,4 +1,4 @@
-<div class="notification-wrapper">
+<div class="notification-wrapper" (click)="forceRemoveSelf()">
     <h1>{{notification.title}}</h1>
     <span class="time">{{notification.time}}</span>
     <p *ngIf="notification.deviceName">Device: {{notification.deviceName}}</p>

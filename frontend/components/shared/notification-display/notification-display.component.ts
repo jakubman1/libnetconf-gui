@@ -48,6 +48,11 @@ export class NotificationDisplayComponent implements OnInit {
         }
     }
 
+    forceRemoveNotification(notificationId: number) {
+        this.displayedNotifications = this.displayedNotifications.filter(
+            notification => notification.notification.id !== notificationId);
+    }
+
     cleanupNotifications() {
 
     }
