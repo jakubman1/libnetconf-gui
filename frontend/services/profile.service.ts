@@ -38,4 +38,12 @@ export class ProfileService {
     public getProfileDevices(profileName: string): Observable<Device[]> {
         return of(this.exampleDevices);
     }
+
+    public getAllProfileNames(): Observable<string[]> {
+        return of(['myProfile1', 'myProfile2']);
+    }
+
+    public addProfile(name: string) {
+
+    }
 }

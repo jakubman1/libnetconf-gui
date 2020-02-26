@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ProfileService} from "../../services/profile.service";
 
 @Component({
     selector: 'nc-devices',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilesComponent implements OnInit {
 
-    constructor() { }
-
-    ngOnInit() {
+    constructor(
+        private profileService: ProfileService
+    ) {
     }
 
-}
+    profiles: string[];
+
+    ngOnInit() {
+        this.profileService.getAllProfileNames().subscribe(
+            profiles => {
+                this.profiles = profiles;
+            }
+        );
+    }
+
+
+    }

@@ -66,7 +66,8 @@ export class NetconfComponent implements OnInit {
                         this.notificationService.createNotification("Notification 4", "Internal", "Channel 1")
                     );
                 }, 5000);
-                /*setTimeout(() => {
+/*
+                setTimeout(() => {
                     this.notificationService.sendNotification(
                         this.notificationService.createNotification("Notification 5", "Internal", "Channel 1")
                     );
