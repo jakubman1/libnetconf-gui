@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import {Device} from "../classes/Device";
+import { Device } from "../classes/Device";
 
 
 @Injectable({
@@ -31,8 +31,8 @@ export class ProfileService {
     /**
      * Get all devices from profile, that uses sets as a default profile
      */
-    public getOnLoginProfile(): Observable<Device[]> {
-        return this.getProfileDevices("default");
+    public getOnLoginProfile(): Observable<{devices: Device[], name: string}> {
+        return of({devices: this.exampleDevices, name: "MyProfile1"});
     }
 
     public getProfileDevices(profileName: string): Observable<Device[]> {

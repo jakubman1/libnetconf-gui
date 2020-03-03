@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ProfileService} from "../../services/profile.service";
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from "../../services/profile.service";
+import {Device} from "../../classes/Device";
 
 @Component({
     selector: 'nc-devices',
@@ -14,11 +15,19 @@ export class ProfilesComponent implements OnInit {
     }
 
     profiles: string[];
+    selectedProfile: string;
+    devices: Device[] = [];
 
     ngOnInit() {
         this.profileService.getAllProfileNames().subscribe(
             profiles => {
                 this.profiles = profiles;
+            }
+        );
+        this.profileService.getOnLoginProfile().subscribe(
+            data => {
+                this.selectedProfile = data.name;
+                this.devices = data.devices;
             }
         );
     }

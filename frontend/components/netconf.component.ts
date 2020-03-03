@@ -43,9 +43,9 @@ export class NetconfComponent implements OnInit {
 
     loadProfile() {
         this.profileService.getOnLoginProfile().subscribe(
-            devices => {
+            data => {
                 this.statusMessage = "";
-                this.deviceService.connectToMultipleDevices(devices);
+                this.deviceService.connectToMultipleDevices(data.devices);
                 setTimeout(() => {
                     this.notificationService.sendNotification(
                         this.notificationService.createNotification("Notification 1", "Internal", "Channel 1")

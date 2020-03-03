@@ -12,7 +12,7 @@
             <p><a [routerLink]="null">+ Add new profile</a></p>
 
             <label for="profileSelect">Active profile</label>
-            <select id="profileSelect" class="mr-2">
+            <select id="profileSelect" class="mr-2" [(ngModel)]="selectedProfile">
                 <option *ngFor="let profileName of profiles">{{profileName}}</option>
             </select>
             <input type="checkbox" id="connectOnLogin">
@@ -31,7 +31,12 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    <tr *ngFor="let device of devices">
+                        <td>{{device.name ? device.name : ""}}</td>
+                        <td>{{device.hostname}}:{{device.port}}</td>
+                        <td>{{device.username}}</td>
+                        <td>Yes</td>
+                    </tr>
                 </tbody>
             </table>
 
