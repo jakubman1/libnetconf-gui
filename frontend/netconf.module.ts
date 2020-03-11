@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,9 @@ import {AddDeviceFormComponent} from "./components/shared/add-device-form/add-de
 import {DeviceListComponent} from "./components/devices/device-list/device-list.component";
 import {NotificationDisplayComponent} from "./components/shared/notification-display/notification-display.component";
 import {NotificationInfoComponent} from "./components/shared/notification-info/notification-info.component";
+import {ToolLoaderService} from "./services/tool-loader/tool-loader.service";
+import {ClientToolLoaderService} from "./services/tool-loader/client-tool-loader.service";
+import {ToolConfigProvider} from "./services/tool-config.provider";
 
 const routes: Routes = [{
     path: 'netconf',
@@ -37,6 +40,11 @@ const routes: Routes = [{
         {
             path: 'devices',
             component: DevicesComponent,
+            canActivate: [AuthGuard]
+        },
+        {
+            path: 'tool/:tool',
+            component: ToolsComponent,
             canActivate: [AuthGuard]
         },
         {
@@ -78,7 +86,19 @@ const routes: Routes = [{
         NotificationInfoComponent
     ],
     providers: [
-        SafePipe
+        SafePipe,
+        { provide: ToolLoaderService, useClass: ClientToolLoaderService },
+        ToolConfigProvider,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (provider: ToolConfigProvider) => () =>
+                provider
+                    .loadConfig()
+                    .toPromise()
+                    .then(config => (provider.config = config)),
+            multi: true,
+            deps: [ToolConfigProvider]
+        }
     ]
 })
 export class NetconfModule {}

@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "ngc": "frontend/angular.json",
         "npm": "frontend/package.json",
         "pip": "backend/requirements.txt"
     },
