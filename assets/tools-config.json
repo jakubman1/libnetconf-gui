@@ -1,0 +1,8 @@
+{
+  "example": {
+    "name": "Example tool",
+    "path": "/assets/libnetconf/tools/example.js",
+    "image": "/assets/libnetconf/tools/img/example.png",
+    "description": "Does nothing... yet."
+  }
+}

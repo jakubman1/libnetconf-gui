@@ -1,4 +1,6 @@
+// @ts-ignore
 import { Component, OnInit, Injector, ViewChild, ViewContainerRef } from '@angular/core';
+// @ts-ignore
 import { ActivatedRoute } from "@angular/router";
 import {ToolLoaderService} from "../../services/tool-loader/tool-loader.service";
 import {ToolConfigProvider} from "../../services/tool-config.provider";
@@ -38,13 +40,21 @@ export class ToolsComponent implements OnInit {
     loadTool(toolName: string) {
         try {
             this.toolLoader.load(toolName).then(moduleFactory => {
-                const moduleRef = moduleFactory.create(this.injector);
-                const entryComponent = (moduleFactory.moduleType as any).entry;
-                const compFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
-                    entryComponent
-                );
-                this.vcRef.createComponent(compFactory);
-            });
+                try {
+                    const moduleRef = moduleFactory.create(this.injector);
+                    const entryComponent = (moduleFactory.moduleType as any).entry;
+                    const compFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
+                        entryComponent
+                    );
+                    this.vcRef.createComponent(compFactory);
+                    this.error = '';
+                }
+                catch(e) {
+                    this.error = 'Selected tool could not be loaded. Check the console for more details.';
+                    console.error(e.message);
+                    this.activeTool = null;
+                }}
+            );
         }
         catch(e) {
             this.error = "Selected tool does not exist or crashed during launch.";

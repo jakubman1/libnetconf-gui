@@ -4,6 +4,7 @@ import * as forms from '@angular/forms';
 import * as router from '@angular/router';
 import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
+import * as socketIo from 'socket.io-client';
 //import * as lib from 'netconf-lib';
 
 
@@ -14,6 +15,7 @@ export const TOOL_EXTERNALS_MAP = {
     'ng.router': router,
     rxjs,
     tslib,
+    socketIo,
     //shared: { ...lib, ...require('lib/lib.ngfactory') }
 };
 

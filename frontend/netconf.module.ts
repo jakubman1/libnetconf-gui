@@ -53,6 +53,11 @@ const routes: Routes = [{
             canActivate: [AuthGuard]
         },
         {
+            path: 'profiles/:profile',
+            component: ProfilesComponent,
+            canActivate: [AuthGuard]
+        },
+        {
             path: 'profiles',
             component: ProfilesComponent,
             canActivate: [AuthGuard]
@@ -64,6 +69,7 @@ const routes: Routes = [{
         }
     ]
 }];
+
 
 @NgModule({
     imports: [
