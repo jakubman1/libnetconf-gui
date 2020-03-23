@@ -45,3 +45,6 @@ Thumbs.db
 /netconf-tool-devkit/node_modules
 /netconf-tool-devkit/.idea
 /netconf-tool-devkit/dist
+
+# Backend cache
+/backend/__pycache__
