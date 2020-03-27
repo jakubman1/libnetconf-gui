@@ -23,6 +23,9 @@ export class ProfileEditComponent implements OnInit {
     savedDevices: {device: Device, inProfile: boolean}[] = [];
     searchedText: string = '';
 
+    perPage = 12;
+    page = 1;
+
     loading = false;
 
     ngOnInit() {

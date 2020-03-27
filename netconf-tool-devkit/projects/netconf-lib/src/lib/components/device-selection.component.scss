@@ -22,6 +22,8 @@
 
 .hostname {
   font-size: 0.8em;
+  white-space: nowrap;
+  display: inline-block;
   color: transparentize($colorText, 0.3);
 }
 

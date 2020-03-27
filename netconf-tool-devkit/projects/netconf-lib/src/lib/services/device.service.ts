@@ -43,6 +43,33 @@ export class DeviceService {
       port: 888,
       username: 'user',
       password: '',
+    },
+    {
+      fingerprint: '',
+      id: 4,
+      name: 'Example server',
+      hostname: 'example.com',
+      port: 25565,
+      username: 'admin',
+      password: '',
+    },
+    {
+      fingerprint: '',
+      id: 5,
+      name: 'Example server',
+      hostname: 'example.com',
+      port: 4201,
+      username: 'user',
+      password: '',
+    },
+    {
+      fingerprint: '',
+      id: 6,
+      name: '',
+      hostname: 'example.com',
+      port: 4200,
+      username: 'user',
+      password: '',
     }];
 
   public connectedDevicesChanged: EventEmitter<Device[]> = new EventEmitter<Device[]>();
