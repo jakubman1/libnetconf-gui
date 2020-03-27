@@ -47,6 +47,7 @@ export class ToolConfigProvider {
     private http: HttpClient;
 
     constructor(handler: HttpBackend) {
+        // Go around HTTP interceptor
         this.http = new HttpClient(handler);
     }
 

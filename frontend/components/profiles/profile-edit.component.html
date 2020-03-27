@@ -1,0 +1,16 @@
+<lib-content-box [title]="'Edit devices in profile ' + selectedProfile" [limitWidth]="true">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <label for="search" class="nc-label nc-label-center">Search in saved devices</label>
+            <input class="nc-input nc-input-wide" type="text" name="search" id="search" [(ngModel)]="searchedText"
+            placeholder="Search for name, hostname, port, username...">
+        </div>
+    </div>
+    <div class="row" *ngIf="!loading">
+        <div class="col-sm-12 col-md-4 pl-3 pr-3 p-2" *ngFor="let device of savedDevices | deviceFilter : searchedText">
+            <lib-device-selection-item [device]="device.device" [(selected)]="device.inProfile">
+            </lib-device-selection-item>
+        </div>
+
+    </div>
+</lib-content-box>

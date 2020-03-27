@@ -1,0 +1,33 @@
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/netconf-lib.module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NetconfLibComponent } from './netconf-lib.component';
+import { DeviceQuickswitchComponent } from './components/device-quickswitch.component';
+import { DeviceSelectionComponent } from './components/device-selection.component';
+import { DeviceSelectionItemComponent } from './components/subcomponents/device-selection-item.component';
+import { ContentBoxComponent } from './components/content-box.component';
+import { PopupComponent } from "./components/popup.component";
+/** @type {?} */
+const sharedComponents = [
+    NetconfLibComponent,
+    DeviceQuickswitchComponent,
+    DeviceSelectionComponent,
+    DeviceSelectionItemComponent,
+    ContentBoxComponent,
+    PopupComponent
+];
+export class NetconfLibModule {
+}
+NetconfLibModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, RouterModule],
+                declarations: [...sharedComponents],
+                exports: [...sharedComponents],
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmV0Y29uZi1saWIubW9kdWxlLmpzIiwic291cmNlUm9vdCI6Im5nOi8vbmV0Y29uZi1saWIvIiwic291cmNlcyI6WyJsaWIvbmV0Y29uZi1saWIubW9kdWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUEsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUN6QyxPQUFPLEVBQUUsWUFBWSxFQUFFLE1BQU0saUJBQWlCLENBQUM7QUFDL0MsT0FBTyxFQUFFLFlBQVksRUFBRSxNQUFNLGlCQUFpQixDQUFDO0FBQy9DLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLHlCQUF5QixDQUFDO0FBQzlELE9BQU8sRUFBQywwQkFBMEIsRUFBQyxNQUFNLDJDQUEyQyxDQUFDO0FBQ3JGLE9BQU8sRUFBQyx3QkFBd0IsRUFBQyxNQUFNLHlDQUF5QyxDQUFDO0FBQ2pGLE9BQU8sRUFBQyw0QkFBNEIsRUFBQyxNQUFNLDREQUE0RCxDQUFDO0FBQ3hHLE9BQU8sRUFBQyxtQkFBbUIsRUFBQyxNQUFNLG9DQUFvQyxDQUFDO0FBQ3ZFLE9BQU8sRUFBQyxjQUFjLEVBQUMsTUFBTSw4QkFBOEIsQ0FBQzs7TUFHdEQsZ0JBQWdCLEdBQUc7SUFDdkIsbUJBQW1CO0lBQ25CLDBCQUEwQjtJQUMxQix3QkFBd0I7SUFDeEIsNEJBQTRCO0lBQzVCLG1CQUFtQjtJQUNuQixjQUFjO0NBQ2Y7QUFPRCxNQUFNOzs7WUFMTCxRQUFRLFNBQUM7Z0JBQ1IsT0FBTyxFQUFFLENBQUMsWUFBWSxFQUFFLFlBQVksQ0FBQztnQkFDckMsWUFBWSxFQUFFLENBQUUsR0FBRyxnQkFBZ0IsQ0FBRTtnQkFDckMsT0FBTyxFQUFFLENBQUUsR0FBRyxnQkFBZ0IsQ0FBRTthQUNqQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE5nTW9kdWxlIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBDb21tb25Nb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jb21tb24nO1xuaW1wb3J0IHsgUm91dGVyTW9kdWxlIH0gZnJvbSAnQGFuZ3VsYXIvcm91dGVyJztcbmltcG9ydCB7IE5ldGNvbmZMaWJDb21wb25lbnQgfSBmcm9tICcuL25ldGNvbmYtbGliLmNvbXBvbmVudCc7XG5pbXBvcnQge0RldmljZVF1aWNrc3dpdGNoQ29tcG9uZW50fSBmcm9tICcuL2NvbXBvbmVudHMvZGV2aWNlLXF1aWNrc3dpdGNoLmNvbXBvbmVudCc7XG5pbXBvcnQge0RldmljZVNlbGVjdGlvbkNvbXBvbmVudH0gZnJvbSAnLi9jb21wb25lbnRzL2RldmljZS1zZWxlY3Rpb24uY29tcG9uZW50JztcbmltcG9ydCB7RGV2aWNlU2VsZWN0aW9uSXRlbUNvbXBvbmVudH0gZnJvbSAnLi9jb21wb25lbnRzL3N1YmNvbXBvbmVudHMvZGV2aWNlLXNlbGVjdGlvbi1pdGVtLmNvbXBvbmVudCc7XG5pbXBvcnQge0NvbnRlbnRCb3hDb21wb25lbnR9IGZyb20gJy4vY29tcG9uZW50cy9jb250ZW50LWJveC5jb21wb25lbnQnO1xuaW1wb3J0IHtQb3B1cENvbXBvbmVudH0gZnJvbSBcIi4vY29tcG9uZW50cy9wb3B1cC5jb21wb25lbnRcIjtcblxuXG5jb25zdCBzaGFyZWRDb21wb25lbnRzID0gW1xuICBOZXRjb25mTGliQ29tcG9uZW50LFxuICBEZXZpY2VRdWlja3N3aXRjaENvbXBvbmVudCxcbiAgRGV2aWNlU2VsZWN0aW9uQ29tcG9uZW50LFxuICBEZXZpY2VTZWxlY3Rpb25JdGVtQ29tcG9uZW50LFxuICBDb250ZW50Qm94Q29tcG9uZW50LFxuICBQb3B1cENvbXBvbmVudFxuXTtcblxuQE5nTW9kdWxlKHtcbiAgaW1wb3J0czogW0NvbW1vbk1vZHVsZSwgUm91dGVyTW9kdWxlXSxcbiAgZGVjbGFyYXRpb25zOiBbIC4uLnNoYXJlZENvbXBvbmVudHMgXSxcbiAgZXhwb3J0czogWyAuLi5zaGFyZWRDb21wb25lbnRzIF0sXG59KVxuZXhwb3J0IGNsYXNzIE5ldGNvbmZMaWJNb2R1bGUgeyB9XG4iXX0=

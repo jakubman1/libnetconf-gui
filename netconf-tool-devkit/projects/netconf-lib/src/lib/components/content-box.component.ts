@@ -3,14 +3,14 @@ import {Component, OnInit, Input} from '@angular/core';
 @Component({
   selector: 'lib-content-box',
   template: `
-    <div class="box">
+    <div class="content-box">
       <div class="box-header" *ngIf="title">{{title}}</div>
       <div class="box-content" [class.box-content-limited]="limitWidth">
           <ng-content></ng-content>
       </div>
     </div>
   `,
-  styleUrls: ['../../../../shared-styles/netconf.scss']
+  styleUrls: ['./content-box.component.scss']
 })
 export class ContentBoxComponent implements OnInit {
 

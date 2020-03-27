@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
+import {Observable, of} from 'rxjs';
 // import {SocketService} from './socket.service';
 
 @Injectable({
@@ -48,6 +49,10 @@ export class DeviceService {
 
   public getConnectedDevices(): Device[] {
     return this.connectedDevices;
+  }
+
+  public getSavedDevices(): Observable<Device[]> {
+    return of(this.connectedDevices);
   }
 
   public saveDevice(hostname: string,

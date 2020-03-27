@@ -6,6 +6,7 @@ import {DeviceQuickswitchComponent} from './components/device-quickswitch.compon
 import {DeviceSelectionComponent} from './components/device-selection.component';
 import {DeviceSelectionItemComponent} from './components/subcomponents/device-selection-item.component';
 import {ContentBoxComponent} from './components/content-box.component';
+import {PopupComponent} from "./components/popup.component";
 
 
 const sharedComponents = [
@@ -13,7 +14,8 @@ const sharedComponents = [
   DeviceQuickswitchComponent,
   DeviceSelectionComponent,
   DeviceSelectionItemComponent,
-  ContentBoxComponent
+  ContentBoxComponent,
+  PopupComponent
 ];
 
 @NgModule({

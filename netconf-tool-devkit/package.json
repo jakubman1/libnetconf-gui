@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "postinstall": "tsc -p builders/tsconfig.builders.json",
     "build:tools": "npm run build:lib && npm run build:example",
-    "build:lib": "ng build netconf-lib && ng build --project tools --prod --modulePath=netconf-lib#NetconfLibModule --pluginName=netconf-lib  --outputPath=../assets/tools",
+    "build:lib": "ng build netconf-lib && rm -rf ../frontend/lib && cp -rf dist ../frontend/lib && ng build --project tools --prod --modulePath=netconf-lib#NetconfLibModule --pluginName=netconf-lib  --outputPath=../assets/tools",
     "build:example": "ng build --project tools --prod --modulePath=./example/example.module#ExampleModule --pluginName=example --sharedLibs=netconf-lib --outputPath=../assets/tools"
   },
   "private": true,

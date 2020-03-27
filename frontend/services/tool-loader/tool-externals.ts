@@ -14,5 +14,5 @@ export const TOOL_EXTERNALS_MAP = {
     rxjs,
     tslib,
     socketIo,
-    shared: '/assets/libnetconf/tools/netconf-lib.js'
+    netconfLib: '/assets/libnetconf/tools/netconf-lib.js'
 };

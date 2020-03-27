@@ -32,18 +32,33 @@ export class ProfileService {
      * Get all devices from profile, that uses sets as a default profile
      */
     public getOnLoginProfile(): Observable<{devices: Device[], name: string}> {
-        return of({devices: this.exampleDevices, name: "MyProfile1"});
+        return of({devices: [], name: "myProfile2"});
     }
 
     public getProfileDevices(profileName: string): Observable<Device[]> {
-        return of(this.exampleDevices);
+        if(profileName === 'myProfile2') {
+            return of([]);
+        }
+        else {
+            return of(this.exampleDevices);
+        }
+
     }
 
     public getAllProfileNames(): Observable<string[]> {
         return of(['myProfile1', 'myProfile2']);
     }
 
-    public addProfile(name: string) {
+    public addProfile(name: string): Observable<object> {
+        //return this.http.post<object>('/netconf/addProfile', {name});
+        return of({success: true});
+    }
 
+    public removeProfile(name: string): Observable<object> {
+        return of({success: true});
+    }
+
+    setActiveProfile(profileName: string): Observable<object> {
+        return of({success: true});
     }
 }

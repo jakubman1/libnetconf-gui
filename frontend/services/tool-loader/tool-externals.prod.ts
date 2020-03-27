@@ -16,7 +16,7 @@ export const TOOL_EXTERNALS_MAP = {
     rxjs,
     tslib,
     socketIo,
-    //shared: { ...lib, ...require('lib/lib.ngfactory') }
+    //shared: { ...lib, ...require('netconf-lib/netconf-lib.ngfactory') }
 };
 
 declare let require: any;

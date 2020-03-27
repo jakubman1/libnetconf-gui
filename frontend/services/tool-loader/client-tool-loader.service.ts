@@ -57,9 +57,9 @@ export class ClientToolLoaderService extends ToolLoaderService {
             });
         });
 
-        if (typeof TOOL_EXTERNALS_MAP.shared === 'string') {
+        if (typeof TOOL_EXTERNALS_MAP.netconfLib === 'string') {
             depsPromises.push(SystemJS.import('/assets/libnetconf/tools/netconf-lib.js').then(m => {
-                TOOL_EXTERNALS_MAP.shared = m.default;
+                TOOL_EXTERNALS_MAP.netconfLib = m.default;
                 window['define']('netconf-lib', [], () => m.default);
             }));
         }

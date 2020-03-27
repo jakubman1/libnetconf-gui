@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AuthGuard } from 'app/utils/auth.guard';
 import { SafePipe, SafePipeModule } from 'app/utils/safe.pipe';
+
+import {NetconfLibModule} from "./lib/netconf-lib";
+
 import { NetconfComponent } from './components/netconf.component';
 import {DevicesComponent} from "./components/devices/devices.component";
 import {ToolsComponent} from "./components/tools/tools.component";
@@ -20,6 +23,9 @@ import {NotificationInfoComponent} from "./components/shared/notification-info/n
 import {ToolLoaderService} from "./services/tool-loader/tool-loader.service";
 import {ClientToolLoaderService} from "./services/tool-loader/client-tool-loader.service";
 import {ToolConfigProvider} from "./services/tool-config.provider";
+import {PopupAddProfileComponent} from "./components/profiles/popup-add-profile.component";
+import {ProfileEditComponent} from "./components/profiles/profile-edit.component";
+import {DeviceFilterPipe} from "./pipes/device-filter.pipe";
 
 const routes: Routes = [{
     path: 'netconf',
@@ -40,32 +46,50 @@ const routes: Routes = [{
         {
             path: 'devices',
             component: DevicesComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         },
         {
             path: 'tool/:tool',
             component: ToolsComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         },
         {
             path: 'tools',
             component: ToolsComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         },
         {
-            path: 'profiles/:profile',
-            component: ProfilesComponent,
-            canActivate: [AuthGuard]
+            path: 'profile/:profile',
+            component: ProfileEditComponent,
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         },
         {
             path: 'profiles',
             component: ProfilesComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         },
         {
             path: 'notifications',
             component: NotificationsComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
+            data: {
+                role: 10
+            }
         }
     ]
 }];
@@ -78,7 +102,8 @@ const routes: Routes = [{
         SafePipeModule,
         RouterModule.forChild(routes),
         NgbModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        NetconfLibModule
     ],
     declarations: [
 	    NetconfComponent,
@@ -89,7 +114,10 @@ const routes: Routes = [{
         AddDeviceFormComponent,
         DeviceListComponent,
         NotificationDisplayComponent,
-        NotificationInfoComponent
+        NotificationInfoComponent,
+        PopupAddProfileComponent,
+        ProfileEditComponent,
+        DeviceFilterPipe
     ],
     providers: [
         SafePipe,
