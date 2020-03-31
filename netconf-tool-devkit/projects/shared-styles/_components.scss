@@ -30,7 +30,7 @@
   cursor: pointer;
   &::selection, &::-moz-selection {
     background: none;
-    color: none;
+    color: $colorText;
   }
 }
 

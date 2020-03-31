@@ -26,6 +26,8 @@ import {ToolConfigProvider} from "./services/tool-config.provider";
 import {PopupAddProfileComponent} from "./components/profiles/popup-add-profile.component";
 import {ProfileEditComponent} from "./components/profiles/profile-edit.component";
 import {DeviceFilterPipe} from "./pipes/device-filter.pipe";
+import {PaginationPipe} from "./pipes/pagination.pipe";
+import {PaginationComponent} from "./components/shared/pagination/pagination.component";
 
 const routes: Routes = [{
     path: 'netconf',
@@ -117,7 +119,9 @@ const routes: Routes = [{
         NotificationInfoComponent,
         PopupAddProfileComponent,
         ProfileEditComponent,
-        DeviceFilterPipe
+        DeviceFilterPipe,
+        PaginationPipe,
+        PaginationComponent
     ],
     providers: [
         SafePipe,
