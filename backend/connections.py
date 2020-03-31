@@ -28,6 +28,10 @@ def profile_get(profile_name):
     return json.dumps(get_profile_devices(get_username_from_session(), profile_name, None))
 
 @auth.required()
+def profile_on_login():
+    return json.dumps(get_on_login_profile(get_username_from_session(), None))
+
+@auth.required()
 def profile_set(profile_name):
     data = request.json
     # name = data['profile']

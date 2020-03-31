@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
-import {Device} from "../../classes/Device";
+import {ProfileDevice} from "../../classes/ProfileDevice";
 
 
 @Component({
@@ -18,7 +18,7 @@ export class ProfilesComponent implements OnInit {
     profiles: string[];
     selectedProfile: string;
     activeProfile: string;
-    devices: Device[] = [];
+    devices: ProfileDevice[] = [];
     loading = false;
 
     addNewProfileShown = false;

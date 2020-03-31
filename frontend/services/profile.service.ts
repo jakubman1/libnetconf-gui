@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Device } from "../classes/Device";
+import { ProfileDevice } from "../classes/ProfileDevice";
+import {Profile} from "../classes/Profile";
 
 
 @Injectable({
@@ -31,17 +33,12 @@ export class ProfileService {
     /**
      * Get all devices from profile, that uses sets as a default profile
      */
-    public getOnLoginProfile(): Observable<{devices: Device[], name: string}> {
-        return of({devices: [], name: "myProfile2"});
+    public getOnLoginProfile(): Observable<{devices: ProfileDevice[], name: string}> {
+        return this.http.get<{devices: ProfileDevice[], name: string}>('/netconf/profileOnLogin');
     }
 
-    public getProfileDevices(profileName: string): Observable<Device[]> {
-        if(profileName === 'myProfile2') {
-            return of([]);
-        }
-        else {
-            return of(this.exampleDevices);
-        }
+    public getProfileDevices(profileName: string): Observable<ProfileDevice[]> {
+        return this.http.get<ProfileDevice[]>('/netconf/profile/' + profileName);
 
     }
 

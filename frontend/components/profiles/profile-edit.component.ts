@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {ProfileService} from "../../services/profile.service";
 import {DeviceService} from "../../lib/netconf-lib";
-import {Device} from "../../lib/netconf-lib/lib/classes/device";
+import {ProfileDevice} from "../../classes/ProfileDevice";
 
 
 
@@ -20,7 +20,7 @@ export class ProfileEditComponent implements OnInit {
     }
 
     selectedProfile: string;
-    savedDevices: {device: Device, inProfile: boolean}[] = [];
+    savedDevices: {device: ProfileDevice, inProfile: boolean, subscriptions?: string[]}[] = [];
     searchedText: string = '';
 
     paginationOptions = {page: 1, perPage: 9};
@@ -28,6 +28,7 @@ export class ProfileEditComponent implements OnInit {
     loading = false;
 
     ngOnInit() {
+        this.loading = true;
         this.route.paramMap.subscribe(
             params => {
                 this.selectedProfile = params.get("profile");
@@ -37,8 +38,24 @@ export class ProfileEditComponent implements OnInit {
             });
         this.deviceService.getSavedDevices().subscribe(
             devices => {
-                for(let device of devices)
-                this.savedDevices.push({device, inProfile: false});
+                this.profileService.getProfileDevices(this.selectedProfile).subscribe(
+                    profileDevices => {
+                        console.log(profileDevices);
+                        for(let device of devices) {
+                            let inProfile = false;
+                            let subscriptions = [];
+                            for(let profileDevice of profileDevices) {
+                                if(profileDevice.id === device.id) {
+                                    inProfile = true;
+                                    subscriptions = profileDevice.subscriptions;
+                                    break;
+                                }
+                            }
+                            this.savedDevices.push({device, inProfile, subscriptions});
+                        }
+                        this.loading = false;
+                    }
+                );
             }
         );
     }

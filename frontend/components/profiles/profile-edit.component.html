@@ -3,7 +3,7 @@
         <div class="col-12 text-center">
             <label for="search" class="nc-label nc-label-center">Search in saved devices</label>
             <input class="nc-input nc-input-wide" type="text" name="search" id="search" [(ngModel)]="searchedText"
-            placeholder="Search for name, hostname, port, username..." (input)="setPage(1)">
+                   placeholder="Search for name, hostname, port, username..." (input)="setPage(1)">
         </div>
     </div>
     <div class="row" *ngIf="!loading">
@@ -11,13 +11,19 @@
              *ngFor="let device of savedDevices | deviceFilter: searchedText | pagination: paginationOptions">
             <lib-device-selection-item [device]="device.device" [(selected)]="device.inProfile">
             </lib-device-selection-item>
-            <div class="subscriptions" *ngIf="device.inProfile">
+            <div class="subscriptions"
+                 *ngIf="device.inProfile && device.subscriptions && device.subscriptions.length !== 0">
                 Notification subscriptions
-            <p>
-                <span class="channel">Channel 1 <i class="fa fa-times-circle remove"></i></span>
-                <span class="channel">Channel 2 <i class="fa fa-times-circle remove"></i></span>
-            </p>
+                <p>
+                    <span class="channel" *ngFor="let channel of device.subscriptions">{{channel}} <i
+                            class="fa fa-times-circle remove"></i></span>
+                </p>
             </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="loading">
+        <div class="col-sm-12 centered">
+            <h1 class="text-center">Loading devices...</h1>
         </div>
     </div>
     <div class="row">

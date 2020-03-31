@@ -12,5 +12,6 @@ netconf_bp = Module('netconf', __name__, url_prefix='/netconf', no_version=True)
 
 netconf_bp.add_url_rule('/profiles', view_func=profiles, methods=['GET'])
 netconf_bp.add_url_rule('/profile/<profile_name>', view_func=profile_get, methods=['GET'])
+netconf_bp.add_url_rule('/profileOnLogin', view_func=profile_on_login, methods=['GET'])
 netconf_bp.add_url_rule('/profile', view_func=profile_add, methods=['POST'])
 netconf_bp.add_url_rule('/profile/<profile_name>', view_func=profile_set, methods=['POST'])
