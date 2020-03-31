@@ -24,5 +24,20 @@ class TestDeviceConnection(unittest.TestCase):
         testCol.deleteMany({})
 
 
+class TestProfiles(unittest.TestCase):
+    """
+    Test manipulating profiles
+    """
+
+    @staticmethod
+    def setUpClass():
+        # TODO: Create a test JSON file
+        pass
+
+    @staticmethod
+    def tearDownClass():
+        # TODO: Remove a test JSON file
+        pass
+
 if __name__ == "__main__":
     unittest.main()

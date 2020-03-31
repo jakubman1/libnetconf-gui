@@ -11,7 +11,8 @@
              *ngFor="let device of savedDevices | deviceFilter: searchedText | pagination: paginationOptions">
             <lib-device-selection-item [device]="device.device" [(selected)]="device.inProfile">
             </lib-device-selection-item>
-            <div class="subscriptions">Notification subscriptions
+            <div class="subscriptions" *ngIf="device.inProfile">
+                Notification subscriptions
             <p>
                 <span class="channel">Channel 1 <i class="fa fa-times-circle remove"></i></span>
                 <span class="channel">Channel 2 <i class="fa fa-times-circle remove"></i></span>
