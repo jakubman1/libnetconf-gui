@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {ProfileDevice} from "../../classes/ProfileDevice";
