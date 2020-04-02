@@ -16,11 +16,14 @@ export class ProfilesComponent implements OnInit {
     ) {
     }
 
-    profiles: string[];
+    profiles: string[] = [];
     selectedProfile: string;
     activeProfile: string;
     devices: ProfileDevice[] = [];
     loading = false;
+    activationLoading = false;
+
+    error = '';
 
     addNewProfileShown = false;
 
@@ -52,13 +55,16 @@ export class ProfilesComponent implements OnInit {
     }
 
     setActiveProfile(profileName: string) {
-
+        this.activationLoading = true;
         this.profileService.setActiveProfile(profileName).subscribe(
             _ => {
                 this.activeProfile = profileName;
+                this.activationLoading = false;
             },
             err => {
                 console.error(err.message);
+                this.error = err.message;
+                this.activationLoading = false;
             }
         );
     }

@@ -30,6 +30,7 @@ export class ProfileEditComponent implements OnInit {
     paginationOptions = {page: 1, perPage: 9};
 
     loading = false;
+    error = '';
 
     ngOnInit() {
         this.loading = true;
@@ -40,7 +41,6 @@ export class ProfileEditComponent implements OnInit {
         this.deviceService.getSavedDevices().subscribe(
             devices => {
                 this.allDevices = devices;
-                //this.loadProfile(this.selectedProfile)
                 this.route.paramMap.subscribe(
                     params => {
                         this.selectedProfile = params.get("profile");
@@ -48,6 +48,10 @@ export class ProfileEditComponent implements OnInit {
                             this.loadProfile(this.selectedProfile)
                         }
                     });
+            },
+            err => {
+                this.error = err.message;
+                this.loading = false;
             }
         );
     }
@@ -56,9 +60,12 @@ export class ProfileEditComponent implements OnInit {
 
     loadProfile(profileName: string) {
         this.loading = true;
+        if(!this.allDevices) {
+            this.initDevices();
+            return;
+        }
         this.profileService.getProfileDevices(this.selectedProfile).subscribe(
             profileDevices => {
-                console.log(profileDevices);
                 for(let device of this.allDevices) {
                     let inProfile = false;
                     let subscriptions = [];
@@ -71,6 +78,10 @@ export class ProfileEditComponent implements OnInit {
                     }
                     this.savedDevices.push({device, inProfile, subscriptions});
                 }
+                this.loading = false;
+            },
+            err => {
+                this.error = err.message;
                 this.loading = false;
             }
         );

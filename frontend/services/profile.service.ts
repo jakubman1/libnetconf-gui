@@ -1,10 +1,12 @@
+// @ts-ignore
 import { Injectable } from '@angular/core';
+// @ts-ignore
 import { HttpClient, HttpParams } from '@angular/common/http';
+// @ts-ignore
 import { Observable, of } from 'rxjs';
-import { Device } from "../classes/Device";
 import { ProfileDevice } from "../classes/ProfileDevice";
-import {Profile} from "../classes/Profile";
 
+// TODO: Caching to prevent multiple unnecessary HTTP requests
 
 @Injectable({
     providedIn: 'root'
@@ -13,22 +15,6 @@ export class ProfileService {
     constructor(
         private http: HttpClient
     ) {}
-
-
-    exampleDevices: Device[] = [
-        {
-            name: "Example device",
-            hostname: "localhost",
-            port: 123,
-            username: "admin",
-        },
-        {
-            name: "Example device 2",
-            hostname: "localhost",
-            port: 124,
-            username: "admin",
-        },
-    ];
 
     /**
      * Get all devices from profile, that uses sets as a default profile
@@ -43,19 +29,18 @@ export class ProfileService {
     }
 
     public getAllProfileNames(): Observable<string[]> {
-        return of(['myProfile1', 'myProfile2']);
+        return this.http.get<string[]>('/netconf/profiles');
     }
 
     public addProfile(name: string): Observable<object> {
-        //return this.http.post<object>('/netconf/addProfile', {name});
-        return of({success: true});
+        return this.http.post<object>('/netconf/profile', {profile: name});
     }
 
     public removeProfile(name: string): Observable<object> {
-        return of({success: true});
+        return this.http.post<object>('/netconf/removeProfile', {profile: name});
     }
 
     setActiveProfile(profileName: string): Observable<object> {
-        return of({success: true});
+        return this.http.post<object>('/netconf/activateProfile', {profile: profileName});
     }
 }

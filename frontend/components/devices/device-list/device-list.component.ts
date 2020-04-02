@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DeviceService} from "../../../services/device.service";
 import {Device} from "../../../classes/Device";
+import {DeviceService} from '../../../lib/netconf-lib';
 
 @Component({
     selector: 'nc-device-list',
@@ -13,7 +13,7 @@ export class DeviceListComponent implements OnInit {
         private deviceService: DeviceService
     ) { }
 
-    connectedDevices: {device: Device, status: string}[] = [];
+    connectedDevices: Device[] = [];
 
     ngOnInit() {
         this.connectedDevices = this.deviceService.connectedDevices;

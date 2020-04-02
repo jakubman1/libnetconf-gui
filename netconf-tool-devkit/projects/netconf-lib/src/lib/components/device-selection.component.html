@@ -12,13 +12,13 @@
     </div>
   </div>
   <div *ngIf="compatibleDevices.length === 0">
-    <p class="error-text text-right">No compatible devices found.</p>
+    <h2 class="text-center">No compatible devices connected.</h2>
   </div>
   <div class="toolbox mt-3">
     <a routerLink="/netconf/tools" class="btn btn-danger">Cancel</a>
     <button class="btn btn-primary right" (click)="submit()">Configure</button>
   </div>
-  <p class="error-text">{{errorMessage}}</p>
+  <p class="error-text text-right">{{errorMessage}}</p>
 </lib-content-box>
 <!--<div class="box">
   <div class="box-header">

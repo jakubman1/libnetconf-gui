@@ -10,10 +10,10 @@
     </thead>
     <tbody>
     <tr *ngFor="let device of connectedDevices">
-        <td>{{device.device.name ? device.device.name : ""}}</td>
-        <td>{{device.device.hostname}}:{{device.device.port}}</td>
-        <td>{{device.device.username}}</td>
-        <td>{{device.status}}</td>
+        <td>{{device.name ? device.name : ""}}</td>
+        <td>{{device.hostname}}:{{device.port}}</td>
+        <td>{{device.username}}</td>
+        <td></td>
         <td><button>Disconnect</button></td>
     </tr>
     </tbody>

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('socket.io-client'), require('rxjs'), require('@angular/common'), require('@angular/router'), require('@angular/core')) :
-    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', 'socket.io-client', 'rxjs', '@angular/common', '@angular/router', '@angular/core'], factory) :
-    (factory((global['netconf-lib'] = {}),global.socketIo,global.rxjs,global.ng.common,global.ng.router,global.ng.core));
-}(this, (function (exports,socketIo,rxjs,common,router,i0) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('socket.io-client'), require('@angular/common'), require('@angular/router'), require('@angular/core'), require('@angular/common/http')) :
+    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', 'rxjs', 'socket.io-client', '@angular/common', '@angular/router', '@angular/core', '@angular/common/http'], factory) :
+    (factory((global['netconf-lib'] = {}),global.rxjs,global.socketIo,global.ng.common,global.ng.router,global.ng.core,global.ng.common.http));
+}(this, (function (exports,rxjs,socketIo,common,router,i0,http) { 'use strict';
 
     /**
      * @fileoverview added by tsickle
@@ -129,64 +129,17 @@
      */
     // import {SocketService} from './socket.service';
     var DeviceService = /** @class */ (function () {
-        // import {SocketService} from './socket.service';
-        function DeviceService() {
-            this._connectedDevices = [
-                {
-                    fingerprint: '',
+        function DeviceService(http$$1) {
+            this.http = http$$1;
+            this._connectedDevices = [{
                     id: 1,
-                    name: 'Test device',
+                    name: 'Test',
                     hostname: 'localhost',
-                    port: 883,
+                    port: 830,
                     username: 'admin',
                     password: '',
-                },
-                {
-                    fingerprint: '',
-                    id: 2,
-                    name: 'Test device 2',
-                    hostname: 'localhost',
-                    port: 883,
-                    username: 'user',
-                    password: '',
-                },
-                {
-                    fingerprint: '',
-                    id: 3,
-                    name: '',
-                    hostname: 'localhost',
-                    port: 888,
-                    username: 'user',
-                    password: '',
-                },
-                {
-                    fingerprint: '',
-                    id: 4,
-                    name: 'Example server',
-                    hostname: 'example.com',
-                    port: 25565,
-                    username: 'admin',
-                    password: '',
-                },
-                {
-                    fingerprint: '',
-                    id: 5,
-                    name: 'Example server',
-                    hostname: 'example.com',
-                    port: 4201,
-                    username: 'user',
-                    password: '',
-                },
-                {
-                    fingerprint: '',
-                    id: 6,
-                    name: '',
-                    hostname: 'example.com',
-                    port: 4200,
-                    username: 'user',
-                    password: '',
-                }
-            ];
+                    fingerprint: 'aaa',
+                }];
             this.connectedDevicesChanged = new i0.EventEmitter();
         }
         Object.defineProperty(DeviceService.prototype, "connectedDevices", {
@@ -221,7 +174,7 @@
          * @return {?}
          */
             function () {
-                return rxjs.of(this.connectedDevices);
+                return this.http.get('/netconf/devices');
             };
         /**
          * @param {?} hostname
@@ -264,6 +217,7 @@
                 if (connect) {
                     this.connectToDevice(dev);
                 }
+                return this.http.post('/netconf/device', {});
             };
         /**
          * @param {?} device
@@ -293,11 +247,13 @@
                 return this.connectedDevices;
             };
         DeviceService.decorators = [
-            { type: i0.Injectable, args: [{
-                        providedIn: 'root'
-                    },] }
+            { type: i0.Injectable }
         ];
-        /** @nocollapse */ DeviceService.ngInjectableDef = i0.defineInjectable({ factory: function DeviceService_Factory() { return new DeviceService(); }, token: DeviceService, providedIn: "root" });
+        DeviceService.ctorParameters = function () {
+            return [
+                { type: http.HttpClient }
+            ];
+        };
         return DeviceService;
     }());
 
@@ -471,6 +427,8 @@
          */
             function () {
                 var e_1, _a;
+                console.log('DEVICE SERVICE');
+                console.log(this.deviceService);
                 /** @type {?} */
                 var devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
                 try {
@@ -591,19 +549,17 @@
                                 throw e_4.error;
                         }
                     }
-                    console.log(selectedDevices);
                     this.devicesSelected.emit(selectedDevices);
                     this.errorMessage = '';
                 }
                 else {
-                    console.log('nothing selected');
                     this.errorMessage = 'No devices selected';
                 }
             };
         DeviceSelectionComponent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'lib-device-selection',
-                        template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <p class=\"error-text text-right\">No compatible devices found.</p>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
+                        template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
                         styles: [".btn{margin-right:5px}.box{margin-bottom:10px;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)}.box-header{background:#008545;width:100%;font-size:1.5rem;border-radius:5px 5px 0 0;color:#fff;padding:5px 10px;text-align:center}.box-content{padding:5px 10px}.box-content-limited{max-width:1200px;margin-left:auto;margin-right:auto}.clickable{cursor:pointer}.clickable::-moz-selection{background:0 0;color:#231f20}.clickable::-moz-selection,.clickable::selection{background:0 0;color:#231f20}.error-text{color:#ee1d23}.checkbox-container{display:block;position:relative;padding-left:35px;margin-bottom:32px;cursor:pointer;font-size:22px;line-height:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transition:150ms ease-in-out}.checkbox-container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkbox-container:hover input~.checkmark{background-color:#00b55d}.checkbox-container input:checked~.checkmark{background-color:#231f20}.checkbox-container input:checked~.checkmark:after{display:block}.checkbox-container .checkmark:after{left:7px;top:-1px;width:12px;height:22px;border:solid #fff;border-width:0 4px 4px 0;border-radius:2px;transform:rotate(45deg)}.checkmark{position:absolute;top:0;left:0;height:32px;width:32px;background-color:#fff;border:3px solid #231f20;border-radius:5px;transition:150ms ease-in-out}.checkmark:after{content:\"\";position:absolute;display:none}.device-selection-title{font-size:1.2em;margin-bottom:0}.device-name{font-weight:700;margin-right:.5rem}.device-item{cursor:pointer;border:2px solid #016d39;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);margin-bottom:0}.hostname{font-size:.8em;white-space:nowrap;display:inline-block;color:rgba(35,31,32,.7)}.toolbox{width:100%}@media only screen and (min-width:600px){.toolbox{display:flex}}.toolbox .right{margin-left:auto}"]
                     }] }
         ];
@@ -771,9 +727,12 @@
         }
         NetconfLibModule.decorators = [
             { type: i0.NgModule, args: [{
-                        imports: [common.CommonModule, router.RouterModule],
+                        imports: [common.CommonModule, router.RouterModule, http.HttpClientModule],
                         declarations: __spread(sharedComponents),
                         exports: __spread(sharedComponents),
+                        providers: [
+                            DeviceService
+                        ]
                     },] }
         ];
         return NetconfLibModule;

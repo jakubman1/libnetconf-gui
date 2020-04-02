@@ -51,11 +51,9 @@ export class DeviceSelectionComponent implements OnInit {
           selectedDevices.push(d.device);
         }
       }
-      console.log(selectedDevices);
       this.devicesSelected.emit(selectedDevices);
       this.errorMessage = '';
     } else {
-      console.log('nothing selected');
       this.errorMessage = 'No devices selected';
     }
   }

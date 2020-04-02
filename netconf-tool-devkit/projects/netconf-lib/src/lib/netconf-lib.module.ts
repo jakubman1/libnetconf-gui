@@ -6,7 +6,9 @@ import {DeviceQuickswitchComponent} from './components/device-quickswitch.compon
 import {DeviceSelectionComponent} from './components/device-selection.component';
 import {DeviceSelectionItemComponent} from './components/subcomponents/device-selection-item.component';
 import {ContentBoxComponent} from './components/content-box.component';
-import {PopupComponent} from "./components/popup.component";
+import {PopupComponent} from './components/popup.component';
+import {HttpClientModule} from '@angular/common/http';
+import {DeviceService} from './services/device.service';
 
 
 const sharedComponents = [
@@ -19,8 +21,11 @@ const sharedComponents = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HttpClientModule],
   declarations: [ ...sharedComponents ],
   exports: [ ...sharedComponents ],
+  providers: [
+    DeviceService
+  ]
 })
 export class NetconfLibModule { }

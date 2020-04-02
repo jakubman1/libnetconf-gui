@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfigService} from "../services/config.service";
 import {ProfileService} from "../services/profile.service";
-import {DeviceService} from "../services/device.service";
 import {NotificationService} from "../services/notification.service";
 
 @Component({
@@ -14,7 +13,6 @@ export class NetconfComponent implements OnInit {
     constructor(
         private configService: ConfigService,
         private profileService: ProfileService,
-        private deviceService: DeviceService,
         private notificationService: NotificationService
     ) {
     }
@@ -45,7 +43,7 @@ export class NetconfComponent implements OnInit {
         this.profileService.getOnLoginProfile().subscribe(
             data => {
                 this.statusMessage = "";
-                this.deviceService.connectToMultipleDevices(data.devices);
+
                 setTimeout(() => {
                     this.notificationService.sendNotification(
                         this.notificationService.createNotification("Notification 1", "Internal", "Channel 1")

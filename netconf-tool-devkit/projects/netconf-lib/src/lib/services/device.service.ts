@@ -1,12 +1,13 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
 import {Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 // import {SocketService} from './socket.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DeviceService {
+  constructor(public http: HttpClient) {}
+
   get connectedDevices(): Device[] {
     return this._connectedDevices;
   }
@@ -16,61 +17,15 @@ export class DeviceService {
     this.connectedDevicesChanged.emit(value);
   }
 
-  private _connectedDevices: Device[] = [
-    {
-      fingerprint: '',
-      id: 1,
-      name: 'Test device',
-      hostname: 'localhost',
-      port: 883,
-      username: 'admin',
-      password: '',
-    },
-    {
-      fingerprint: '',
-      id: 2,
-      name: 'Test device 2',
-      hostname: 'localhost',
-      port: 883,
-      username: 'user',
-      password: '',
-    },
-    {
-      fingerprint: '',
-      id: 3,
-      name: '',
-      hostname: 'localhost',
-      port: 888,
-      username: 'user',
-      password: '',
-    },
-    {
-      fingerprint: '',
-      id: 4,
-      name: 'Example server',
-      hostname: 'example.com',
-      port: 25565,
-      username: 'admin',
-      password: '',
-    },
-    {
-      fingerprint: '',
-      id: 5,
-      name: 'Example server',
-      hostname: 'example.com',
-      port: 4201,
-      username: 'user',
-      password: '',
-    },
-    {
-      fingerprint: '',
-      id: 6,
-      name: '',
-      hostname: 'example.com',
-      port: 4200,
-      username: 'user',
-      password: '',
-    }];
+  private _connectedDevices: Device[] = [{
+    id: 1,
+    name: 'Test',
+    hostname: 'localhost',
+    port: 830,
+    username: 'admin',
+    password: '',
+    fingerprint: 'aaa',
+  }];
 
   public connectedDevicesChanged: EventEmitter<Device[]> = new EventEmitter<Device[]>();
 
@@ -79,15 +34,16 @@ export class DeviceService {
   }
 
   public getSavedDevices(): Observable<Device[]> {
-    return of(this.connectedDevices);
+    return this.http.get<Device[]>('/netconf/devices');
   }
+
 
   public saveDevice(hostname: string,
                     port: number,
                     username: string,
                     deviceName = '',
                     password = '',
-                    connect = false) {
+                    connect = false): Observable<object> {
     const dev: Device = {
       fingerprint: '',
       id: -1,
@@ -101,6 +57,7 @@ export class DeviceService {
     if (connect) {
       this.connectToDevice(dev);
     }
+    return this.http.post<object>('/netconf/device', {});
   }
 
   public connectToDevice(device: Device) {

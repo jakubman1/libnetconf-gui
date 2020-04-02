@@ -1,8 +1,9 @@
+import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
-import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
  * @fileoverview added by tsickle
@@ -103,64 +104,20 @@ ConfigurationService.ctorParameters = () => [
  */
 // import {SocketService} from './socket.service';
 class DeviceService {
-    // import {SocketService} from './socket.service';
-    constructor() {
-        this._connectedDevices = [
-            {
-                fingerprint: '',
+    /**
+     * @param {?} http
+     */
+    constructor(http) {
+        this.http = http;
+        this._connectedDevices = [{
                 id: 1,
-                name: 'Test device',
+                name: 'Test',
                 hostname: 'localhost',
-                port: 883,
+                port: 830,
                 username: 'admin',
                 password: '',
-            },
-            {
-                fingerprint: '',
-                id: 2,
-                name: 'Test device 2',
-                hostname: 'localhost',
-                port: 883,
-                username: 'user',
-                password: '',
-            },
-            {
-                fingerprint: '',
-                id: 3,
-                name: '',
-                hostname: 'localhost',
-                port: 888,
-                username: 'user',
-                password: '',
-            },
-            {
-                fingerprint: '',
-                id: 4,
-                name: 'Example server',
-                hostname: 'example.com',
-                port: 25565,
-                username: 'admin',
-                password: '',
-            },
-            {
-                fingerprint: '',
-                id: 5,
-                name: 'Example server',
-                hostname: 'example.com',
-                port: 4201,
-                username: 'user',
-                password: '',
-            },
-            {
-                fingerprint: '',
-                id: 6,
-                name: '',
-                hostname: 'example.com',
-                port: 4200,
-                username: 'user',
-                password: '',
-            }
-        ];
+                fingerprint: 'aaa',
+            }];
         this.connectedDevicesChanged = new EventEmitter();
     }
     /**
@@ -187,7 +144,7 @@ class DeviceService {
      * @return {?}
      */
     getSavedDevices() {
-        return of(this.connectedDevices);
+        return this.http.get('/netconf/devices');
     }
     /**
      * @param {?} hostname
@@ -212,6 +169,7 @@ class DeviceService {
         if (connect) {
             this.connectToDevice(dev);
         }
+        return this.http.post('/netconf/device', {});
     }
     /**
      * @param {?} device
@@ -230,11 +188,11 @@ class DeviceService {
     }
 }
 DeviceService.decorators = [
-    { type: Injectable, args: [{
-                providedIn: 'root'
-            },] }
+    { type: Injectable }
 ];
-/** @nocollapse */ DeviceService.ngInjectableDef = defineInjectable({ factory: function DeviceService_Factory() { return new DeviceService(); }, token: DeviceService, providedIn: "root" });
+DeviceService.ctorParameters = () => [
+    { type: HttpClient }
+];
 
 /**
  * @fileoverview added by tsickle
@@ -343,6 +301,8 @@ class DeviceSelectionComponent {
      * @return {?}
      */
     ngOnInit() {
+        console.log('DEVICE SERVICE');
+        console.log(this.deviceService);
         /** @type {?} */
         const devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
         for (const d of devices) {
@@ -382,12 +342,10 @@ class DeviceSelectionComponent {
                     selectedDevices.push(d.device);
                 }
             }
-            console.log(selectedDevices);
             this.devicesSelected.emit(selectedDevices);
             this.errorMessage = '';
         }
         else {
-            console.log('nothing selected');
             this.errorMessage = 'No devices selected';
         }
     }
@@ -395,7 +353,7 @@ class DeviceSelectionComponent {
 DeviceSelectionComponent.decorators = [
     { type: Component, args: [{
                 selector: 'lib-device-selection',
-                template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <p class=\"error-text text-right\">No compatible devices found.</p>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
+                template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
                 styles: [".btn{margin-right:5px}.box{margin-bottom:10px;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)}.box-header{background:#008545;width:100%;font-size:1.5rem;border-radius:5px 5px 0 0;color:#fff;padding:5px 10px;text-align:center}.box-content{padding:5px 10px}.box-content-limited{max-width:1200px;margin-left:auto;margin-right:auto}.clickable{cursor:pointer}.clickable::-moz-selection{background:0 0;color:#231f20}.clickable::-moz-selection,.clickable::selection{background:0 0;color:#231f20}.error-text{color:#ee1d23}.checkbox-container{display:block;position:relative;padding-left:35px;margin-bottom:32px;cursor:pointer;font-size:22px;line-height:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transition:150ms ease-in-out}.checkbox-container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkbox-container:hover input~.checkmark{background-color:#00b55d}.checkbox-container input:checked~.checkmark{background-color:#231f20}.checkbox-container input:checked~.checkmark:after{display:block}.checkbox-container .checkmark:after{left:7px;top:-1px;width:12px;height:22px;border:solid #fff;border-width:0 4px 4px 0;border-radius:2px;transform:rotate(45deg)}.checkmark{position:absolute;top:0;left:0;height:32px;width:32px;background-color:#fff;border:3px solid #231f20;border-radius:5px;transition:150ms ease-in-out}.checkmark:after{content:\"\";position:absolute;display:none}.device-selection-title{font-size:1.2em;margin-bottom:0}.device-name{font-weight:700;margin-right:.5rem}.device-item{cursor:pointer;border:2px solid #016d39;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);margin-bottom:0}.hostname{font-size:.8em;white-space:nowrap;display:inline-block;color:rgba(35,31,32,.7)}.toolbox{width:100%}@media only screen and (min-width:600px){.toolbox{display:flex}}.toolbox .right{margin-left:auto}"]
             }] }
 ];
@@ -561,9 +519,12 @@ class NetconfLibModule {
 }
 NetconfLibModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, RouterModule],
+                imports: [CommonModule, RouterModule, HttpClientModule],
                 declarations: [...sharedComponents],
                 exports: [...sharedComponents],
+                providers: [
+                    DeviceService
+                ]
             },] }
 ];
 
