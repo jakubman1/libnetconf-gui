@@ -1,5 +1,4 @@
-from liberouterapi import db, auth, config, socketio
-from liberouterapi.dbConnector import dbConnector
+# from liberouterapi import db, auth, config, socketio
 
 import json
 from flask import request

@@ -63,8 +63,9 @@
 </div>
 <lib-content-box title="Profiles" *ngIf="profiles.length === 0 && !loading">
     <div class="text-center">
-        <h1>You don't have any profiles</h1>
-        <button class="btn btn-primary btn-attention" (click)="addNewProfileShown = true">Add profile</button>
+        <h1 *ngIf="!error">You don't have any profiles</h1>
+        <p class="text-danger" *ngIf="error">{{error}}</p>
+        <button *ngIf="!error" class="btn btn-primary btn-attention" (click)="addNewProfileShown = true">Add profile</button>
     </div>
 </lib-content-box>
 <nc-add-profile *ngIf="addNewProfileShown"

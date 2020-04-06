@@ -48,3 +48,5 @@ Thumbs.db
 
 # Backend cache
 /backend/__pycache__
+# User configuration files
+/backend/userfiles

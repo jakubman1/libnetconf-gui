@@ -32,6 +32,9 @@ export class ProfilesComponent implements OnInit {
         this.profileService.getAllProfileNames().subscribe(
             profiles => {
                 this.profiles = profiles;
+            },
+            err => {
+                this.error = err.message;
             }
         );
         this.profileService.getOnLoginProfile().subscribe(

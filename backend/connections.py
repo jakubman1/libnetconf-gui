@@ -35,7 +35,7 @@ def activate_profile():
 
 @auth.required()
 def profiles():
-    return json.dumps(get_profiles(get_username_from_session()))
+    return json.dumps(get_profile_names(get_username_from_session()))
 
 @auth.required()
 def profile_add():
