@@ -109,15 +109,7 @@ class DeviceService {
      */
     constructor(http) {
         this.http = http;
-        this._connectedDevices = [{
-                id: 1,
-                name: 'Test',
-                hostname: 'localhost',
-                port: 830,
-                username: 'admin',
-                password: '',
-                fingerprint: 'aaa',
-            }];
+        this._connectedDevices = [];
         this.connectedDevicesChanged = new EventEmitter();
     }
     /**
@@ -169,7 +161,7 @@ class DeviceService {
         if (connect) {
             this.connectToDevice(dev);
         }
-        return this.http.post('/netconf/device', {});
+        return this.http.post('/netconf/device', { device: dev });
     }
     /**
      * @param {?} device
@@ -301,8 +293,6 @@ class DeviceSelectionComponent {
      * @return {?}
      */
     ngOnInit() {
-        console.log('DEVICE SERVICE');
-        console.log(this.deviceService);
         /** @type {?} */
         const devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
         for (const d of devices) {

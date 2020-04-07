@@ -27,6 +27,12 @@ Devices
 def devices_get():
     return json.dumps(get_saved_devices(get_username_from_session(), netconf_coll))
 
+@auth.required()
+def device_add():
+    data = request.json
+    device = data['device']
+    return json.dumps({'id': add_device(get_username_from_session(), device, netconf_coll)})
+
 """
 Profiles
 """

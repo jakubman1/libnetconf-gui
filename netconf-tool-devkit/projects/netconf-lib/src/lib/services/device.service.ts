@@ -17,15 +17,7 @@ export class DeviceService {
     this.connectedDevicesChanged.emit(value);
   }
 
-  private _connectedDevices: Device[] = [{
-    id: 1,
-    name: 'Test',
-    hostname: 'localhost',
-    port: 830,
-    username: 'admin',
-    password: '',
-    fingerprint: 'aaa',
-  }];
+  private _connectedDevices: Device[] = [];
 
   public connectedDevicesChanged: EventEmitter<Device[]> = new EventEmitter<Device[]>();
 
@@ -57,7 +49,7 @@ export class DeviceService {
     if (connect) {
       this.connectToDevice(dev);
     }
-    return this.http.post<object>('/netconf/device', {});
+    return this.http.post<object>('/netconf/device', {device: dev});
   }
 
   public connectToDevice(device: Device) {

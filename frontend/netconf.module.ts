@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AuthGuard } from 'app/utils/auth.guard';
 import { SafePipe, SafePipeModule } from 'app/utils/safe.pipe';
@@ -105,7 +106,8 @@ const routes: Routes = [{
         RouterModule.forChild(routes),
         NgbModule,
         BrowserAnimationsModule,
-        NetconfLibModule
+        NetconfLibModule,
+        ReactiveFormsModule
     ],
     declarations: [
 	    NetconfComponent,

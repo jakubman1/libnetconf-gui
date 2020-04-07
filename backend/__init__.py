@@ -12,6 +12,7 @@ netconf_bp = Module('netconf', __name__, url_prefix='/netconf', no_version=True)
 
 # Devices
 netconf_bp.add_url_rule('/devices', view_func=devices_get, methods=['GET'])
+netconf_bp.add_url_rule('/device', view_func=device_add, methods=['POST'])
 
 # Profiles
 netconf_bp.add_url_rule('/activateProfile', view_func=activate_profile, methods=['POST'])

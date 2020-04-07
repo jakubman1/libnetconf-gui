@@ -131,15 +131,7 @@
     var DeviceService = /** @class */ (function () {
         function DeviceService(http$$1) {
             this.http = http$$1;
-            this._connectedDevices = [{
-                    id: 1,
-                    name: 'Test',
-                    hostname: 'localhost',
-                    port: 830,
-                    username: 'admin',
-                    password: '',
-                    fingerprint: 'aaa',
-                }];
+            this._connectedDevices = [];
             this.connectedDevicesChanged = new i0.EventEmitter();
         }
         Object.defineProperty(DeviceService.prototype, "connectedDevices", {
@@ -217,7 +209,7 @@
                 if (connect) {
                     this.connectToDevice(dev);
                 }
-                return this.http.post('/netconf/device', {});
+                return this.http.post('/netconf/device', { device: dev });
             };
         /**
          * @param {?} device
@@ -427,8 +419,6 @@
          */
             function () {
                 var e_1, _a;
-                console.log('DEVICE SERVICE');
-                console.log(this.deviceService);
                 /** @type {?} */
                 var devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
                 try {

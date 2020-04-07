@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { __values, __spread } from 'tslib';
-import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
+import { Injectable, Component, Input, Output, EventEmitter, defineInjectable, NgModule, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
@@ -131,15 +131,7 @@ var ConfigurationService = /** @class */ (function () {
 var DeviceService = /** @class */ (function () {
     function DeviceService(http) {
         this.http = http;
-        this._connectedDevices = [{
-                id: 1,
-                name: 'Test',
-                hostname: 'localhost',
-                port: 830,
-                username: 'admin',
-                password: '',
-                fingerprint: 'aaa',
-            }];
+        this._connectedDevices = [];
         this.connectedDevicesChanged = new EventEmitter();
     }
     Object.defineProperty(DeviceService.prototype, "connectedDevices", {
@@ -213,7 +205,7 @@ var DeviceService = /** @class */ (function () {
         if (connect) {
             this.connectToDevice(dev);
         }
-        return this.http.post('/netconf/device', {});
+        return this.http.post('/netconf/device', { device: dev });
     };
     /**
      * @param {?} device
@@ -361,8 +353,6 @@ var DeviceSelectionComponent = /** @class */ (function () {
      */
     function () {
         var e_1, _a;
-        console.log('DEVICE SERVICE');
-        console.log(this.deviceService);
         /** @type {?} */
         var devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
         try {
