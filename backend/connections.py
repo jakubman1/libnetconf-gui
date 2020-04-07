@@ -5,6 +5,13 @@ import json
 from .profiles import *
 from .devices import *
 
+
+"""
+DB connection setup
+"""
+netconf_db = dbConnector('netconf', provider='mongodb', config={'database': config['netconf']['database']})
+netconf_coll = netconf_db.db[config['netconf']['collection']]
+
 """
 Helpers
 """
@@ -18,7 +25,7 @@ Devices
 """
 @auth.required()
 def devices_get():
-    return json.dumps(get_saved_devices(get_username_from_session(), None))
+    return json.dumps(get_saved_devices(get_username_from_session(), netconf_coll))
 
 """
 Profiles
@@ -48,7 +55,7 @@ def profile_add():
 
 @auth.required()
 def profile_get(profile_name):
-    return json.dumps(get_profile_devices(get_username_from_session(), profile_name, None))
+    return json.dumps(get_profile_devices(get_username_from_session(), profile_name, netconf_coll))
 
 @auth.required()
 def profile_remove():
@@ -61,7 +68,7 @@ def profile_remove():
 
 @auth.required()
 def profile_on_login():
-    return json.dumps(get_on_login_profile(get_username_from_session(), None))
+    return json.dumps(get_on_login_profile(get_username_from_session(), netconf_coll))
 
 @auth.required()
 def profile_set(profile_name):
