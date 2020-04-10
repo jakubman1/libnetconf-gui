@@ -350,9 +350,9 @@ def set_profile_devices(username: str, profile_name: str, devices: list) -> bool
     """
     profiles = get_profiles(username)
     for i in range(len(profiles)):
-        if profiles[i]['name'] == profile_name and 'devices' in profiles[i].keys():
+        if profiles[i]['name'] == profile_name:
             profiles[i]['devices'] = devices
-            return True
+            return write_user_profiles(username, {'active': get_active_profile(username), 'profiles': profiles})
     return False
 
 def get_profile_devices_raw(username: str, profile_name: str) -> list:

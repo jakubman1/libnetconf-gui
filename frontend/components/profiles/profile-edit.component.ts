@@ -2,10 +2,13 @@
 import {Component, OnInit} from '@angular/core';
 // @ts-ignore
 import { ActivatedRoute } from '@angular/router';
+// @ts-ignore
+import {Router} from '@angular/router';
 import {ProfileService} from "../../services/profile.service";
 import {DeviceService} from "../../lib/netconf-lib";
 import {ProfileDevice} from "../../classes/ProfileDevice";
 import {Device} from "../../lib/netconf-lib/lib/classes/device";
+
 
 
 
@@ -18,7 +21,8 @@ export class ProfileEditComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private profileService: ProfileService,
-        private deviceService: DeviceService
+        private deviceService: DeviceService,
+        private router: Router
     ) {
     }
 
@@ -31,6 +35,8 @@ export class ProfileEditComponent implements OnInit {
 
     loading = false;
     error = '';
+    saving = false;
+    saveError = '';
 
     ngOnInit() {
         this.loading = true;
@@ -45,7 +51,7 @@ export class ProfileEditComponent implements OnInit {
                     params => {
                         this.selectedProfile = params.get("profile");
                         if(this.selectedProfile) {
-                            this.loadProfile(this.selectedProfile)
+                            this.loadProfile()
                         }
                     });
             },
@@ -56,9 +62,7 @@ export class ProfileEditComponent implements OnInit {
         );
     }
 
-
-
-    loadProfile(profileName: string) {
+    loadProfile() {
         this.loading = true;
         if(!this.allDevices) {
             this.initDevices();
@@ -103,5 +107,37 @@ export class ProfileEditComponent implements OnInit {
     setPage(page: number) {
         this.paginationOptions.page = page;
     }
+
+    removeSubscription(device: ProfileDevice, channel: string) {
+
+    }
+
+    saveChanges() {
+        let ids = [];
+        for (let device of this.savedDevices) {
+            if(device.inProfile) {
+                ids.push({id: device.device.id});
+            }
+        }
+        console.log(ids);
+        this.saving = true;
+        this.saveError = '';
+        this.profileService.saveProfile(this.selectedProfile, ids).subscribe(
+            success => {
+                this.saving = false;
+                if(success.success) {
+                    this.router.navigateByUrl('/netconf/profiles')
+                }
+                else {
+                    this.saveError = 'Server could not write data to profile ' + this.selectedProfile + '.';
+                }
+            },
+            err => {
+                this.saving = false;
+                this.saveError = err.message;
+            }
+        );
+    }
+
 
 }

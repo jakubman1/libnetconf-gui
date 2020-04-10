@@ -46,5 +46,4 @@ export class AddDeviceFormComponent implements OnInit {
     }
   }
 
-
 }

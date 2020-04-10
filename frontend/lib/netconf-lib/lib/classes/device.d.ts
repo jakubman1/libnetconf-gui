@@ -1,5 +1,5 @@
 export declare class Device {
-    id: number;
+    id: string;
     name: string;
     hostname: string;
     port: number;

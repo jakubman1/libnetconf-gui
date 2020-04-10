@@ -151,7 +151,7 @@ class DeviceService {
         /** @type {?} */
         const dev = {
             fingerprint: '',
-            id: -1,
+            id: '',
             name: deviceName,
             hostname,
             port,

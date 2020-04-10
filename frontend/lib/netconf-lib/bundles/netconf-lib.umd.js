@@ -199,7 +199,7 @@
                 /** @type {?} */
                 var dev = {
                     fingerprint: '',
-                    id: -1,
+                    id: '',
                     name: deviceName,
                     hostname: hostname,
                     port: port,

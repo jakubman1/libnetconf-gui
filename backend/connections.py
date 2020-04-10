@@ -77,10 +77,11 @@ def profile_on_login():
     return json.dumps(get_on_login_profile(get_username_from_session(), netconf_coll))
 
 @auth.required()
-def profile_set(profile_name):
+def profile_set():
     data = request.json
     val = data['value']
-    if set_profile(get_username_from_session(), profile_name, val):
+    profile = data['profile']
+    if set_profile_devices(get_username_from_session(), profile, val):
         return json.dumps({'success': True, 'code': 200})
     else:
         return json.dumps({'success': False, 'code': 500})

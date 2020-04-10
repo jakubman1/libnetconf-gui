@@ -10,6 +10,7 @@ def get_saved_devices(username, db_coll):
     list = []
     for item in db_coll.find({'owner': username}):
         item['_id'] = str(item['_id'])
+        item['id'] = str(item['_id'])
         list.append(item)
     return list
 
@@ -22,4 +23,6 @@ def add_device(username, device, db_coll):
 def get_device_by_id(device_id: str, db_coll):
     device = db_coll.find_one({'_id': ObjectId(device_id)})
     device['_id'] = str(device['_id'])
+    device['id'] = str(device['_id'])
+    return device
 

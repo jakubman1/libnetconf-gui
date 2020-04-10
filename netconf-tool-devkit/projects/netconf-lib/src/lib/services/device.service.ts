@@ -38,7 +38,7 @@ export class DeviceService {
                     connect = false): Observable<object> {
     const dev: Device = {
       fingerprint: '',
-      id: -1,
+      id: '',
       name: deviceName,
       hostname,
       port,

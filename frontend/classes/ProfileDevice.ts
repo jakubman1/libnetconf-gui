@@ -1,5 +1,5 @@
 export class ProfileDevice {
-    id: number;
+    id: string;
     name?: string;
     hostname: string;
     port: number;

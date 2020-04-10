@@ -11,6 +11,10 @@
             <h1 class="text-danger">Could not load profiles!</h1>
             <p><span class="text-bold">Error details:</span> {{error}}</p>
         </div>
+        <div *ngIf="saveError" class="col-sm-12 text-center">
+            <h1 class="text-danger">Could not save changes!</h1>
+            <p><span class="text-bold">Error details:</span> {{saveError}}</p>
+        </div>
         <div class="col-sm-12 col-md-4 pl-3 pr-3 p-2"
              *ngFor="let device of savedDevices | deviceFilter: searchedText | pagination: paginationOptions">
             <lib-device-selection-item [device]="device.device" [(selected)]="device.inProfile">
@@ -45,7 +49,9 @@
     <div class="row">
         <div class="col-sm-12">
             <a routerLink="/netconf/profiles" class="btn btn-danger">Cancel</a>
-            <button class="btn btn-primary float-right" *ngIf="!error">Save changes</button>
+            <button class="btn btn-primary float-right" *ngIf="!error"
+                    (click)="saveChanges()"
+                    [disabled]="saving">Save changes <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="saving"></i></button>
         </div>
     </div>
 </lib-content-box>

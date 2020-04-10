@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 // @ts-ignore
 import { HttpClient, HttpParams } from '@angular/common/http';
 // @ts-ignore
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ProfileDevice } from "../classes/ProfileDevice";
+import {ProfileItem} from '../classes/ProfileItem';
+import {GenericServerResponse} from '../classes/GenericServerResponse';
 
 // TODO: Caching to prevent multiple unnecessary HTTP requests
 
@@ -40,7 +42,11 @@ export class ProfileService {
         return this.http.post<object>('/netconf/removeProfile', {profile: name});
     }
 
-    setActiveProfile(profileName: string): Observable<object> {
+    public setActiveProfile(profileName: string): Observable<object> {
         return this.http.post<object>('/netconf/activateProfile', {profile: profileName});
+    }
+
+    public saveProfile(profileName: string, profiles: ProfileItem[]): Observable<GenericServerResponse> {
+        return this.http.post<GenericServerResponse>('/netconf/profileSet', {profile: profileName, value: profiles});
     }
 }

@@ -1,5 +1,5 @@
 export class Device {
-  public id: number;
+  public id: string;
   public name = '';
   public hostname = '';
   public port = 830;

@@ -1,6 +1,7 @@
+// @ts-ignore
 import { Component, OnInit } from '@angular/core';
-import {Device} from "../../../classes/Device";
 import {DeviceService} from '../../../lib/netconf-lib';
+import {Device} from '../../../lib/netconf-lib/lib/classes/device';
 
 @Component({
     selector: 'nc-device-list',
