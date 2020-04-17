@@ -1,4 +1,4 @@
-from liberouterapi import db, auth, config
+from liberouterapi import db, auth, config, socketio
 from liberouterapi.dbConnector import dbConnector
 import json
 
@@ -32,6 +32,7 @@ def device_add():
     data = request.json
     device = data['device']
     return json.dumps({'id': add_device(get_username_from_session(), device, netconf_coll)})
+
 
 """
 Profiles

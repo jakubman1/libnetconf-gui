@@ -207,7 +207,7 @@
                     password: password
                 };
                 if (connect) {
-                    this.connectToDevice(dev);
+                    this.connectToDevice(dev).subscribe();
                 }
                 return this.http.post('/netconf/device', { device: dev });
             };
@@ -220,7 +220,16 @@
          * @return {?}
          */
             function (device) {
-                this.connectedDevices.push(device);
+                // this.connectedDevices.push(device);
+                /** @type {?} */
+                var body = {
+                    'name': device.name,
+                    'hostname': device.hostname,
+                    'port': device.port,
+                    'username': device.username,
+                    'password': device.password
+                };
+                return this.http.post('/netconf/connect', body);
             };
         /**
          * Filter is xpath (?)

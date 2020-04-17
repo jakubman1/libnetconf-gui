@@ -1,4 +1,4 @@
-# from liberouterapi import db, auth, config, socketio
+# from liberouterapi import socketio
 
 import json
 from flask import request

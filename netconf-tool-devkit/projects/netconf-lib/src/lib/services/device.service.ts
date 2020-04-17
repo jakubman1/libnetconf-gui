@@ -2,11 +2,13 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
 import {Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+
 // import {SocketService} from './socket.service';
 
 @Injectable()
 export class DeviceService {
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) {
+  }
 
   get connectedDevices(): Device[] {
     return this._connectedDevices;
@@ -47,13 +49,21 @@ export class DeviceService {
     };
 
     if (connect) {
-      this.connectToDevice(dev);
+      this.connectToDevice(dev).subscribe();
     }
     return this.http.post<object>('/netconf/device', {device: dev});
   }
 
   public connectToDevice(device: Device) {
-    this.connectedDevices.push(device);
+    // this.connectedDevices.push(device);
+    const body = {
+      'name': device.name,
+      'hostname': device.hostname,
+      'port': device.port,
+      'username': device.username,
+      'password': device.password
+    };
+    return this.http.post('/netconf/connect', body);
   }
 
   /**

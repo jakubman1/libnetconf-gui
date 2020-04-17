@@ -11,7 +11,7 @@ export declare class DeviceService {
     getConnectedDevices(): Device[];
     getSavedDevices(): Observable<Device[]>;
     saveDevice(hostname: string, port: number, username: string, deviceName?: string, password?: string, connect?: boolean): Observable<object>;
-    connectToDevice(device: Device): void;
+    connectToDevice(device: Device): Observable<Object>;
     /**
      * Filter is xpath (?)
      */
