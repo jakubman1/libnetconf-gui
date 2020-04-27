@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { __values, __spread } from 'tslib';
-import { Injectable, Component, Input, Output, EventEmitter, defineInjectable, NgModule, inject } from '@angular/core';
+import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
@@ -69,9 +69,12 @@ var SocketService = /** @class */ (function () {
         this.socket.removeListener(event);
     };
     SocketService.decorators = [
-        { type: Injectable }
+        { type: Injectable, args: [{
+                    providedIn: 'root'
+                },] }
     ];
     SocketService.ctorParameters = function () { return []; };
+    /** @nocollapse */ SocketService.ngInjectableDef = defineInjectable({ factory: function SocketService_Factory() { return new SocketService(); }, token: SocketService, providedIn: "root" });
     return SocketService;
 }());
 
@@ -607,7 +610,7 @@ var PopupComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'lib-nc-popup',
                     template: "\n    <div class=\"popup-wrapper\">\n      <div class=\"popup-content\">\n        <div *ngIf=\"title !== ''\" class=\"popup-header\">{{title}}</div>\n        <ng-content></ng-content>\n        <div class=\"popup-toolbox\" *ngIf=\"toolbox\">\n          <button class=\"btn btn-danger\" (click)=\"cancel()\">Cancel</button>\n          <button class=\"btn btn-primary float-right\" (click)=\"submit()\">{{submitBtnText}}</button>\n        </div>\n      </div>\n    </div>\n  ",
-                    styles: [".popup-wrapper{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.7);z-index:9999}.popup-content{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;max-width:100vw;padding:10px;background:#fff;border:3px solid #fff;border-radius:5px}.popup-header{width:calc(100% + 20px);margin:-10px -10px 10px;background:#008545;color:#fff;border-radius:5px 5px 0 0;padding:5px;font-size:1.3rem;text-align:center}.popup-toolbox{background:#fafafa;width:calc(100% + 20px);margin:10px -10px -20px;padding:10px}"]
+                    styles: [".popup-wrapper{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.7);z-index:9999}.popup-content{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:100vw;max-height:100vh;overflow:auto;padding:10px;background:#fff;border:3px solid #fff;border-radius:5px}.popup-header{width:calc(100% + 20px);margin:-10px -10px 10px;background:#008545;color:#fff;border-radius:5px 5px 0 0;padding:5px;font-size:1.3rem;text-align:center}.popup-toolbox{background:#fafafa;width:calc(100% + 20px);margin:10px -10px -20px;padding:10px}"]
                 }] }
     ];
     PopupComponent.ctorParameters = function () { return []; };
