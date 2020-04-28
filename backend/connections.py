@@ -92,7 +92,7 @@ def profile_set_connect_on_login():
     data = request.json
     profile = data['profile']
     value = data['value']
-    if set_connect_on_login(get_username_from_session(), profile, val):
+    if set_connect_on_login(get_username_from_session(), profile, value):
         return json.dumps({'success': True, 'code': 200})
     else:
         return json.dumps({'success': False, 'code': 500})

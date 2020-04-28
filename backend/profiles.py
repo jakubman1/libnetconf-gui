@@ -218,7 +218,7 @@ def add_profile(username, profile_name):
     """
     profiles = read_user_profiles(username)
     if not does_profile_exist(username, profile_name):
-        profiles['profiles'].append({'name': profile_name})
+        profiles['profiles'].append({'name': profile_name, 'connectOnLogin': False})
         return write_user_profiles(username, profiles)
     else:
         return False
