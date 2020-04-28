@@ -35,8 +35,7 @@ export class NowConnectingFormComponent implements OnInit {
     error = '';
 
     devices = [];
-    schemasRequired: string[] = [];
-    schemaMessageIds = [];
+    schemasRequired = [];
 
     constructor(private profileService: ProfileService,
                 private deviceService: DeviceService,
@@ -62,14 +61,21 @@ export class NowConnectingFormComponent implements OnInit {
             console.log("GETSCHEMA CALLED")
             console.log(message);
             this.schemasRequired.push(message);
-            this.schemaMessageIds.push(message['id']);
         });
     }
 
-    uploadSchemas(fileInput: any) {
-        if (fileInput.target.files && fileInput.target.files[0]) {
+    uploadSchema(fileInput: FileList, schema: any) {
+        if (fileInput && fileInput.item(0)) {
+            let idx = this.schemasRequired.indexOf(schema);
+            this.schemasRequired[idx]['status'] = 1;
             let reader = new FileReader();
-            console.log(fileInput.target.files)
+            let file: File = fileInput[0];
+            reader.onloadend = (e) => {
+                this.socketService.send('getschema_result', {'id': schema['id'], 'filename': fileInput[0]['name'], 'data': reader.result});
+                this.schemasRequired[idx]['status'] = 2;
+            }
+            reader.readAsText(file);
+
         }
     }
 
@@ -82,7 +88,7 @@ export class NowConnectingFormComponent implements OnInit {
                     request => {
                         if(request['success']) {
                             this.setDeviceSessionKey(dev, request['session-key']);
-                            this.updateDeviceStatus(dev, ConnectionStatus.WAITING_FOR_DEVICE);
+                            this.updateDeviceStatus(dev, ConnectionStatus.CONNECTED);
                         }
                         else {
 
@@ -128,12 +134,11 @@ export class NowConnectingFormComponent implements OnInit {
     }
 
     skipSchemaUpload() {
-        for(let id of this.schemaMessageIds) {
-            console.log(id);
-            this.socketService.send('hostcheck_result', {'id': id, 'filename': '', 'data': ''})
+        for(let schema of this.schemasRequired) {
+            console.log(schema['id']);
+            this.socketService.send('getschema_result', {'id': schema['id'], 'filename': '', 'data': ''});
         }
         this.schemasRequired = [];
-        this.schemaMessageIds = [];
     }
 
 }
