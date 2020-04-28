@@ -89,6 +89,9 @@ export class NowConnectingFormComponent implements OnInit {
                         if(request['success']) {
                             this.setDeviceSessionKey(dev, request['session-key']);
                             this.updateDeviceStatus(dev, ConnectionStatus.CONNECTED);
+                            if(this.shouldCloseSelf()) {
+                                this.close();
+                            }
                         }
                         else {
 
@@ -123,6 +126,16 @@ export class NowConnectingFormComponent implements OnInit {
     setDeviceSessionKey(device, sessionKey: string) {
         let idx = this.devices.indexOf(device);
         this.devices[idx].sessionKey = sessionKey;
+    }
+
+    shouldCloseSelf() {
+        let close = true;
+        for(let device of this.devices) {
+            if (device.status !== ConnectionStatus.CONNECTED) {
+                close = false;
+            }
+        }
+        return close;
     }
 
     close() {

@@ -21,8 +21,8 @@ export class ProfileService {
     /**
      * Get all devices from profile, that uses sets as a default profile
      */
-    public getOnLoginProfile(): Observable<{devices: ProfileDevice[], name: string}> {
-        return this.http.get<{devices: ProfileDevice[], name: string}>('/netconf/profileOnLogin');
+    public getOnLoginProfile(): Observable<{devices: ProfileDevice[], name: string, connectOnLogin: boolean}> {
+        return this.http.get<{devices: ProfileDevice[], name: string, connectOnLogin: boolean}>('/netconf/profileOnLogin');
     }
 
     public getProfileDevices(profileName: string): Observable<ProfileDevice[]> {
@@ -48,5 +48,9 @@ export class ProfileService {
 
     public saveProfile(profileName: string, profiles: ProfileItem[]): Observable<GenericServerResponse> {
         return this.http.post<GenericServerResponse>('/netconf/profileSet', {profile: profileName, value: profiles});
+    }
+
+    public setProfileConnectOnLogin(profileName: string, value: boolean): Observable<GenericServerResponse> {
+        return this.http.post<GenericServerResponse>('/netconf/profile/setConnectOnLogin', {profile: profileName, value});
     }
 }

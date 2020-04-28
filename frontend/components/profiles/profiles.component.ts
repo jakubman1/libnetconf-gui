@@ -20,8 +20,10 @@ export class ProfilesComponent implements OnInit {
     selectedProfile: string;
     activeProfile: string;
     devices: ProfileDevice[] = [];
+    connectOnLogin = false;
     loading = false;
     activationLoading = false;
+    connectOnLoginChangeLoading = false;
 
     error = '';
 
@@ -43,6 +45,7 @@ export class ProfilesComponent implements OnInit {
                 this.devices = data.devices;
                 this.loading = false;
                 this.activeProfile = data.name;
+                this.connectOnLogin = data.connectOnLogin;
             }
         );
     }
@@ -97,6 +100,26 @@ export class ProfilesComponent implements OnInit {
     selectProfile(profileName: string) {
         this.selectedProfile = profileName;
         this.reloadDevices();
+    }
+
+    setShouldConnectOnLogin(value) {
+        this.connectOnLoginChangeLoading = true;
+        this.profileService.setProfileConnectOnLogin(this.selectedProfile, value).subscribe(
+
+            response => {
+                if(!response.success) {
+                    this.error = "Server error!"
+                }
+                this.connectOnLoginChangeLoading = false;
+            },
+            err => {
+                this.error = "HTTP error";
+                if(err.message) {
+                    this.error += ": " + err.message
+                }
+                this.connectOnLoginChangeLoading = false;
+            }
+        )
     }
 
 }
