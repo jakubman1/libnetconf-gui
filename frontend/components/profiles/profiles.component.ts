@@ -104,7 +104,7 @@ export class ProfilesComponent implements OnInit {
 
     setShouldConnectOnLogin(value) {
         this.connectOnLoginChangeLoading = true;
-        this.profileService.setProfileConnectOnLogin(this.selectedProfile, value).subscribe(
+        this.profileService.setProfileConnectOnLogin(this.selectedProfile, value.target.checked).subscribe(
 
             response => {
                 if(!response.success) {

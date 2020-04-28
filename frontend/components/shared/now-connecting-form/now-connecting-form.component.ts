@@ -46,22 +46,28 @@ export class NowConnectingFormComponent implements OnInit {
         this.connecting = true;
         this.profileService.getOnLoginProfile().subscribe(
             res => {
-                for(let dev of res.devices) {
-                    this.devices.push({...dev, status: ConnectionStatus.WAITING_FOR_CONNECTION});
+                if(res.connectOnLogin) {
+                    for(let dev of res.devices) {
+                        this.devices.push({...dev, status: ConnectionStatus.WAITING_FOR_CONNECTION});
+                    }
+                    this.connectToAllWaiting();
+                    this.socketService.subscribe('device_auth').subscribe((message: any) => {
+                        console.log("DEVICE AUTH CALLED")
+                        console.log(message);
+                        this.handleAuthRequest();
+                    });
+                    this.socketService.subscribe('getschema').subscribe((message: any) => {
+                        console.log("GETSCHEMA CALLED")
+                        console.log(message);
+                        this.schemasRequired.push(message);
+                    });
                 }
-                this.connectToAllWaiting();
+                else {
+                    this.close();
+                }
             }
         );
-        this.socketService.subscribe('device_auth').subscribe((message: any) => {
-            console.log("DEVICE AUTH CALLED")
-            console.log(message);
-            this.handleAuthRequest();
-        });
-        this.socketService.subscribe('getschema').subscribe((message: any) => {
-            console.log("GETSCHEMA CALLED")
-            console.log(message);
-            this.schemasRequired.push(message);
-        });
+
     }
 
     uploadSchema(fileInput: FileList, schema: any) {
