@@ -8,6 +8,9 @@ from .sockets import *
 import os
 import yang
 
+log = logging.getLogger(__name__)
+
+
 def get_schema(name, revision, submod_name, submod_revision, priv):
     global log
     # ask frontend/user for missing schema
@@ -56,5 +59,4 @@ def get_schema(name, revision, submod_name, submod_revision, priv):
         except Exception as e:
             log.error(e)
             print(e)
-
     return result

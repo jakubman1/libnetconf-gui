@@ -16,12 +16,14 @@ log = logging.getLogger(__name__)
 def connect_device():
     global sessions
     session = auth.lookup(request.headers.get('lgui-Authorization', None))
-    username = str(session['user'])
+    username = str(session['user'].username)
     data = request.get_json()
 
     nc.setSchemaCallback(get_schema, session)
-    # nc.setSearchPath(data['path'])
-    if 'password' in data:
+    site_root = os.path.realpath(os.path.dirname(__file__))
+    path = os.path.join(site_root, 'userfiles', username)
+    nc.setSearchpath(path)
+    if 'password' in data and data['password'] != '':
         ssh = nc.SSH(data['username'], password = data['password'])
     else:
         ssh = nc.SSH(data['username'])
