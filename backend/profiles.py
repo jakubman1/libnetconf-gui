@@ -14,6 +14,7 @@ from .devices import get_device_by_id
 Profile entry format:
 'profiles': [{
     'name': 'profile name',
+    'connectOnLogin': bool
     'devices': [
         {
             'id': device id,
@@ -195,11 +196,12 @@ def get_on_login_profile(username, db_conn):
     """
     active = get_active_profile(username)
     if active == '':
-        return {'devices': [], 'name': ''}
+        return {'devices': [], 'name': '', 'connectOnLogin': False}
     else:
         return {
             'devices': get_profile_devices(username, active, db_conn),
-            'name': active
+            'name': active,
+            'connectOnLogin': should_connect_on_login(username, active)
         }
 
 

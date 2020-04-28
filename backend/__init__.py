@@ -24,5 +24,7 @@ netconf_bp.add_url_rule('/profiles', view_func=profiles, methods=['GET'])
 netconf_bp.add_url_rule('/profile/<profile_name>', view_func=profile_get, methods=['GET'])
 netconf_bp.add_url_rule('/removeProfile', view_func=profile_remove, methods=['POST'])
 netconf_bp.add_url_rule('/profileOnLogin', view_func=profile_on_login, methods=['GET'])
+netconf_bp.add_url_rule('/profile/setConnectOnLogin', view_func=profile_set_connect_on_login, methods=['POST'])
 netconf_bp.add_url_rule('/profile', view_func=profile_add, methods=['POST'])
 netconf_bp.add_url_rule('/profileSet', view_func=profile_set, methods=['POST'])
+
