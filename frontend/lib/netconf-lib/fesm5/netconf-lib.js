@@ -1,82 +1,9 @@
-import { Observable } from 'rxjs';
-import { io } from 'socket.io-client';
+import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { __values, __spread } from 'tslib';
-import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
+import { Injectable, Component, Input, Output, EventEmitter, defineInjectable, NgModule, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
-/**
- * @fileoverview added by tsickle
- * Generated from: lib/services/socket.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-var SocketService = /** @class */ (function () {
-    function SocketService() {
-        console.log('initSocket ' + window.location.origin);
-        this.socket = io(window.location.origin);
-    }
-    /**
-     * @param {?} event
-     * @param {?=} message
-     * @return {?}
-     */
-    SocketService.prototype.send = /**
-     * @param {?} event
-     * @param {?=} message
-     * @return {?}
-     */
-    function (event, message) {
-        if (message === void 0) { message = null; }
-        if (message) {
-            this.socket.emit(event, message);
-        }
-        else {
-            this.socket.emit(event);
-        }
-    };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    SocketService.prototype.subscribe = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        var _this = this;
-        return new Observable((/**
-         * @param {?} observer
-         * @return {?}
-         */
-        function (observer) {
-            _this.socket.on(event, (/**
-             * @param {?} data
-             * @return {?}
-             */
-            function (data) { return observer.next(data); }));
-        }));
-    };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    SocketService.prototype.unsubscribe = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        this.socket.removeListener(event);
-    };
-    SocketService.decorators = [
-        { type: Injectable, args: [{
-                    providedIn: 'root'
-                },] }
-    ];
-    SocketService.ctorParameters = function () { return []; };
-    /** @nocollapse */ SocketService.ngInjectableDef = defineInjectable({ factory: function SocketService_Factory() { return new SocketService(); }, token: SocketService, providedIn: "root" });
-    return SocketService;
-}());
 
 /**
  * @fileoverview added by tsickle
@@ -84,8 +11,7 @@ var SocketService = /** @class */ (function () {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ConfigurationService = /** @class */ (function () {
-    function ConfigurationService(socketService) {
-        this.socketService = socketService;
+    function ConfigurationService() {
     }
     /**
      * @param {?} device
@@ -118,10 +44,7 @@ var ConfigurationService = /** @class */ (function () {
                     providedIn: 'root'
                 },] }
     ];
-    ConfigurationService.ctorParameters = function () { return [
-        { type: SocketService }
-    ]; };
-    /** @nocollapse */ ConfigurationService.ngInjectableDef = defineInjectable({ factory: function ConfigurationService_Factory() { return new ConfigurationService(inject(SocketService)); }, token: ConfigurationService, providedIn: "root" });
+    /** @nocollapse */ ConfigurationService.ngInjectableDef = defineInjectable({ factory: function ConfigurationService_Factory() { return new ConfigurationService(); }, token: ConfigurationService, providedIn: "root" });
     return ConfigurationService;
 }());
 
@@ -130,7 +53,6 @@ var ConfigurationService = /** @class */ (function () {
  * Generated from: lib/services/device.service.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-// import {SocketService} from './socket.service';
 var DeviceService = /** @class */ (function () {
     function DeviceService(http) {
         this.http = http;
@@ -246,6 +168,17 @@ var DeviceService = /** @class */ (function () {
     function (filter) {
         return this.connectedDevices;
     };
+    /**
+     * @param {?} device
+     * @return {?}
+     */
+    DeviceService.prototype.disconnectDevice = /**
+     * @param {?} device
+     * @return {?}
+     */
+    function (device) {
+        return of(null);
+    };
     DeviceService.decorators = [
         { type: Injectable }
     ];
@@ -253,6 +186,132 @@ var DeviceService = /** @class */ (function () {
         { type: HttpClient }
     ]; };
     return DeviceService;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/services/session.service.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var SessionService = /** @class */ (function () {
+    function SessionService(http, deviceService) {
+        this.http = http;
+        this.deviceService = deviceService;
+        this.sessions = [];
+    }
+    /**
+     * @param {?} key
+     * @param {?} device
+     * @return {?}
+     */
+    SessionService.prototype.addSession = /**
+     * @param {?} key
+     * @param {?} device
+     * @return {?}
+     */
+    function (key, device) {
+        if (!this.doesSessionExists(key)) {
+            this.sessions.push({
+                key: key, device: device
+            });
+        }
+        else {
+            /** @type {?} */
+            var idx = this.findSessionIndex(key);
+            this.sessions[idx].device = device;
+        }
+    };
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    SessionService.prototype.destroySession = /**
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        var _this = this;
+        /** @type {?} */
+        var idx = this.findSessionIndex(key);
+        this.deviceService.disconnectDevice(this.sessions[idx].device).subscribe((/**
+         * @param {?} _
+         * @return {?}
+         */
+        function (_) {
+            _this.sessions.splice(idx, 1);
+        }));
+    };
+    /**
+     *  Check if session exists.
+     */
+    /**
+     *  Check if session exists.
+     * @param {?} key
+     * @return {?}
+     */
+    SessionService.prototype.sessionAlive = /**
+     *  Check if session exists.
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        /*const params = new HttpParams()
+          .append('key', key);*/
+        return this.http.get('/netconf/session/alive/' + key);
+    };
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    SessionService.prototype.doesSessionExists = /**
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        var e_1, _a;
+        try {
+            for (var _b = __values(this.sessions), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var session = _c.value;
+                if (session.key === key) {
+                    return true;
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        return false;
+    };
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    SessionService.prototype.findSessionIndex = /**
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return this.sessions.findIndex((/**
+         * @param {?} s
+         * @return {?}
+         */
+        function (s) { return s.key === key; }));
+    };
+    SessionService.decorators = [
+        { type: Injectable, args: [{
+                    providedIn: 'root'
+                },] }
+    ];
+    SessionService.ctorParameters = function () { return [
+        { type: HttpClient },
+        { type: DeviceService }
+    ]; };
+    /** @nocollapse */ SessionService.ngInjectableDef = defineInjectable({ factory: function SessionService_Factory() { return new SessionService(inject(HttpClient), inject(DeviceService)); }, token: SessionService, providedIn: "root" });
+    return SessionService;
 }());
 
 /**
@@ -666,6 +725,6 @@ var NetconfLibModule = /** @class */ (function () {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { NetconfLibService, ConfigurationService, DeviceService, SocketService, NetconfLibModule, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
+export { NetconfLibService, ConfigurationService, DeviceService, SessionService, NetconfLibModule, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
 
 //# sourceMappingURL=netconf-lib.js.map

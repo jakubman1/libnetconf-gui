@@ -88,3 +88,19 @@ def auth_password(username, hostname, priv):
 
 def hostkey_check():
     print("HOSTKEY CHECK CALLED")
+
+
+""" SESSION HANDLING """
+@auth.required()
+def session_alive(key):
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+
+    if not username in sessions:
+        sessions[username] = {}
+
+    if key in sessions[username]:
+        return json.dumps({'success': True, 'code': 200})
+    else:
+        return json.dumps({'success': False, 'code': 404, 'message': 'Session not found'})

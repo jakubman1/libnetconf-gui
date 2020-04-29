@@ -2,9 +2,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
 import {Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {GenericServerResponse} from '../../../../../../frontend/classes/GenericServerResponse';
-
-// import {SocketService} from './socket.service';
+import {GenericServerResponse} from '../classes/GenericServerResponse';
+import {Session} from '../classes/session';
 
 @Injectable()
 export class DeviceService {
@@ -55,7 +54,7 @@ export class DeviceService {
     return this.http.post<object>('/netconf/device', {device: dev});
   }
 
-  public connectToDevice(device: Device): Observable<GenericServerResponse> {
+  public connectToDevice(device: Device) {
     // this.connectedDevices.push(device);
     const body = {
       'name': device.name,
@@ -64,7 +63,7 @@ export class DeviceService {
       'username': device.username,
       'password': device.password
     };
-    return this.http.post<GenericServerResponse>('/netconf/connect', body);
+    return this.http.post('/netconf/connect', body);
   }
 
   /**
@@ -72,6 +71,10 @@ export class DeviceService {
    */
   public getCompatibleDevices(filter: any): Device[] {
     return this.connectedDevices;
+  }
+
+  disconnectDevice(device: Device) {
+    return of(null);
   }
 
 }

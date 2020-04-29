@@ -1,11 +1,10 @@
 // @ts-ignore
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {ProfileService} from '../../../services/profile.service';
-import {DeviceService} from '../../../lib/netconf-lib';
+import {DeviceService, SessionService} from '../../../lib/netconf-lib';
 // @ts-ignore
 import {SocketService} from 'app/services/socket.service';
-import {GenericServerResponse} from '../../../classes/GenericServerResponse';
-
+import {Session} from '../../../lib/netconf-lib/lib/classes/session';
 
 enum ConnectionStatus {
     WAITING_FOR_CONNECTION = -2,
@@ -17,7 +16,6 @@ enum ConnectionStatus {
     ERR_HOSTCHECK_CONFIRMATION,
     ERR_SCHEMA_REQUIRED,
     ERR_SERVER
-
 }
 
 
@@ -39,30 +37,26 @@ export class NowConnectingFormComponent implements OnInit {
 
     constructor(private profileService: ProfileService,
                 private deviceService: DeviceService,
-                private socketService: SocketService) {
+                private socketService: SocketService,
+                private sessionService: SessionService) {
     }
 
     ngOnInit() {
         this.connecting = true;
         this.profileService.getOnLoginProfile().subscribe(
             res => {
-                if(res.connectOnLogin) {
-                    for(let dev of res.devices) {
+                if (res.connectOnLogin) {
+                    for (let dev of res.devices) {
                         this.devices.push({...dev, status: ConnectionStatus.WAITING_FOR_CONNECTION});
                     }
                     this.connectToAllWaiting();
                     this.socketService.subscribe('device_auth').subscribe((message: any) => {
-                        console.log("DEVICE AUTH CALLED")
-                        console.log(message);
                         this.handleAuthRequest();
                     });
                     this.socketService.subscribe('getschema').subscribe((message: any) => {
-                        console.log("GETSCHEMA CALLED")
-                        console.log(message);
                         this.schemasRequired.push(message);
                     });
-                }
-                else {
+                } else {
                     this.close();
                 }
             }
@@ -70,78 +64,73 @@ export class NowConnectingFormComponent implements OnInit {
 
     }
 
-    uploadSchema(fileInput: FileList, schema: any) {
-        if (fileInput && fileInput.item(0)) {
-            let idx = this.schemasRequired.indexOf(schema);
-            this.schemasRequired[idx]['status'] = 1;
-            let reader = new FileReader();
-            let file: File = fileInput[0];
-            reader.onloadend = (e) => {
-                this.socketService.send('getschema_result', {'id': schema['id'], 'filename': fileInput[0]['name'], 'data': reader.result});
-                this.schemasRequired[idx]['status'] = 2;
-            }
-            reader.readAsText(file);
-
-        }
-    }
-
     connectToAllWaiting() {
-        let idx = 0;
         for (let dev of this.devices) {
             if (dev.status === ConnectionStatus.WAITING_FOR_CONNECTION) {
-                this.devices[idx].status = ConnectionStatus.CONNECTING;
-                this.deviceService.connectToDevice(dev).subscribe(
-                    request => {
-                        if(request['success']) {
-                            this.setDeviceSessionKey(dev, request['session-key']);
-                            this.updateDeviceStatus(dev, ConnectionStatus.CONNECTED);
-                            if(this.shouldCloseSelf()) {
-                                this.close();
-                            }
-                        }
-                        else {
-
-                            if(request['message']) {
-                                console.warn(request['message']);
-                                this.updateDeviceStatus(dev, request['message']);
-                            }
-                            else {
-                                this.updateDeviceStatus(dev, ConnectionStatus.ERR_SERVER);
-                            }
-
-                        }
-                        this.connecting = false;
-
-                    },
-                    err => {
-                        this.updateDeviceStatus(dev, ConnectionStatus.ERR_HTTP);
-                        this.connecting = false;
-                    }
-                );
+                this.connectToDevice(dev);
             }
-            idx++;
         }
-
     }
 
-    updateDeviceStatus(device, newStatus: ConnectionStatus) {
-        let idx = this.devices.indexOf(device);
-        this.devices[idx].status = newStatus;
+    connectToDevice(device) {
+        this.updateDeviceStatus(device, ConnectionStatus.CONNECTING);
+        this.deviceService.connectToDevice(device).subscribe(
+            request => {
+                if (request['success']) {
+                    this.sessionService.addSession(request['session-key'], device);
+                    this.updateDeviceStatus(device, ConnectionStatus.WAITING_FOR_DEVICE);
+                    this.checkSession(request['session-key'], device);
+                } else {
+                    if (request['message']) {
+                        console.warn(request['message']);
+                        this.updateDeviceStatus(device, request['message']);
+                    } else {
+                        this.updateDeviceStatus(device, ConnectionStatus.ERR_SERVER);
+                    }
+
+                }
+                this.connecting = false;
+            },
+            err => {
+                this.updateDeviceStatus(device, ConnectionStatus.ERR_HTTP);
+                this.connecting = false;
+            }
+        );
     }
 
-    setDeviceSessionKey(device, sessionKey: string) {
-        let idx = this.devices.indexOf(device);
-        this.devices[idx].sessionKey = sessionKey;
+    checkSession(key, device) {
+        this.sessionService.sessionAlive(key).subscribe(
+            alive => {
+                if (alive['success']) {
+                    this.updateDeviceStatus(device, ConnectionStatus.CONNECTED);
+                    if (this.shouldCloseSelf()) {
+                        this.close();
+                    }
+                } else {
+                    this.updateDeviceStatus(device, ConnectionStatus.ERR_SERVER);
+                }
+            },
+            err => {
+                this.updateDeviceStatus(device, ConnectionStatus.ERR_HTTP);
+            }
+        );
     }
+
+    updateDeviceStatus(device, newStatus: ConnectionStatus | string) {
+        const idx = this.devices.indexOf(device);
+        if (idx >= 0) {
+            this.devices[idx].status = newStatus;
+        }
+    }
+
 
     shouldCloseSelf() {
-        let close = true;
-        for(let device of this.devices) {
+        for (let device of this.devices) {
             if (device.status !== ConnectionStatus.CONNECTED) {
-                close = false;
+                return false;
             }
         }
-        return close;
+        return true;
     }
 
     close() {
@@ -152,8 +141,27 @@ export class NowConnectingFormComponent implements OnInit {
         alert("AUTH REQUIRED!");
     }
 
+    uploadSchema(fileInput: FileList, schema: any) {
+        if (fileInput && fileInput.item(0)) {
+            let idx = this.schemasRequired.indexOf(schema);
+            this.schemasRequired[idx]['status'] = 1;
+            let reader = new FileReader();
+            let file: File = fileInput[0];
+            reader.onloadend = (e) => {
+                this.socketService.send('getschema_result', {
+                    'id': schema['id'],
+                    'filename': fileInput[0]['name'],
+                    'data': reader.result
+                });
+                this.schemasRequired[idx]['status'] = 2;
+            }
+            reader.readAsText(file);
+
+        }
+    }
+
     skipSchemaUpload() {
-        for(let schema of this.schemasRequired) {
+        for (let schema of this.schemasRequired) {
             console.log(schema['id']);
             this.socketService.send('getschema_result', {'id': schema['id'], 'filename': '', 'data': ''});
         }

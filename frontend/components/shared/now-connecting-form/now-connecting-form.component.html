@@ -43,9 +43,11 @@
             <td>{{device.hostname}}:{{device.port}}</td>
             <td>{{device.username}}</td>
             <td>{{device.hostkey ? device.hostkey: ""}}</td>
-            <td [class.text-error]="device.status > 1" [class.text-success]="device.status == 1">{{device.status | connectionStatus}} <i *ngIf="device.status <= 0"
+            <td [class.text-error]="device.status > 1"
+                [class.text-success]="device.status == 1">{{device.status | connectionStatus}} <i *ngIf="device.status <= 0"
                                     class="fa fa-spinner fa-pulse fa-fw"></i></td>
             <td>
+                <button class="btn btn-danger" *ngIf="device.status > 1 && device.status !== 3" (click)="connectToDevice(device)">Retry</button>
                 <input *ngIf="device.status === 3" type="text" class="nc-input" placeholder="Enter password">
                 <button *ngIf="device.status === 3" class="btn btn-primary">Connect</button>
             </td>

@@ -16,4 +16,5 @@ export declare class DeviceService {
      * Filter is xpath (?)
      */
     getCompatibleDevices(filter: any): Device[];
+    disconnectDevice(device: Device): Observable<any>;
 }

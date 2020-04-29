@@ -1,6 +1,6 @@
 // @ts-ignore
 import { Component, OnInit } from '@angular/core';
-import {DeviceService} from '../../../lib/netconf-lib';
+import {DeviceService, SessionService} from '../../../lib/netconf-lib';
 import {Device} from '../../../lib/netconf-lib/lib/classes/device';
 
 @Component({
@@ -11,7 +11,8 @@ import {Device} from '../../../lib/netconf-lib/lib/classes/device';
 export class DeviceListComponent implements OnInit {
 
     constructor(
-        private deviceService: DeviceService
+        private deviceService: DeviceService,
+        private sessionService: SessionService
     ) { }
 
     connectedDevices: Device[] = [];
