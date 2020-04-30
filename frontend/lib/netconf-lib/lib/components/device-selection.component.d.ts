@@ -1,16 +1,16 @@
 import { OnInit, EventEmitter } from '@angular/core';
-import { Device } from '../classes/device';
-import { DeviceService } from '../netconf-lib.service';
+import { SessionService } from '../services/session.service';
+import { Session } from '../classes/session';
 export declare class DeviceSelectionComponent implements OnInit {
-    private deviceService;
+    private sessionService;
     schemaFilter: string;
-    devicesSelected: EventEmitter<Device[]>;
+    devicesSelected: EventEmitter<Session[]>;
     compatibleDevices: {
-        device: Device;
+        session: Session;
         selected: boolean;
     }[];
     errorMessage: string;
-    constructor(deviceService: DeviceService);
+    constructor(sessionService: SessionService);
     ngOnInit(): void;
     /**
      * Returns true, if there is at least one device selected. Returns false otherwise.
@@ -18,4 +18,5 @@ export declare class DeviceSelectionComponent implements OnInit {
     areDevicesSelected(): boolean;
     setAllSelectionsTo(val: boolean): void;
     submit(): void;
+    reload(): void;
 }

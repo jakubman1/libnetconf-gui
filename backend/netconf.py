@@ -1,4 +1,5 @@
-from liberouterapi import socketio, auth
+from liberouterapi import socketio, auth, db, config
+from liberouterapi.dbConnector import dbConnector
 import netconf2 as nc
 import json
 from eventlet.timeout import Timeout
@@ -8,9 +9,27 @@ from .sockets import *
 import os
 import yang
 from .schemas import get_schema
+from .devices import get_device_from_session_data
+
 
 sessions = {}
 log = logging.getLogger(__name__)
+
+
+"""
+netconf session (ncs)
+static PyGetSetDef ncSessionGetSetters[] = {
+    {"id", (getter)ncSessionGetId, NULL, "NETCONF Session id.", NULL},
+    {"host", (getter)ncSessionGetHost, NULL, "Host where the NETCONF Session is connected.", NULL},
+    {"port", (getter)ncSessionGetPort, NULL, "Port number where the NETCONF Session is connected.", NULL},
+    {"user", (getter)ncSessionGetUser, NULL, "Username of the user connected with the NETCONF Session.", NULL},
+    {"transport", (getter)ncSessionGetTransport, NULL, "Transport protocol used for the NETCONF Session.", NULL},
+    {"version", (getter)ncSessionGetVersion, NULL, "NETCONF Protocol version used for the NETCONF Session.", NULL},
+    {"capabilities", (getter)ncSessionGetCapabilities, NULL, "Capabilities of the NETCONF Session.", NULL},
+    {"context", (getter)ncSessionGetContext, NULL, "libyang context of the NETCONF Session.", NULL},
+    {NULL} /* Sentinel */
+};
+"""
 
 @auth.required()
 def connect_device():
@@ -45,7 +64,6 @@ def connect_device():
     key = ncs.host + ":" + str(ncs.port) + ":" + ncs.id
     sessions[username][key] = {}
     sessions[username][key]['session'] = ncs
-    print(key)
 
     # update inventory's list of schemas
     # schemas_update(session)
@@ -92,6 +110,30 @@ def hostkey_check():
 
 """ SESSION HANDLING """
 @auth.required()
+def sessions_get_open():
+    """
+    Get all open sessions belonging to the user
+    :return: Array of session keys and devices belonging to sessions. Device names will not be loaded.
+    """
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+    netconf_db = dbConnector('netconf', provider='mongodb', config={'database': config['netconf']['database']})
+    netconf_coll = netconf_db.db[config['netconf']['collection']]
+
+    if username in sessions:
+        result = []
+        for key in sessions[username].keys():
+            ncs = sessions[username][key]['session']
+            device = get_device_from_session_data(ncs.host, ncs.port, username, ncs.user, netconf_coll)
+            if device is not None:
+                result.append({'key': key, 'device': device})
+        return json.dumps(result)
+    else:
+        return json.dumps([])
+
+
+@auth.required()
 def session_alive(key):
     global sessions
     session = auth.lookup(request.headers.get('lgui-Authorization', None))
@@ -104,3 +146,27 @@ def session_alive(key):
         return json.dumps({'success': True, 'code': 200})
     else:
         return json.dumps({'success': False, 'code': 404, 'message': 'Session not found'})
+
+
+@auth.required()
+def session_destroy(key):
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+    if not username in sessions:
+        sessions[username] = {}
+
+    if key in sessions[username]:
+        del sessions[username][key]
+        return json.dumps({'success': True, 'code': 200})
+    else:
+        return json.dumps({'success': False, 'code': 404, 'message': 'Session not found'})
+
+@auth.required()
+def session_destroy_all():
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+    if username in sessions:
+        del sessions[username]
+    return json.dumps({'success': True, 'code': 200})

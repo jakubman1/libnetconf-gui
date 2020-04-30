@@ -43,6 +43,35 @@ export class NowConnectingFormComponent implements OnInit {
 
     ngOnInit() {
         this.connecting = true;
+        this.loadOpenSessions();
+
+    }
+
+    loadOpenSessions() {
+        this.sessionService.loadOpenSessions().subscribe(
+            sessions => {
+                if(sessions.length > 0) {
+                    if(confirm('Found active sessions, load them?')) {
+                        this.sessionService.sessions = sessions;
+                        this.close();
+                    }
+                    else {
+                        this.sessionService.destroyAllSessions().subscribe();
+                        this.loadOnLoginProfile();
+                    }
+
+                }
+                else {
+                    this.loadOnLoginProfile();
+                }
+            },
+            err => {
+                console.warn(err.message);
+            }
+        );
+    }
+
+    loadOnLoginProfile() {
         this.profileService.getOnLoginProfile().subscribe(
             res => {
                 if (res.connectOnLogin) {
@@ -61,7 +90,6 @@ export class NowConnectingFormComponent implements OnInit {
                 }
             }
         );
-
     }
 
     connectToAllWaiting() {

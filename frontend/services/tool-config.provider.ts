@@ -24,11 +24,11 @@
  SOFTWARE.
  */
 
-
-import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+// @ts-ignore
+import { Injectable } from '@angular/core';
+// @ts-ignore
 import { HttpClient, HttpBackend } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
+
 
 interface ToolConfig {
     [key: string]: {

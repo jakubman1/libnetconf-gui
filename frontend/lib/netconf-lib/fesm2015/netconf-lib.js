@@ -1,6 +1,6 @@
-import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -33,6 +33,56 @@ ConfigurationService.decorators = [
             },] }
 ];
 /** @nocollapse */ ConfigurationService.ngInjectableDef = defineInjectable({ factory: function ConfigurationService_Factory() { return new ConfigurationService(); }, token: ConfigurationService, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/netconf-lib.service.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+// export * from './services/device.service';
+// export * from './services/session.service';
+class NetconfLibService {
+    constructor() {
+    }
+    /**
+     * @return {?}
+     */
+    provideExample() {
+        return 'Example service works!';
+    }
+}
+NetconfLibService.decorators = [
+    { type: Injectable, args: [{
+                providedIn: 'root'
+            },] }
+];
+NetconfLibService.ctorParameters = () => [];
+/** @nocollapse */ NetconfLibService.ngInjectableDef = defineInjectable({ factory: function NetconfLibService_Factory() { return new NetconfLibService(); }, token: NetconfLibService, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/netconf-lib.component.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class NetconfLibComponent {
+    constructor() { }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+    }
+}
+NetconfLibComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'lib-nc',
+                template: `
+    <p>
+      netconf-lib works!
+    </p>
+  `
+            }] }
+];
+NetconfLibComponent.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
@@ -95,7 +145,7 @@ class DeviceService {
             password
         };
         if (connect) {
-            this.connectToDevice(dev).subscribe();
+            this.connectToDevice(dev).subscribe(); // TODO: Show 'now connecting' modal window
         }
         return this.http.post('/netconf/device', { device: dev });
     }
@@ -104,7 +154,6 @@ class DeviceService {
      * @return {?}
      */
     connectToDevice(device) {
-        // this.connectedDevices.push(device);
         /** @type {?} */
         const body = {
             'name': device.name,
@@ -123,13 +172,6 @@ class DeviceService {
     getCompatibleDevices(filter) {
         return this.connectedDevices;
     }
-    /**
-     * @param {?} device
-     * @return {?}
-     */
-    disconnectDevice(device) {
-        return of(null);
-    }
 }
 DeviceService.decorators = [
     { type: Injectable }
@@ -137,146 +179,6 @@ DeviceService.decorators = [
 DeviceService.ctorParameters = () => [
     { type: HttpClient }
 ];
-
-/**
- * @fileoverview added by tsickle
- * Generated from: lib/services/session.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class SessionService {
-    /**
-     * @param {?} http
-     * @param {?} deviceService
-     */
-    constructor(http, deviceService) {
-        this.http = http;
-        this.deviceService = deviceService;
-        this.sessions = [];
-    }
-    /**
-     * @param {?} key
-     * @param {?} device
-     * @return {?}
-     */
-    addSession(key, device) {
-        if (!this.doesSessionExists(key)) {
-            this.sessions.push({
-                key, device
-            });
-        }
-        else {
-            /** @type {?} */
-            const idx = this.findSessionIndex(key);
-            this.sessions[idx].device = device;
-        }
-    }
-    /**
-     * @param {?} key
-     * @return {?}
-     */
-    destroySession(key) {
-        /** @type {?} */
-        const idx = this.findSessionIndex(key);
-        this.deviceService.disconnectDevice(this.sessions[idx].device).subscribe((/**
-         * @param {?} _
-         * @return {?}
-         */
-        _ => {
-            this.sessions.splice(idx, 1);
-        }));
-    }
-    /**
-     *  Check if session exists.
-     * @param {?} key
-     * @return {?}
-     */
-    sessionAlive(key) {
-        /*const params = new HttpParams()
-          .append('key', key);*/
-        return this.http.get('/netconf/session/alive/' + key);
-    }
-    /**
-     * @param {?} key
-     * @return {?}
-     */
-    doesSessionExists(key) {
-        for (const session of this.sessions) {
-            if (session.key === key) {
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     * @param {?} key
-     * @return {?}
-     */
-    findSessionIndex(key) {
-        return this.sessions.findIndex((/**
-         * @param {?} s
-         * @return {?}
-         */
-        s => s.key === key));
-    }
-}
-SessionService.decorators = [
-    { type: Injectable, args: [{
-                providedIn: 'root'
-            },] }
-];
-SessionService.ctorParameters = () => [
-    { type: HttpClient },
-    { type: DeviceService }
-];
-/** @nocollapse */ SessionService.ngInjectableDef = defineInjectable({ factory: function SessionService_Factory() { return new SessionService(inject(HttpClient), inject(DeviceService)); }, token: SessionService, providedIn: "root" });
-
-/**
- * @fileoverview added by tsickle
- * Generated from: lib/netconf-lib.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class NetconfLibService {
-    constructor() {
-    }
-    /**
-     * @return {?}
-     */
-    provideExample() {
-        return 'Example service works!';
-    }
-}
-NetconfLibService.decorators = [
-    { type: Injectable, args: [{
-                providedIn: 'root'
-            },] }
-];
-NetconfLibService.ctorParameters = () => [];
-/** @nocollapse */ NetconfLibService.ngInjectableDef = defineInjectable({ factory: function NetconfLibService_Factory() { return new NetconfLibService(); }, token: NetconfLibService, providedIn: "root" });
-
-/**
- * @fileoverview added by tsickle
- * Generated from: lib/netconf-lib.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class NetconfLibComponent {
-    constructor() { }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-    }
-}
-NetconfLibComponent.decorators = [
-    { type: Component, args: [{
-                selector: 'lib-nc',
-                template: `
-    <p>
-      netconf-lib works!
-    </p>
-  `
-            }] }
-];
-NetconfLibComponent.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
@@ -319,15 +221,153 @@ DeviceQuickswitchComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: lib/services/session.service.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class SessionService {
+    /**
+     * @param {?} http
+     */
+    constructor(http) {
+        this.http = http;
+        this._sessions = [];
+        this.sessionsChanged = new EventEmitter();
+        console.log('CONSTRUCTOR OF SESSION SERVICE CALLED');
+    }
+    /**
+     * @return {?}
+     */
+    get sessions() {
+        console.log('Getting sessions');
+        console.log(this._sessions);
+        return this._sessions;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set sessions(value) {
+        console.log('Setting sessions');
+        console.log(value);
+        this._sessions = value;
+        this.sessionsChanged.emit(value);
+    }
+    /**
+     * @param {?} key
+     * @param {?} device
+     * @return {?}
+     */
+    addSession(key, device) {
+        if (!this.doesSessionExists(key)) {
+            /** @type {?} */
+            const sessions = this.sessions;
+            sessions.push({
+                key, device
+            });
+            this.sessions = sessions;
+        }
+        else {
+            /** @type {?} */
+            const idx = this.findSessionIndex(key);
+            this._sessions[idx].device = device;
+            this.sessionsChanged.emit(this.sessions);
+        }
+    }
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    destroySession(key) {
+        /** @type {?} */
+        const idx = this.findSessionIndex(key);
+        return this.http.delete('/netconf/session/' + key)
+            .pipe(tap((/**
+         * @param {?} next
+         * @return {?}
+         */
+        next => {
+            this._sessions.splice(idx, 1);
+            this.sessionsChanged.emit(this.sessions);
+        })));
+    }
+    /**
+     * @return {?}
+     */
+    loadOpenSessions() {
+        return this.http.get('/netconf/sessions');
+    }
+    /**
+     * @return {?}
+     */
+    destroyAllSessions() {
+        return this.http.delete('/netconf/sessions');
+    }
+    /**
+     *  Check if session exists on the server.
+     * @param {?} key
+     * @return {?}
+     */
+    sessionAlive(key) {
+        /*const params = new HttpParams()
+          .append('key', key);*/
+        return this.http.get('/netconf/session/alive/' + key);
+    }
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    doesSessionExists(key) {
+        for (const session of this._sessions) {
+            if (session.key === key) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * @param {?} key
+     * @return {?}
+     */
+    findSessionIndex(key) {
+        return this._sessions.findIndex((/**
+         * @param {?} s
+         * @return {?}
+         */
+        s => s.key === key));
+    }
+    /**
+     * Filter is xpath (?)
+     * @param {?} filter
+     * @return {?}
+     */
+    getCompatibleDeviceSessions(filter) {
+        // TODO: Filter
+        console.log('Getting compatible sessions');
+        console.log(this.sessions);
+        return this.sessions;
+    }
+}
+SessionService.decorators = [
+    { type: Injectable, args: [{
+                providedIn: 'root'
+            },] }
+];
+SessionService.ctorParameters = () => [
+    { type: HttpClient }
+];
+/** @nocollapse */ SessionService.ngInjectableDef = defineInjectable({ factory: function SessionService_Factory() { return new SessionService(inject(HttpClient)); }, token: SessionService, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
  * Generated from: lib/components/device-selection.component.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class DeviceSelectionComponent {
     /**
-     * @param {?} deviceService
+     * @param {?} sessionService
      */
-    constructor(deviceService) {
-        this.deviceService = deviceService;
+    constructor(sessionService) {
+        this.sessionService = sessionService;
         this.schemaFilter = '';
         this.devicesSelected = new EventEmitter();
         this.compatibleDevices = [];
@@ -337,11 +377,7 @@ class DeviceSelectionComponent {
      * @return {?}
      */
     ngOnInit() {
-        /** @type {?} */
-        const devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
-        for (const d of devices) {
-            this.compatibleDevices.push({ device: d, selected: true });
-        }
+        this.reload();
     }
     /**
      * Returns true, if there is at least one device selected. Returns false otherwise.
@@ -373,7 +409,7 @@ class DeviceSelectionComponent {
             const selectedDevices = [];
             for (const d of this.compatibleDevices) {
                 if (d.selected) {
-                    selectedDevices.push(d.device);
+                    selectedDevices.push(d.session);
                 }
             }
             this.devicesSelected.emit(selectedDevices);
@@ -383,16 +419,36 @@ class DeviceSelectionComponent {
             this.errorMessage = 'No devices selected';
         }
     }
+    /**
+     * @return {?}
+     */
+    reload() {
+        // const sessions = this.sessionService.getCompatibleDeviceSessions('');
+        /** @type {?} */
+        const sessions = this.sessionService.sessions;
+        this.sessionService.sessionsChanged.subscribe((/**
+         * @param {?} ses
+         * @return {?}
+         */
+        ses => {
+            for (const s of ses) {
+                this.compatibleDevices.push({ session: s, selected: true });
+            }
+        }));
+        for (const s of sessions) {
+            this.compatibleDevices.push({ session: s, selected: true });
+        }
+    }
 }
 DeviceSelectionComponent.decorators = [
     { type: Component, args: [{
                 selector: 'lib-device-selection',
-                template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
+                template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"reload()\">Reload device list</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let session of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"session.session.device\"\r\n                                 [(selected)]=\"session.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
                 styles: [".btn{margin-right:5px}.box{margin-bottom:10px;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)}.box-header{background:#008545;width:100%;font-size:1.5rem;border-radius:5px 5px 0 0;color:#fff;padding:5px 10px;text-align:center}.box-content{padding:5px 10px}.box-content-limited{max-width:1200px;margin-left:auto;margin-right:auto}.clickable{cursor:pointer}.clickable::-moz-selection{background:0 0;color:#231f20}.clickable::-moz-selection,.clickable::selection{background:0 0;color:#231f20}.error-text{color:#ee1d23}.checkbox-container{display:block;position:relative;padding-left:35px;margin-bottom:32px;cursor:pointer;font-size:22px;line-height:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transition:150ms ease-in-out}.checkbox-container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkbox-container:hover input~.checkmark{background-color:#00b55d}.checkbox-container input:checked~.checkmark{background-color:#231f20}.checkbox-container input:checked~.checkmark:after{display:block}.checkbox-container .checkmark:after{left:7px;top:-1px;width:12px;height:22px;border:solid #fff;border-width:0 4px 4px 0;border-radius:2px;transform:rotate(45deg)}.checkmark{position:absolute;top:0;left:0;height:32px;width:32px;background-color:#fff;border:3px solid #231f20;border-radius:5px;transition:150ms ease-in-out}.checkmark:after{content:\"\";position:absolute;display:none}.device-selection-title{font-size:1.2em;margin-bottom:0}.device-name{font-weight:700;margin-right:.5rem}.device-item{cursor:pointer;border:2px solid #016d39;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);margin-bottom:0}.hostname{font-size:.8em;white-space:nowrap;display:inline-block;color:rgba(35,31,32,.7)}.toolbox{width:100%}@media only screen and (min-width:600px){.toolbox{display:flex}}.toolbox .right{margin-left:auto}"]
             }] }
 ];
 DeviceSelectionComponent.ctorParameters = () => [
-    { type: DeviceService }
+    { type: SessionService }
 ];
 DeviceSelectionComponent.propDecorators = {
     schemaFilter: [{ type: Input }],
@@ -553,7 +609,11 @@ class NetconfLibModule {
 }
 NetconfLibModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, RouterModule, HttpClientModule],
+                imports: [
+                    CommonModule,
+                    RouterModule,
+                    HttpClientModule
+                ],
                 declarations: [...sharedComponents],
                 exports: [...sharedComponents],
                 providers: [
@@ -574,6 +634,6 @@ NetconfLibModule.decorators = [
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { NetconfLibService, ConfigurationService, DeviceService, SessionService, NetconfLibModule, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
+export { NetconfLibService, ConfigurationService, NetconfLibModule, SessionService, DeviceService, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
 
 //# sourceMappingURL=netconf-lib.js.map

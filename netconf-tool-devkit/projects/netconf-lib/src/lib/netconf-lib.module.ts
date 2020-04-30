@@ -21,7 +21,11 @@ const sharedComponents = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HttpClientModule
+  ],
   declarations: [ ...sharedComponents ],
   exports: [ ...sharedComponents ],
   providers: [

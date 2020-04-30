@@ -49,13 +49,12 @@ export class DeviceService {
     };
 
     if (connect) {
-      this.connectToDevice(dev).subscribe();
+      this.connectToDevice(dev).subscribe(); // TODO: Show 'now connecting' modal window
     }
     return this.http.post<object>('/netconf/device', {device: dev});
   }
 
   public connectToDevice(device: Device) {
-    // this.connectedDevices.push(device);
     const body = {
       'name': device.name,
       'hostname': device.hostname,
@@ -73,8 +72,5 @@ export class DeviceService {
     return this.connectedDevices;
   }
 
-  disconnectDevice(device: Device) {
-    return of(null);
-  }
 
 }

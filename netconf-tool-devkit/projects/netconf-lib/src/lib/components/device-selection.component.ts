@@ -1,28 +1,25 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Device} from '../classes/device';
-import {DeviceService} from '../netconf-lib.service';
+import {SessionService} from '../services/session.service';
+import {Session} from '../classes/session';
 
 @Component({
   selector: 'lib-device-selection',
   templateUrl: './device-selection.component.html',
-  styleUrls: ['./device-selection.component.scss']
+  styleUrls: ['./device-selection.component.scss'],
 })
 export class DeviceSelectionComponent implements OnInit {
 
   @Input() schemaFilter = '';
-  @Output() devicesSelected: EventEmitter<Device[]> = new EventEmitter<Device[]>();
-  compatibleDevices: {device: Device, selected: boolean}[] = [];
+  @Output() devicesSelected: EventEmitter<Session[]> = new EventEmitter<Session[]>();
+  compatibleDevices: {session: Session, selected: boolean}[] = [];
 
   errorMessage = '';
 
-  constructor(private deviceService: DeviceService) {
+  constructor(private sessionService: SessionService) {
   }
 
   ngOnInit() {
-    const devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
-    for (const d of devices) {
-      this.compatibleDevices.push({device: d, selected: true});
-    }
+    this.reload();
   }
 
   /**
@@ -45,16 +42,31 @@ export class DeviceSelectionComponent implements OnInit {
 
   submit() {
     if (this.areDevicesSelected()) {
-      const selectedDevices: Device[] = [];
+      const selectedDevices: Session[] = [];
       for (const d of this.compatibleDevices) {
         if (d.selected) {
-          selectedDevices.push(d.device);
+          selectedDevices.push(d.session);
         }
       }
       this.devicesSelected.emit(selectedDevices);
       this.errorMessage = '';
     } else {
       this.errorMessage = 'No devices selected';
+    }
+  }
+
+  reload() {
+    // const sessions = this.sessionService.getCompatibleDeviceSessions('');
+    const sessions = this.sessionService.sessions;
+    this.sessionService.sessionsChanged.subscribe(
+      ses => {
+        for (const s of ses) {
+          this.compatibleDevices.push({session: s, selected: true});
+        }
+      }
+    );
+    for (const s of sessions) {
+      this.compatibleDevices.push({session: s, selected: true});
     }
   }
 

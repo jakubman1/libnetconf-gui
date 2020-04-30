@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('@angular/common'), require('@angular/router'), require('@angular/core'), require('@angular/common/http')) :
-    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', 'rxjs', '@angular/common', '@angular/router', '@angular/core', '@angular/common/http'], factory) :
-    (factory((global['netconf-lib'] = {}),global.rxjs,global.ng.common,global.ng.router,global.ng.core,global.ng.common.http));
-}(this, (function (exports,rxjs,common,router,i0,i1) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/router'), require('rxjs/operators'), require('@angular/core'), require('@angular/common/http')) :
+    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', '@angular/common', '@angular/router', 'rxjs/operators', '@angular/core', '@angular/common/http'], factory) :
+    (factory((global['netconf-lib'] = {}),global.ng.common,global.ng.router,global.rxjs.operators,global.ng.core,global.ng.common.http));
+}(this, (function (exports,common,router,operators,i0,i1) { 'use strict';
 
     /**
      * @fileoverview added by tsickle
@@ -45,6 +45,119 @@
         ];
         /** @nocollapse */ ConfigurationService.ngInjectableDef = i0.defineInjectable({ factory: function ConfigurationService_Factory() { return new ConfigurationService(); }, token: ConfigurationService, providedIn: "root" });
         return ConfigurationService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * Generated from: lib/netconf-lib.service.ts
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    // export * from './services/device.service';
+    // export * from './services/session.service';
+    var NetconfLibService = /** @class */ (function () {
+        function NetconfLibService() {
+        }
+        /**
+         * @return {?}
+         */
+        NetconfLibService.prototype.provideExample = /**
+         * @return {?}
+         */
+            function () {
+                return 'Example service works!';
+            };
+        NetconfLibService.decorators = [
+            { type: i0.Injectable, args: [{
+                        providedIn: 'root'
+                    },] }
+        ];
+        NetconfLibService.ctorParameters = function () { return []; };
+        /** @nocollapse */ NetconfLibService.ngInjectableDef = i0.defineInjectable({ factory: function NetconfLibService_Factory() { return new NetconfLibService(); }, token: NetconfLibService, providedIn: "root" });
+        return NetconfLibService;
+    }());
+
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+    function __values(o) {
+        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+        if (m)
+            return m.call(o);
+        if (o && typeof o.length === "number")
+            return {
+                next: function () {
+                    if (o && i >= o.length)
+                        o = void 0;
+                    return { value: o && o[i++], done: !o };
+                }
+            };
+        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+    }
+    function __read(o, n) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator];
+        if (!m)
+            return o;
+        var i = m.call(o), r, ar = [], e;
+        try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
+                ar.push(r.value);
+        }
+        catch (error) {
+            e = { error: error };
+        }
+        finally {
+            try {
+                if (r && !r.done && (m = i["return"]))
+                    m.call(i);
+            }
+            finally {
+                if (e)
+                    throw e.error;
+            }
+        }
+        return ar;
+    }
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++)
+            ar = ar.concat(__read(arguments[i]));
+        return ar;
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * Generated from: lib/netconf-lib.component.ts
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var NetconfLibComponent = /** @class */ (function () {
+        function NetconfLibComponent() {
+        }
+        /**
+         * @return {?}
+         */
+        NetconfLibComponent.prototype.ngOnInit = /**
+         * @return {?}
+         */
+            function () {
+            };
+        NetconfLibComponent.decorators = [
+            { type: i0.Component, args: [{
+                        selector: 'lib-nc',
+                        template: "\n    <p>\n      netconf-lib works!\n    </p>\n  "
+                    }] }
+        ];
+        NetconfLibComponent.ctorParameters = function () { return []; };
+        return NetconfLibComponent;
     }());
 
     /**
@@ -131,7 +244,7 @@
                     password: password
                 };
                 if (connect) {
-                    this.connectToDevice(dev).subscribe();
+                    this.connectToDevice(dev).subscribe(); // TODO: Show 'now connecting' modal window
                 }
                 return this.http.post('/netconf/device', { device: dev });
             };
@@ -144,7 +257,6 @@
          * @return {?}
          */
             function (device) {
-                // this.connectedDevices.push(device);
                 /** @type {?} */
                 var body = {
                     'name': device.name,
@@ -171,17 +283,6 @@
             function (filter) {
                 return this.connectedDevices;
             };
-        /**
-         * @param {?} device
-         * @return {?}
-         */
-        DeviceService.prototype.disconnectDevice = /**
-         * @param {?} device
-         * @return {?}
-         */
-            function (device) {
-                return rxjs.of(null);
-            };
         DeviceService.decorators = [
             { type: i0.Injectable }
         ];
@@ -191,249 +292,6 @@
             ];
         };
         return DeviceService;
-    }());
-
-    /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
-
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
-
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-    function __values(o) {
-        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-        if (m)
-            return m.call(o);
-        if (o && typeof o.length === "number")
-            return {
-                next: function () {
-                    if (o && i >= o.length)
-                        o = void 0;
-                    return { value: o && o[i++], done: !o };
-                }
-            };
-        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-    }
-    function __read(o, n) {
-        var m = typeof Symbol === "function" && o[Symbol.iterator];
-        if (!m)
-            return o;
-        var i = m.call(o), r, ar = [], e;
-        try {
-            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
-                ar.push(r.value);
-        }
-        catch (error) {
-            e = { error: error };
-        }
-        finally {
-            try {
-                if (r && !r.done && (m = i["return"]))
-                    m.call(i);
-            }
-            finally {
-                if (e)
-                    throw e.error;
-            }
-        }
-        return ar;
-    }
-    function __spread() {
-        for (var ar = [], i = 0; i < arguments.length; i++)
-            ar = ar.concat(__read(arguments[i]));
-        return ar;
-    }
-
-    /**
-     * @fileoverview added by tsickle
-     * Generated from: lib/services/session.service.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    var SessionService = /** @class */ (function () {
-        function SessionService(http, deviceService) {
-            this.http = http;
-            this.deviceService = deviceService;
-            this.sessions = [];
-        }
-        /**
-         * @param {?} key
-         * @param {?} device
-         * @return {?}
-         */
-        SessionService.prototype.addSession = /**
-         * @param {?} key
-         * @param {?} device
-         * @return {?}
-         */
-            function (key, device) {
-                if (!this.doesSessionExists(key)) {
-                    this.sessions.push({
-                        key: key, device: device
-                    });
-                }
-                else {
-                    /** @type {?} */
-                    var idx = this.findSessionIndex(key);
-                    this.sessions[idx].device = device;
-                }
-            };
-        /**
-         * @param {?} key
-         * @return {?}
-         */
-        SessionService.prototype.destroySession = /**
-         * @param {?} key
-         * @return {?}
-         */
-            function (key) {
-                var _this = this;
-                /** @type {?} */
-                var idx = this.findSessionIndex(key);
-                this.deviceService.disconnectDevice(this.sessions[idx].device).subscribe(( /**
-                 * @param {?} _
-                 * @return {?}
-                 */function (_) {
-                    _this.sessions.splice(idx, 1);
-                }));
-            };
-        /**
-         *  Check if session exists.
-         */
-        /**
-         *  Check if session exists.
-         * @param {?} key
-         * @return {?}
-         */
-        SessionService.prototype.sessionAlive = /**
-         *  Check if session exists.
-         * @param {?} key
-         * @return {?}
-         */
-            function (key) {
-                /*const params = new HttpParams()
-                  .append('key', key);*/
-                return this.http.get('/netconf/session/alive/' + key);
-            };
-        /**
-         * @param {?} key
-         * @return {?}
-         */
-        SessionService.prototype.doesSessionExists = /**
-         * @param {?} key
-         * @return {?}
-         */
-            function (key) {
-                var e_1, _a;
-                try {
-                    for (var _b = __values(this.sessions), _c = _b.next(); !_c.done; _c = _b.next()) {
-                        var session = _c.value;
-                        if (session.key === key) {
-                            return true;
-                        }
-                    }
-                }
-                catch (e_1_1) {
-                    e_1 = { error: e_1_1 };
-                }
-                finally {
-                    try {
-                        if (_c && !_c.done && (_a = _b.return))
-                            _a.call(_b);
-                    }
-                    finally {
-                        if (e_1)
-                            throw e_1.error;
-                    }
-                }
-                return false;
-            };
-        /**
-         * @param {?} key
-         * @return {?}
-         */
-        SessionService.prototype.findSessionIndex = /**
-         * @param {?} key
-         * @return {?}
-         */
-            function (key) {
-                return this.sessions.findIndex(( /**
-                 * @param {?} s
-                 * @return {?}
-                 */function (s) { return s.key === key; }));
-            };
-        SessionService.decorators = [
-            { type: i0.Injectable, args: [{
-                        providedIn: 'root'
-                    },] }
-        ];
-        SessionService.ctorParameters = function () {
-            return [
-                { type: i1.HttpClient },
-                { type: DeviceService }
-            ];
-        };
-        /** @nocollapse */ SessionService.ngInjectableDef = i0.defineInjectable({ factory: function SessionService_Factory() { return new SessionService(i0.inject(i1.HttpClient), i0.inject(DeviceService)); }, token: SessionService, providedIn: "root" });
-        return SessionService;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * Generated from: lib/netconf-lib.service.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    var NetconfLibService = /** @class */ (function () {
-        function NetconfLibService() {
-        }
-        /**
-         * @return {?}
-         */
-        NetconfLibService.prototype.provideExample = /**
-         * @return {?}
-         */
-            function () {
-                return 'Example service works!';
-            };
-        NetconfLibService.decorators = [
-            { type: i0.Injectable, args: [{
-                        providedIn: 'root'
-                    },] }
-        ];
-        NetconfLibService.ctorParameters = function () { return []; };
-        /** @nocollapse */ NetconfLibService.ngInjectableDef = i0.defineInjectable({ factory: function NetconfLibService_Factory() { return new NetconfLibService(); }, token: NetconfLibService, providedIn: "root" });
-        return NetconfLibService;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * Generated from: lib/netconf-lib.component.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    var NetconfLibComponent = /** @class */ (function () {
-        function NetconfLibComponent() {
-        }
-        /**
-         * @return {?}
-         */
-        NetconfLibComponent.prototype.ngOnInit = /**
-         * @return {?}
-         */
-            function () {
-            };
-        NetconfLibComponent.decorators = [
-            { type: i0.Component, args: [{
-                        selector: 'lib-nc',
-                        template: "\n    <p>\n      netconf-lib works!\n    </p>\n  "
-                    }] }
-        ];
-        NetconfLibComponent.ctorParameters = function () { return []; };
-        return NetconfLibComponent;
     }());
 
     /**
@@ -476,12 +334,207 @@
 
     /**
      * @fileoverview added by tsickle
+     * Generated from: lib/services/session.service.ts
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var SessionService = /** @class */ (function () {
+        function SessionService(http) {
+            this.http = http;
+            this._sessions = [];
+            this.sessionsChanged = new i0.EventEmitter();
+            console.log('CONSTRUCTOR OF SESSION SERVICE CALLED');
+        }
+        Object.defineProperty(SessionService.prototype, "sessions", {
+            get: /**
+             * @return {?}
+             */ function () {
+                console.log('Getting sessions');
+                console.log(this._sessions);
+                return this._sessions;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                console.log('Setting sessions');
+                console.log(value);
+                this._sessions = value;
+                this.sessionsChanged.emit(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} key
+         * @param {?} device
+         * @return {?}
+         */
+        SessionService.prototype.addSession = /**
+         * @param {?} key
+         * @param {?} device
+         * @return {?}
+         */
+            function (key, device) {
+                if (!this.doesSessionExists(key)) {
+                    /** @type {?} */
+                    var sessions = this.sessions;
+                    sessions.push({
+                        key: key, device: device
+                    });
+                    this.sessions = sessions;
+                }
+                else {
+                    /** @type {?} */
+                    var idx = this.findSessionIndex(key);
+                    this._sessions[idx].device = device;
+                    this.sessionsChanged.emit(this.sessions);
+                }
+            };
+        /**
+         * @param {?} key
+         * @return {?}
+         */
+        SessionService.prototype.destroySession = /**
+         * @param {?} key
+         * @return {?}
+         */
+            function (key) {
+                var _this = this;
+                /** @type {?} */
+                var idx = this.findSessionIndex(key);
+                return this.http.delete('/netconf/session/' + key)
+                    .pipe(operators.tap(( /**
+             * @param {?} next
+             * @return {?}
+             */function (next) {
+                    _this._sessions.splice(idx, 1);
+                    _this.sessionsChanged.emit(_this.sessions);
+                })));
+            };
+        /**
+         * @return {?}
+         */
+        SessionService.prototype.loadOpenSessions = /**
+         * @return {?}
+         */
+            function () {
+                return this.http.get('/netconf/sessions');
+            };
+        /**
+         * @return {?}
+         */
+        SessionService.prototype.destroyAllSessions = /**
+         * @return {?}
+         */
+            function () {
+                return this.http.delete('/netconf/sessions');
+            };
+        /**
+         *  Check if session exists on the server.
+         */
+        /**
+         *  Check if session exists on the server.
+         * @param {?} key
+         * @return {?}
+         */
+        SessionService.prototype.sessionAlive = /**
+         *  Check if session exists on the server.
+         * @param {?} key
+         * @return {?}
+         */
+            function (key) {
+                /*const params = new HttpParams()
+                  .append('key', key);*/
+                return this.http.get('/netconf/session/alive/' + key);
+            };
+        /**
+         * @param {?} key
+         * @return {?}
+         */
+        SessionService.prototype.doesSessionExists = /**
+         * @param {?} key
+         * @return {?}
+         */
+            function (key) {
+                var e_1, _a;
+                try {
+                    for (var _b = __values(this._sessions), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var session = _c.value;
+                        if (session.key === key) {
+                            return true;
+                        }
+                    }
+                }
+                catch (e_1_1) {
+                    e_1 = { error: e_1_1 };
+                }
+                finally {
+                    try {
+                        if (_c && !_c.done && (_a = _b.return))
+                            _a.call(_b);
+                    }
+                    finally {
+                        if (e_1)
+                            throw e_1.error;
+                    }
+                }
+                return false;
+            };
+        /**
+         * @param {?} key
+         * @return {?}
+         */
+        SessionService.prototype.findSessionIndex = /**
+         * @param {?} key
+         * @return {?}
+         */
+            function (key) {
+                return this._sessions.findIndex(( /**
+                 * @param {?} s
+                 * @return {?}
+                 */function (s) { return s.key === key; }));
+            };
+        /**
+         * Filter is xpath (?)
+         */
+        /**
+         * Filter is xpath (?)
+         * @param {?} filter
+         * @return {?}
+         */
+        SessionService.prototype.getCompatibleDeviceSessions = /**
+         * Filter is xpath (?)
+         * @param {?} filter
+         * @return {?}
+         */
+            function (filter) {
+                // TODO: Filter
+                console.log('Getting compatible sessions');
+                console.log(this.sessions);
+                return this.sessions;
+            };
+        SessionService.decorators = [
+            { type: i0.Injectable, args: [{
+                        providedIn: 'root'
+                    },] }
+        ];
+        SessionService.ctorParameters = function () {
+            return [
+                { type: i1.HttpClient }
+            ];
+        };
+        /** @nocollapse */ SessionService.ngInjectableDef = i0.defineInjectable({ factory: function SessionService_Factory() { return new SessionService(i0.inject(i1.HttpClient)); }, token: SessionService, providedIn: "root" });
+        return SessionService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
      * Generated from: lib/components/device-selection.component.ts
      * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var DeviceSelectionComponent = /** @class */ (function () {
-        function DeviceSelectionComponent(deviceService) {
-            this.deviceService = deviceService;
+        function DeviceSelectionComponent(sessionService) {
+            this.sessionService = sessionService;
             this.schemaFilter = '';
             this.devicesSelected = new i0.EventEmitter();
             this.compatibleDevices = [];
@@ -494,28 +547,7 @@
          * @return {?}
          */
             function () {
-                var e_1, _a;
-                /** @type {?} */
-                var devices = this.deviceService.getCompatibleDevices(this.schemaFilter);
-                try {
-                    for (var devices_1 = __values(devices), devices_1_1 = devices_1.next(); !devices_1_1.done; devices_1_1 = devices_1.next()) {
-                        var d = devices_1_1.value;
-                        this.compatibleDevices.push({ device: d, selected: true });
-                    }
-                }
-                catch (e_1_1) {
-                    e_1 = { error: e_1_1 };
-                }
-                finally {
-                    try {
-                        if (devices_1_1 && !devices_1_1.done && (_a = devices_1.return))
-                            _a.call(devices_1);
-                    }
-                    finally {
-                        if (e_1)
-                            throw e_1.error;
-                    }
-                }
+                this.reload();
             };
         /**
          * Returns true, if there is at least one device selected. Returns false otherwise.
@@ -529,13 +561,44 @@
          * @return {?}
          */
             function () {
-                var e_2, _a;
+                var e_1, _a;
                 try {
                     for (var _b = __values(this.compatibleDevices), _c = _b.next(); !_c.done; _c = _b.next()) {
                         var d = _c.value;
                         if (d.selected) {
                             return true;
                         }
+                    }
+                }
+                catch (e_1_1) {
+                    e_1 = { error: e_1_1 };
+                }
+                finally {
+                    try {
+                        if (_c && !_c.done && (_a = _b.return))
+                            _a.call(_b);
+                    }
+                    finally {
+                        if (e_1)
+                            throw e_1.error;
+                    }
+                }
+                return false;
+            };
+        /**
+         * @param {?} val
+         * @return {?}
+         */
+        DeviceSelectionComponent.prototype.setAllSelectionsTo = /**
+         * @param {?} val
+         * @return {?}
+         */
+            function (val) {
+                var e_2, _a;
+                try {
+                    for (var _b = __values(this.compatibleDevices), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var d = _c.value;
+                        d.selected = val;
                     }
                 }
                 catch (e_2_1) {
@@ -551,37 +614,6 @@
                             throw e_2.error;
                     }
                 }
-                return false;
-            };
-        /**
-         * @param {?} val
-         * @return {?}
-         */
-        DeviceSelectionComponent.prototype.setAllSelectionsTo = /**
-         * @param {?} val
-         * @return {?}
-         */
-            function (val) {
-                var e_3, _a;
-                try {
-                    for (var _b = __values(this.compatibleDevices), _c = _b.next(); !_c.done; _c = _b.next()) {
-                        var d = _c.value;
-                        d.selected = val;
-                    }
-                }
-                catch (e_3_1) {
-                    e_3 = { error: e_3_1 };
-                }
-                finally {
-                    try {
-                        if (_c && !_c.done && (_a = _b.return))
-                            _a.call(_b);
-                    }
-                    finally {
-                        if (e_3)
-                            throw e_3.error;
-                    }
-                }
             };
         /**
          * @return {?}
@@ -590,7 +622,7 @@
          * @return {?}
          */
             function () {
-                var e_4, _a;
+                var e_3, _a;
                 if (this.areDevicesSelected()) {
                     /** @type {?} */
                     var selectedDevices = [];
@@ -598,12 +630,12 @@
                         for (var _b = __values(this.compatibleDevices), _c = _b.next(); !_c.done; _c = _b.next()) {
                             var d = _c.value;
                             if (d.selected) {
-                                selectedDevices.push(d.device);
+                                selectedDevices.push(d.session);
                             }
                         }
                     }
-                    catch (e_4_1) {
-                        e_4 = { error: e_4_1 };
+                    catch (e_3_1) {
+                        e_3 = { error: e_3_1 };
                     }
                     finally {
                         try {
@@ -611,8 +643,8 @@
                                 _a.call(_b);
                         }
                         finally {
-                            if (e_4)
-                                throw e_4.error;
+                            if (e_3)
+                                throw e_3.error;
                         }
                     }
                     this.devicesSelected.emit(selectedDevices);
@@ -622,16 +654,73 @@
                     this.errorMessage = 'No devices selected';
                 }
             };
+        /**
+         * @return {?}
+         */
+        DeviceSelectionComponent.prototype.reload = /**
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                var e_4, _a;
+                // const sessions = this.sessionService.getCompatibleDeviceSessions('');
+                /** @type {?} */
+                var sessions = this.sessionService.sessions;
+                this.sessionService.sessionsChanged.subscribe(( /**
+                 * @param {?} ses
+                 * @return {?}
+                 */function (ses) {
+                    var e_5, _a;
+                    try {
+                        for (var ses_1 = __values(ses), ses_1_1 = ses_1.next(); !ses_1_1.done; ses_1_1 = ses_1.next()) {
+                            var s = ses_1_1.value;
+                            _this.compatibleDevices.push({ session: s, selected: true });
+                        }
+                    }
+                    catch (e_5_1) {
+                        e_5 = { error: e_5_1 };
+                    }
+                    finally {
+                        try {
+                            if (ses_1_1 && !ses_1_1.done && (_a = ses_1.return))
+                                _a.call(ses_1);
+                        }
+                        finally {
+                            if (e_5)
+                                throw e_5.error;
+                        }
+                    }
+                }));
+                try {
+                    for (var sessions_1 = __values(sessions), sessions_1_1 = sessions_1.next(); !sessions_1_1.done; sessions_1_1 = sessions_1.next()) {
+                        var s = sessions_1_1.value;
+                        this.compatibleDevices.push({ session: s, selected: true });
+                    }
+                }
+                catch (e_4_1) {
+                    e_4 = { error: e_4_1 };
+                }
+                finally {
+                    try {
+                        if (sessions_1_1 && !sessions_1_1.done && (_a = sessions_1.return))
+                            _a.call(sessions_1);
+                    }
+                    finally {
+                        if (e_4)
+                            throw e_4.error;
+                    }
+                }
+            };
         DeviceSelectionComponent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'lib-device-selection',
-                        template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let device of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"device.device\"\r\n                                 [(selected)]=\"device.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
+                        template: "<lib-content-box [title]=\"'Select devices to configure'\" [limitWidth]=\"true\">\r\n  <div class=\"toolbox mb-3\">\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(true)\">Select all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"setAllSelectionsTo(false)\">Unselect all</button>\r\n    <button class=\"btn btn-secondary\" (click)=\"reload()\">Reload device list</button>\r\n    <button class=\"btn btn-primary right\">Connect a new device</button>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length > 0\" class=\"row\">\r\n    <div class=\"col-sm-12 col-md-4 pl-3 pr-3 p-2\" *ngFor=\"let session of compatibleDevices\">\r\n      <lib-device-selection-item [device]=\"session.session.device\"\r\n                                 [(selected)]=\"session.selected\"\r\n      ></lib-device-selection-item>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"compatibleDevices.length === 0\">\r\n    <h2 class=\"text-center\">No compatible devices connected.</h2>\r\n  </div>\r\n  <div class=\"toolbox mt-3\">\r\n    <a routerLink=\"/netconf/tools\" class=\"btn btn-danger\">Cancel</a>\r\n    <button class=\"btn btn-primary right\" (click)=\"submit()\">Configure</button>\r\n  </div>\r\n  <p class=\"error-text text-right\">{{errorMessage}}</p>\r\n</lib-content-box>\r\n<!--<div class=\"box\">\r\n  <div class=\"box-header\">\r\n    Select devices to configure\r\n  </div>\r\n  <div class=\"box-content box-content-limited\">\r\n\r\n  </div>\r\n</div>\r\n-->\r\n",
                         styles: [".btn{margin-right:5px}.box{margin-bottom:10px;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)}.box-header{background:#008545;width:100%;font-size:1.5rem;border-radius:5px 5px 0 0;color:#fff;padding:5px 10px;text-align:center}.box-content{padding:5px 10px}.box-content-limited{max-width:1200px;margin-left:auto;margin-right:auto}.clickable{cursor:pointer}.clickable::-moz-selection{background:0 0;color:#231f20}.clickable::-moz-selection,.clickable::selection{background:0 0;color:#231f20}.error-text{color:#ee1d23}.checkbox-container{display:block;position:relative;padding-left:35px;margin-bottom:32px;cursor:pointer;font-size:22px;line-height:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transition:150ms ease-in-out}.checkbox-container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkbox-container:hover input~.checkmark{background-color:#00b55d}.checkbox-container input:checked~.checkmark{background-color:#231f20}.checkbox-container input:checked~.checkmark:after{display:block}.checkbox-container .checkmark:after{left:7px;top:-1px;width:12px;height:22px;border:solid #fff;border-width:0 4px 4px 0;border-radius:2px;transform:rotate(45deg)}.checkmark{position:absolute;top:0;left:0;height:32px;width:32px;background-color:#fff;border:3px solid #231f20;border-radius:5px;transition:150ms ease-in-out}.checkmark:after{content:\"\";position:absolute;display:none}.device-selection-title{font-size:1.2em;margin-bottom:0}.device-name{font-weight:700;margin-right:.5rem}.device-item{cursor:pointer;border:2px solid #016d39;background:#fff;border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);margin-bottom:0}.hostname{font-size:.8em;white-space:nowrap;display:inline-block;color:rgba(35,31,32,.7)}.toolbox{width:100%}@media only screen and (min-width:600px){.toolbox{display:flex}}.toolbox .right{margin-left:auto}"]
                     }] }
         ];
         DeviceSelectionComponent.ctorParameters = function () {
             return [
-                { type: DeviceService }
+                { type: SessionService }
             ];
         };
         DeviceSelectionComponent.propDecorators = {
@@ -793,7 +882,11 @@
         }
         NetconfLibModule.decorators = [
             { type: i0.NgModule, args: [{
-                        imports: [common.CommonModule, router.RouterModule, i1.HttpClientModule],
+                        imports: [
+                            common.CommonModule,
+                            router.RouterModule,
+                            i1.HttpClientModule
+                        ],
                         declarations: __spread(sharedComponents),
                         exports: __spread(sharedComponents),
                         providers: [
@@ -818,9 +911,9 @@
 
     exports.NetconfLibService = NetconfLibService;
     exports.ConfigurationService = ConfigurationService;
-    exports.DeviceService = DeviceService;
-    exports.SessionService = SessionService;
     exports.NetconfLibModule = NetconfLibModule;
+    exports.SessionService = SessionService;
+    exports.DeviceService = DeviceService;
     exports.ɵe = ContentBoxComponent;
     exports.ɵb = DeviceQuickswitchComponent;
     exports.ɵc = DeviceSelectionComponent;

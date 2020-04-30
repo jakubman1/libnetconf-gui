@@ -51,6 +51,7 @@ export class ToolsComponent implements OnInit {
                 }
                 catch(e) {
                     this.error = 'Selected tool could not be loaded. Check the console for more details.';
+                    console.log(e);
                     console.error(e.message);
                     this.activeTool = null;
                 }}

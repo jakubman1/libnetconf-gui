@@ -16,6 +16,7 @@ def get_saved_devices(username, db_coll):
 
 def add_device(username, device, db_coll):
     device['owner'] = username
+    # Check if device parameter has all required keys
     if all (k in device for k in ('hostname', 'port', 'username')):
         return str(db_coll.insert_one(device).inserted_id)
     return False
@@ -26,3 +27,13 @@ def get_device_by_id(device_id: str, db_coll):
     device['id'] = str(device['_id'])
     return device
 
+def get_device_from_session_data(host, port, owner, username, db_coll):
+    print(host)
+    device = db_coll.find_one({'hostname': host, 'port': port, 'owner': owner, 'username': username})
+    if device is None and host == '127.0.0.1':
+        print("Trying localhost instead of 127.0.0.1")
+        device = db_coll.find_one({'hostname': 'localhost', 'port': port, 'owner': owner, 'username': username})
+    if device is not None:
+        device['_id'] = str(device['_id'])
+        device['id'] = str(device['_id'])
+    return device

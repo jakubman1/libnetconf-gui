@@ -1,7 +1,8 @@
 // @ts-ignore
 import { Component, OnInit } from '@angular/core';
-import {DeviceService, SessionService} from '../../../lib/netconf-lib';
+import {SessionService} from '../../../lib/netconf-lib';
 import {Device} from '../../../lib/netconf-lib/lib/classes/device';
+import {Session} from '../../../lib/netconf-lib/lib/classes/session';
 
 @Component({
     selector: 'nc-device-list',
@@ -11,18 +12,22 @@ import {Device} from '../../../lib/netconf-lib/lib/classes/device';
 export class DeviceListComponent implements OnInit {
 
     constructor(
-        private deviceService: DeviceService,
         private sessionService: SessionService
     ) { }
 
-    connectedDevices: Device[] = [];
+    sessions: Session[] = [];
 
     ngOnInit() {
-        this.connectedDevices = this.deviceService.connectedDevices;
-        this.deviceService.connectedDevicesChanged.subscribe(_ => {
-            this.connectedDevices = this.deviceService.connectedDevices;
+        this.sessions = this.sessionService.sessions;
+        this.sessionService.sessionsChanged.subscribe(
+            sessions => {
+                this.sessions = sessions;
+            }
+        )
+    }
 
-        });
+    disconnect(sessionKey: string) {
+        this.sessionService.destroySession(sessionKey).subscribe();
     }
 
 }

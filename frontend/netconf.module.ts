@@ -2,6 +2,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from 'app/utils/auth.guard';
 import { SafePipe, SafePipeModule } from 'app/utils/safe.pipe';
 
-import {NetconfLibModule} from "./lib/netconf-lib";
+
 
 import { NetconfComponent } from './components/netconf.component';
 import {DevicesComponent} from "./components/devices/devices.component";
@@ -31,6 +32,10 @@ import {PaginationPipe} from "./pipes/pagination.pipe";
 import {PaginationComponent} from "./components/shared/pagination/pagination.component";
 import {NowConnectingFormComponent} from './components/shared/now-connecting-form/now-connecting-form.component';
 import {ConnectionStatusPipe} from './pipes/connectionStatus.pipe';
+
+
+import {NetconfLibModule} from './lib/netconf-lib';
+
 
 const routes: Routes = [{
     path: 'netconf',
@@ -104,6 +109,7 @@ const routes: Routes = [{
     imports: [
         CommonModule,
         FormsModule,
+        HttpClientModule,
         SafePipeModule,
         RouterModule.forChild(routes),
         NgbModule,

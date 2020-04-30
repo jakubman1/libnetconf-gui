@@ -20,6 +20,9 @@ netconf_bp.add_url_rule('/connect', view_func=connect_device, methods=['POST'])
 
 # Sessions
 netconf_bp.add_url_rule('/session/alive/<key>', view_func=session_alive, methods=['GET'])
+netconf_bp.add_url_rule('/session/<key>', view_func=session_destroy, methods=['DELETE'])
+netconf_bp.add_url_rule('/sessions', view_func=sessions_get_open, methods=['GET'])
+netconf_bp.add_url_rule('/sessions', view_func=sessions_get_open, methods=['DELETE'])
 
 # Profiles
 netconf_bp.add_url_rule('/activateProfile', view_func=activate_profile, methods=['POST'])

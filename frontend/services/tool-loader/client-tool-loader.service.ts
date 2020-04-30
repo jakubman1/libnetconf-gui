@@ -24,7 +24,7 @@
  SOFTWARE.
  */
 
-
+// @ts-ignore
 import { Injectable, NgModuleFactory } from '@angular/core';
 import { TOOL_EXTERNALS_MAP } from './tool-externals';
 import {ToolConfigProvider} from "../tool-config.provider";
@@ -61,6 +61,7 @@ export class ClientToolLoaderService extends ToolLoaderService {
             depsPromises.push(SystemJS.import('/assets/libnetconf/tools/netconf-lib.js').then(m => {
                 TOOL_EXTERNALS_MAP.netconfLib = m.default;
                 window['define']('netconf-lib', [], () => m.default);
+                console.log('Defined netconf-lib');
             }));
         }
 

@@ -6,7 +6,7 @@
 /**
  * Generated bundle index. Do not edit.
  */
-export { NetconfLibService, ConfigurationService, DeviceService, SessionService, NetconfLibModule } from './public_api';
+export { NetconfLibService, ConfigurationService, NetconfLibModule, SessionService, DeviceService } from './public_api';
 export { ContentBoxComponent as ɵe } from './lib/components/content-box.component';
 export { DeviceQuickswitchComponent as ɵb } from './lib/components/device-quickswitch.component';
 export { DeviceSelectionComponent as ɵc } from './lib/components/device-selection.component';
