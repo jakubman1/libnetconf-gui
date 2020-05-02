@@ -3,38 +3,39 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+// @ts-ignore
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-
+// @ts-ignore
 import { AuthGuard } from 'app/utils/auth.guard';
+// @ts-ignore
 import { SafePipe, SafePipeModule } from 'app/utils/safe.pipe';
 
 
 
 import { NetconfComponent } from './components/netconf.component';
-import {DevicesComponent} from "./components/devices/devices.component";
-import {ToolsComponent} from "./components/tools/tools.component";
-import {NotificationsComponent} from "./components/notifications/notifications.component";
-import {ProfilesComponent} from "./components/profiles/profiles.component";
-import {AddDeviceFormComponent} from "./components/shared/add-device-form/add-device-form.component";
-import {DeviceListComponent} from "./components/devices/device-list/device-list.component";
-import {NotificationDisplayComponent} from "./components/shared/notification-display/notification-display.component";
-import {NotificationInfoComponent} from "./components/shared/notification-info/notification-info.component";
-import {ToolLoaderService} from "./services/tool-loader/tool-loader.service";
-import {ClientToolLoaderService} from "./services/tool-loader/client-tool-loader.service";
-import {ToolConfigProvider} from "./services/tool-config.provider";
-import {PopupAddProfileComponent} from "./components/profiles/popup-add-profile.component";
-import {ProfileEditComponent} from "./components/profiles/profile-edit.component";
-import {DeviceFilterPipe} from "./pipes/device-filter.pipe";
-import {PaginationPipe} from "./pipes/pagination.pipe";
-import {PaginationComponent} from "./components/shared/pagination/pagination.component";
+import {DevicesComponent} from './components/devices/devices.component';
+import {ToolsComponent} from './components/tools/tools.component';
+import {NotificationsComponent} from './components/notifications/notifications.component';
+import {ProfilesComponent} from './components/profiles/profiles.component';
+import {AddDeviceFormComponent} from './components/shared/add-device-form/add-device-form.component';
+import {DeviceListComponent} from './components/devices/device-list/device-list.component';
+import {NotificationDisplayComponent} from './components/shared/notification-display/notification-display.component';
+import {NotificationInfoComponent} from './components/shared/notification-info/notification-info.component';
+import {ToolLoaderService} from './services/tool-loader/tool-loader.service';
+import {ClientToolLoaderService} from './services/tool-loader/client-tool-loader.service';
+import {ToolConfigProvider} from './services/tool-config.provider';
+import {PopupAddProfileComponent} from './components/profiles/popup-add-profile.component';
+import {ProfileEditComponent} from './components/profiles/profile-edit.component';
+import {DeviceFilterPipe} from './pipes/device-filter.pipe';
+import {PaginationPipe} from './pipes/pagination.pipe';
+import {PaginationComponent} from './components/shared/pagination/pagination.component';
 import {NowConnectingFormComponent} from './components/shared/now-connecting-form/now-connecting-form.component';
 import {ConnectionStatusPipe} from './pipes/connectionStatus.pipe';
 
 
-import {NetconfLibModule} from './lib/netconf-lib';
+import {NetconfLibModule} from './netconf-lib';
 
 
 const routes: Routes = [{
@@ -118,7 +119,7 @@ const routes: Routes = [{
         ReactiveFormsModule
     ],
     declarations: [
-	    NetconfComponent,
+        NetconfComponent,
         DevicesComponent,
         ToolsComponent,
         NotificationsComponent,

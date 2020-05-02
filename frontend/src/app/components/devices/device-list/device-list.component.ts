@@ -1,8 +1,7 @@
 // @ts-ignore
 import { Component, OnInit } from '@angular/core';
-import {SessionService} from '../../../lib/netconf-lib';
-import {Device} from '../../../lib/netconf-lib/lib/classes/device';
-import {Session} from '../../../lib/netconf-lib/lib/classes/session';
+import {SessionService} from '../../../netconf-lib';
+import {Session} from '../../../netconf-lib/lib/classes/session';
 
 @Component({
     selector: 'nc-device-list',
@@ -23,7 +22,7 @@ export class DeviceListComponent implements OnInit {
             sessions => {
                 this.sessions = sessions;
             }
-        )
+        );
     }
 
     disconnect(sessionKey: string) {

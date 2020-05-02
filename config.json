@@ -1,13 +1,13 @@
 {
     "dependencies": {
-        "ngc": "frontend/angular.json",
-        "npm": "frontend/package.json",
+        "ngc": "frontend/angular-shared.json",
+        "npm": "frontend/package-shared.json",
         "pip": "backend/requirements.txt"
     },
     "module": {
         "class": "NetconfModule",
         "file": "netconf.module.ts",
-        "frontend": "frontend/",
+        "frontend": "frontend/src/app/",
         "backend": "backend/",
         "name" : "netconf"
     }

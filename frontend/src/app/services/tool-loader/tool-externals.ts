@@ -2,12 +2,10 @@ import * as core from '@angular/core';
 import * as common from '@angular/common';
 import * as forms from '@angular/forms';
 import * as router from '@angular/router';
+import * as socketIo from 'socket.io-client';
 import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
-import * as socketIo from 'socket.io-client';
 import * as http from "@angular/common/http";
-//import * as lib from 'netconf-lib';
-
 
 export const TOOL_EXTERNALS_MAP = {
     'ng.http': http,
@@ -18,7 +16,5 @@ export const TOOL_EXTERNALS_MAP = {
     rxjs,
     tslib,
     socketIo,
-    //shared: { ...lib, ...require('netconf-lib/netconf-lib.ngfactory') }
+    netconf_lib: '/assets/libnetconf/tools/netconf-lib.js'
 };
-
-declare let require: any;

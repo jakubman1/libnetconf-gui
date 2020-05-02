@@ -27,10 +27,10 @@
 // @ts-ignore
 import { Injectable, NgModuleFactory } from '@angular/core';
 import { TOOL_EXTERNALS_MAP } from './tool-externals';
-import {ToolConfigProvider} from "../tool-config.provider";
-import {ToolLoaderService} from "./tool-loader.service";
+import {ToolConfigProvider} from '../tool-config.provider';
+import {ToolLoaderService} from './tool-loader.service';
 
-let SystemJS = window.System;
+const SystemJS = window.System;
 
 
 @Injectable()
@@ -57,9 +57,9 @@ export class ClientToolLoaderService extends ToolLoaderService {
             });
         });
 
-        if (typeof TOOL_EXTERNALS_MAP.netconfLib === 'string') {
+        if (typeof TOOL_EXTERNALS_MAP.netconf_lib === 'string') {
             depsPromises.push(SystemJS.import('/assets/libnetconf/tools/netconf-lib.js').then(m => {
-                TOOL_EXTERNALS_MAP.netconfLib = m.default;
+                TOOL_EXTERNALS_MAP.netconf_lib = m.default;
                 window['define']('netconf-lib', [], () => m.default);
                 console.log('Defined netconf-lib');
             }));

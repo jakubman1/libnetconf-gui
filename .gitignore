@@ -42,9 +42,8 @@ Thumbs.db
 /frontend/_colors.scss
 
 # Devkit
-/netconf-tool-devkit/node_modules
-/netconf-tool-devkit/.idea
-/netconf-tool-devkit/dist
+/frontend/node_modules
+/frontend/dist
 
 # Backend cache
 /backend/__pycache__

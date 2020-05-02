@@ -1,10 +1,10 @@
-// @ts-ignore
+
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {ProfileService} from '../../../services/profile.service';
-import {DeviceService, SessionService} from '../../../lib/netconf-lib';
+import {DeviceService, SessionService} from '../../../netconf-lib';
 // @ts-ignore
 import {SocketService} from 'app/services/socket.service';
-import {Session} from '../../../lib/netconf-lib/lib/classes/session';
+import {Session} from '../../../netconf-lib/lib/classes/session';
 
 enum ConnectionStatus {
     WAITING_FOR_CONNECTION = -2,

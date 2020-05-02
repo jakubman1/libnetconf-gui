@@ -1,15 +1,15 @@
 // @ts-ignore
-import { Pipe, PipeTransform } from "@angular/core";
-import {Device} from "../lib/netconf-lib/lib/classes/device";
+import { Pipe, PipeTransform } from '@angular/core';
+import {Device} from '../netconf-lib/lib/classes/device';
 
 @Pipe({
     name: 'deviceFilter',
     pure: false
 })
-export class DeviceFilterPipe implements PipeTransform{
-    transform(items: {device:Device, inProfile: boolean}[], searchText: string): any {
-        if(!items) return [];
-        if(!searchText) return items;
+export class DeviceFilterPipe implements PipeTransform {
+    transform(items: {device: Device, inProfile: boolean}[], searchText: string): any {
+        if (!items) { return []; }
+        if (!searchText) { return items; }
         searchText = searchText.toLowerCase();
 
         return items.filter( device => {

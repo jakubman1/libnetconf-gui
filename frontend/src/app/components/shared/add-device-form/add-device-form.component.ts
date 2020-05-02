@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DeviceService} from '../../../lib/netconf-lib';
+import {DeviceService} from '../../../netconf-lib';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -40,7 +40,7 @@ export class AddDeviceFormComponent implements OnInit {
             this.deviceForm.reset();
           },
           err => {
-            this.error = err.message
+            this.error = err.message;
           }
       );
     }
