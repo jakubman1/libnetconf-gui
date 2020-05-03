@@ -4,7 +4,7 @@
   <ul>
     <li *ngFor="let schema of schemas">
       <a class="schema-link" title="View detail"
-         [routerLink]="['..', 'tool','yang-explorer',{'schema': schema}]">{{schema}}</a>
+         [routerLink]="['/netconf', 'tool','yang-explorer',{'schema': schema}]">{{schema}}</a>
     </li>
   </ul>
 </div>

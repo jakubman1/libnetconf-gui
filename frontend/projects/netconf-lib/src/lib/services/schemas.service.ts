@@ -18,7 +18,9 @@ export class SchemasService {
       '\'': '&#39;',
       '/': '&#x2F;'
     };
-    return message.replace(/[&<>"'\/]/g, s => entityMap[s]).replace(/\n/g, '<br>');
+    return message.replace(/[&<>"'\/]/g, s => entityMap[s])
+      .replace(/\n/g, '<br>')
+      .replace(/\t/g, '&nbsp;');
   }
 
   getSchemaNames(): Observable<string[]> {
