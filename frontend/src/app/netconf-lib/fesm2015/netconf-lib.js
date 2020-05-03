@@ -699,6 +699,13 @@ class SchemasService {
     getSchema(schemaName) {
         return this.http.get('/netconf/schema/' + schemaName);
     }
+    /**
+     * @param {?} schemaName
+     * @return {?}
+     */
+    removeSchema(schemaName) {
+        return this.http.delete('/netconf/schema/' + schemaName);
+    }
 }
 SchemasService.decorators = [
     { type: Injectable, args: [{
@@ -747,12 +754,41 @@ class SchemaListComponent {
             this.loading = false;
         }));
     }
+    /**
+     * @param {?} name
+     * @return {?}
+     */
+    removeSchema(name) {
+        if (confirm('Do you really want to remove ' + name + '?')) {
+            this.loading = true;
+            this.schemasService.removeSchema(name).subscribe((/**
+             * @param {?} res
+             * @return {?}
+             */
+            res => {
+                /** @type {?} */
+                const idx = this.schemas.indexOf(name);
+                this.schemas.splice(idx, 1);
+                if (!res.success) {
+                    this.error = res.message;
+                }
+                this.loading = false;
+            }), (/**
+             * @param {?} err
+             * @return {?}
+             */
+            err => {
+                this.error = err.message;
+                this.loading = false;
+            }));
+        }
+    }
 }
 SchemaListComponent.decorators = [
     { type: Component, args: [{
                 selector: 'lib-schema-list',
-                template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
-                styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}"]
+                template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul class=\"schema-list\">\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n      <i class=\"fa fa-trash remove-schema\" aria-hidden=\"true\" (click)=\"removeSchema(schema)\" title=\"Remove schema\"></i>\n      <span class=\"sr-only\" (click)=\"removeSchema(schema)\">Remove</span>\n    </li>\n  </ul>\n</div>\n",
+                styles: [".schema-list{list-style-type:none}.schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}.remove-schema{cursor:pointer;margin-left:20px}.remove-schema:hover{color:red}"]
             }] }
 ];
 SchemaListComponent.ctorParameters = () => [

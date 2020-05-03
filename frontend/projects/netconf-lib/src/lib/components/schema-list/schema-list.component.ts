@@ -29,4 +29,25 @@ export class SchemaListComponent implements OnInit {
       });
   }
 
+  removeSchema(name: string) {
+    if (confirm('Do you really want to remove ' + name + '?')) {
+      this.loading = true;
+      this.schemasService.removeSchema(name).subscribe(
+        res => {
+          const idx = this.schemas.indexOf(name);
+          this.schemas.splice(idx, 1);
+          if (!res.success) {
+            this.error = res.message;
+          }
+          this.loading = false;
+        },
+        err => {
+          this.error = err.message;
+          this.loading = false;
+        }
+      );
+    }
+
+  }
+
 }

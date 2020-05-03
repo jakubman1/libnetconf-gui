@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { __values, __spread } from 'tslib';
-import { Injectable, Component, Input, Output, EventEmitter, defineInjectable, inject, NgModule } from '@angular/core';
+import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
@@ -900,6 +900,17 @@ var SchemasService = /** @class */ (function () {
     function (schemaName) {
         return this.http.get('/netconf/schema/' + schemaName);
     };
+    /**
+     * @param {?} schemaName
+     * @return {?}
+     */
+    SchemasService.prototype.removeSchema = /**
+     * @param {?} schemaName
+     * @return {?}
+     */
+    function (schemaName) {
+        return this.http.delete('/netconf/schema/' + schemaName);
+    };
     SchemasService.decorators = [
         { type: Injectable, args: [{
                     providedIn: 'root'
@@ -950,11 +961,45 @@ var SchemaListComponent = /** @class */ (function () {
             _this.loading = false;
         }));
     };
+    /**
+     * @param {?} name
+     * @return {?}
+     */
+    SchemaListComponent.prototype.removeSchema = /**
+     * @param {?} name
+     * @return {?}
+     */
+    function (name) {
+        var _this = this;
+        if (confirm('Do you really want to remove ' + name + '?')) {
+            this.loading = true;
+            this.schemasService.removeSchema(name).subscribe((/**
+             * @param {?} res
+             * @return {?}
+             */
+            function (res) {
+                /** @type {?} */
+                var idx = _this.schemas.indexOf(name);
+                _this.schemas.splice(idx, 1);
+                if (!res.success) {
+                    _this.error = res.message;
+                }
+                _this.loading = false;
+            }), (/**
+             * @param {?} err
+             * @return {?}
+             */
+            function (err) {
+                _this.error = err.message;
+                _this.loading = false;
+            }));
+        }
+    };
     SchemaListComponent.decorators = [
         { type: Component, args: [{
                     selector: 'lib-schema-list',
-                    template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
-                    styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}"]
+                    template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul class=\"schema-list\">\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n      <i class=\"fa fa-trash remove-schema\" aria-hidden=\"true\" (click)=\"removeSchema(schema)\" title=\"Remove schema\"></i>\n      <span class=\"sr-only\" (click)=\"removeSchema(schema)\">Remove</span>\n    </li>\n  </ul>\n</div>\n",
+                    styles: [".schema-list{list-style-type:none}.schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}.remove-schema{cursor:pointer;margin-left:20px}.remove-schema:hover{color:red}"]
                 }] }
     ];
     SchemaListComponent.ctorParameters = function () { return [

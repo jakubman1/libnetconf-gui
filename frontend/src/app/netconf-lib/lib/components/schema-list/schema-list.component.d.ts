@@ -8,4 +8,5 @@ export declare class SchemaListComponent implements OnInit {
     error: string;
     schemas: string[];
     ngOnInit(): void;
+    removeSchema(name: string): void;
 }

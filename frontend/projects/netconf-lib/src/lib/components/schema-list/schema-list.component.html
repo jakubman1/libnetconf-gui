@@ -1,10 +1,12 @@
 <div *ngIf="!loading">
   <p class="text-danger" *ngIf="error">{{error}}</p>
   <p>Click on schema name to view detail</p>
-  <ul>
+  <ul class="schema-list">
     <li *ngFor="let schema of schemas">
       <a class="schema-link" title="View detail" [class.selected]="schema === selected"
          [routerLink]="['/netconf', 'tool','yang-explorer',{'schema': schema}]">{{schema}}</a>
+      <i class="fa fa-trash remove-schema" aria-hidden="true" (click)="removeSchema(schema)" title="Remove schema"></i>
+      <span class="sr-only" (click)="removeSchema(schema)">Remove</span>
     </li>
   </ul>
 </div>

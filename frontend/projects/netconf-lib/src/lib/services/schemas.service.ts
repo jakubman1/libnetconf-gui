@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {GenericServerResponse} from '../classes/GenericServerResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +85,10 @@ export class SchemasService {
 
   getSchema(schemaName: string): Observable<string> {
     return this.http.get<string>('/netconf/schema/' + schemaName);
+  }
+
+  removeSchema(schemaName: string): Observable<GenericServerResponse> {
+    return this.http.delete<GenericServerResponse>('/netconf/schema/' + schemaName);
   }
 
 
