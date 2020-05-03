@@ -14,13 +14,68 @@ export class SchemasService {
       '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
-      '"': '&quot;',
-      '\'': '&#39;',
+      // '"': '&quot;',
+      // '\'': '&#39;',
       '/': '&#x2F;'
     };
-    return message.replace(/[&<>"'\/]/g, s => entityMap[s])
+    return message.replace(/[&<>\/]/g, s => entityMap[s])
       .replace(/\n/g, '<br>')
       .replace(/\t/g, '&nbsp;');
+  }
+
+  static formatYang(message: string) {
+    const chars = [...message]; // Split message to chars in unicode-safe way
+
+    let bracketPos = 0;
+    let stringFlag = false;
+    let patternFlag = false;
+    let result = '';
+    let idx = 0;
+    for (const c of chars) {
+      switch (c) {
+        case '{':
+          if (!stringFlag && !patternFlag) {
+            bracketPos++;
+            result += c + '<div class="level">';
+          } else {
+            result += c;
+          }
+          break;
+        case '}':
+          if (!stringFlag && !patternFlag) {
+            bracketPos--;
+            result += '</div>' + c;
+          } else {
+            result += c;
+          }
+          break;
+        case '"':
+          if (stringFlag) {
+            result += c + '</span>';
+          } else {
+            result += '<span class="string">' + c;
+          }
+          stringFlag = !stringFlag;
+          break;
+        case '\'':
+          if (!stringFlag) {
+            if (patternFlag) {
+              result += c + '</span>';
+            } else {
+              result += '<span class="pattern">' + c;
+            }
+            patternFlag = !patternFlag;
+          } else {
+            result += c;
+          }
+          break;
+        default:
+          result += c;
+          break;
+      }
+      idx++;
+    }
+    return result;
   }
 
   getSchemaNames(): Observable<string[]> {

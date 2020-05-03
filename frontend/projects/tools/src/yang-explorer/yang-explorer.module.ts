@@ -7,11 +7,12 @@ import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    NetconfLibModule,
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        NetconfLibModule,
+        NetconfLibModule,
+    ],
   declarations: [YangExplorerComponent],
   entryComponents: [YangExplorerComponent]
 })

@@ -37,7 +37,7 @@ export class YangExplorerComponent implements OnInit {
   }
 
   sanitizeYang(yang: string) {
-    return SchemasService.newlineToBr(yang);
+    return SchemasService.formatYang(SchemasService.newlineToBr(yang));
   }
 
 }

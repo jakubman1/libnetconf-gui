@@ -886,14 +886,98 @@
                     '&': '&amp;',
                     '<': '&lt;',
                     '>': '&gt;',
-                    '"': '&quot;',
-                    '\'': '&#39;',
+                    // '"': '&quot;',
+                    // '\'': '&#39;',
                     '/': '&#x2F;'
                 };
-                return message.replace(/[&<>"'\/]/g, ( /**
+                return message.replace(/[&<>\/]/g, ( /**
                  * @param {?} s
                  * @return {?}
-                 */function (s) { return entityMap[s]; })).replace(/\n/g, '<br>');
+                 */function (s) { return entityMap[s]; }))
+                    .replace(/\n/g, '<br>')
+                    .replace(/\t/g, '&nbsp;');
+            };
+        /**
+         * @param {?} message
+         * @return {?}
+         */
+        SchemasService.formatYang = /**
+         * @param {?} message
+         * @return {?}
+         */
+            function (message) {
+                var e_1, _a;
+                /** @type {?} */
+                var chars = __spread(message);
+                /** @type {?} */
+                var stringFlag = false;
+                /** @type {?} */
+                var patternFlag = false;
+                /** @type {?} */
+                var result = '';
+                try {
+                    for (var chars_1 = __values(chars), chars_1_1 = chars_1.next(); !chars_1_1.done; chars_1_1 = chars_1.next()) {
+                        var c = chars_1_1.value;
+                        switch (c) {
+                            case '{':
+                                if (!stringFlag && !patternFlag) {
+                                    result += c + '<div class="level">';
+                                }
+                                else {
+                                    result += c;
+                                }
+                                break;
+                            case '}':
+                                if (!stringFlag && !patternFlag) {
+                                    result += '</div>' + c;
+                                }
+                                else {
+                                    result += c;
+                                }
+                                break;
+                            case '"':
+                                if (stringFlag) {
+                                    result += c + '</span>';
+                                }
+                                else {
+                                    result += '<span class="string">' + c;
+                                }
+                                stringFlag = !stringFlag;
+                                break;
+                            case '\'':
+                                if (!stringFlag) {
+                                    if (patternFlag) {
+                                        result += c + '</span>';
+                                    }
+                                    else {
+                                        result += '<span class="pattern">' + c;
+                                    }
+                                    patternFlag = !patternFlag;
+                                }
+                                else {
+                                    result += c;
+                                }
+                                break;
+                            default:
+                                result += c;
+                                break;
+                        }
+                    }
+                }
+                catch (e_1_1) {
+                    e_1 = { error: e_1_1 };
+                }
+                finally {
+                    try {
+                        if (chars_1_1 && !chars_1_1.done && (_a = chars_1.return))
+                            _a.call(chars_1);
+                    }
+                    finally {
+                        if (e_1)
+                            throw e_1.error;
+                    }
+                }
+                return result;
             };
         /**
          * @return {?}
@@ -937,6 +1021,7 @@
     var SchemaListComponent = /** @class */ (function () {
         function SchemaListComponent(schemasService) {
             this.schemasService = schemasService;
+            this.selected = '';
             this.loading = false;
             this.error = '';
             this.schemas = [];
@@ -967,14 +1052,17 @@
         SchemaListComponent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'lib-schema-list',
-                        template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
-                        styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}"]
+                        template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
+                        styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}"]
                     }] }
         ];
         SchemaListComponent.ctorParameters = function () {
             return [
                 { type: SchemasService }
             ];
+        };
+        SchemaListComponent.propDecorators = {
+            selected: [{ type: i0.Input }]
         };
         return SchemaListComponent;
     }());

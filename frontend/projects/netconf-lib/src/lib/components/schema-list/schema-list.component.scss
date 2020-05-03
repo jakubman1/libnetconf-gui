@@ -8,4 +8,8 @@
     text-decoration: underline;
     color: $colorLink;
   }
+  &.selected {
+    color: $colorLink;
+    font-weight: bolder;
+  }
 }

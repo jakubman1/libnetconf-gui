@@ -613,15 +613,78 @@ class SchemasService {
             '&': '&amp;',
             '<': '&lt;',
             '>': '&gt;',
-            '"': '&quot;',
-            '\'': '&#39;',
+            // '"': '&quot;',
+            // '\'': '&#39;',
             '/': '&#x2F;'
         };
-        return message.replace(/[&<>"'\/]/g, (/**
+        return message.replace(/[&<>\/]/g, (/**
          * @param {?} s
          * @return {?}
          */
-        s => entityMap[s])).replace(/\n/g, '<br>');
+        s => entityMap[s]))
+            .replace(/\n/g, '<br>')
+            .replace(/\t/g, '&nbsp;');
+    }
+    /**
+     * @param {?} message
+     * @return {?}
+     */
+    static formatYang(message) {
+        /** @type {?} */
+        const chars = [...message];
+        /** @type {?} */
+        let stringFlag = false;
+        /** @type {?} */
+        let patternFlag = false;
+        /** @type {?} */
+        let result = '';
+        for (const c of chars) {
+            switch (c) {
+                case '{':
+                    if (!stringFlag && !patternFlag) {
+                        result += c + '<div class="level">';
+                    }
+                    else {
+                        result += c;
+                    }
+                    break;
+                case '}':
+                    if (!stringFlag && !patternFlag) {
+                        result += '</div>' + c;
+                    }
+                    else {
+                        result += c;
+                    }
+                    break;
+                case '"':
+                    if (stringFlag) {
+                        result += c + '</span>';
+                    }
+                    else {
+                        result += '<span class="string">' + c;
+                    }
+                    stringFlag = !stringFlag;
+                    break;
+                case '\'':
+                    if (!stringFlag) {
+                        if (patternFlag) {
+                            result += c + '</span>';
+                        }
+                        else {
+                            result += '<span class="pattern">' + c;
+                        }
+                        patternFlag = !patternFlag;
+                    }
+                    else {
+                        result += c;
+                    }
+                    break;
+                default:
+                    result += c;
+                    break;
+            }
+        }
+        return result;
     }
     /**
      * @return {?}
@@ -658,6 +721,7 @@ class SchemaListComponent {
      */
     constructor(schemasService) {
         this.schemasService = schemasService;
+        this.selected = '';
         this.loading = false;
         this.error = '';
         this.schemas = [];
@@ -687,13 +751,16 @@ class SchemaListComponent {
 SchemaListComponent.decorators = [
     { type: Component, args: [{
                 selector: 'lib-schema-list',
-                template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
-                styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}"]
+                template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\" [class.selected]=\"schema === selected\"\n         [routerLink]=\"['/netconf', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
+                styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}.schema-link.selected{color:#0068a2;font-weight:bolder}"]
             }] }
 ];
 SchemaListComponent.ctorParameters = () => [
     { type: SchemasService }
 ];
+SchemaListComponent.propDecorators = {
+    selected: [{ type: Input }]
+};
 
 /**
  * @fileoverview added by tsickle

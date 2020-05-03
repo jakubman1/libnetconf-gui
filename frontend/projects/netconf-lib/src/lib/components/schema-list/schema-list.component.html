@@ -3,7 +3,7 @@
   <p>Click on schema name to view detail</p>
   <ul>
     <li *ngFor="let schema of schemas">
-      <a class="schema-link" title="View detail"
+      <a class="schema-link" title="View detail" [class.selected]="schema === selected"
          [routerLink]="['/netconf', 'tool','yang-explorer',{'schema': schema}]">{{schema}}</a>
     </li>
   </ul>

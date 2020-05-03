@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SchemasService} from '../../services/schemas.service';
 
 @Component({
@@ -9,6 +9,8 @@ import {SchemasService} from '../../services/schemas.service';
 export class SchemaListComponent implements OnInit {
 
   constructor(public schemasService: SchemasService) { }
+
+  @Input() selected = '';
 
   loading = false;
   error = '';
