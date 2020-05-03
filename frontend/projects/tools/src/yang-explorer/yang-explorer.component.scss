@@ -1,3 +1,14 @@
+// https://flatuicolors.com/palette/ca
 :host {
+  width: 100%;
+}
+
+.code {
+  background: #222f3e;
+  color: #fff;
+  font-family: "JetBrains Mono", "Source Code Pro", Consolas, monospace;
+  padding: 5px;
+  max-height: 80vh;
+  overflow: auto;
   width: 100%;
 }
