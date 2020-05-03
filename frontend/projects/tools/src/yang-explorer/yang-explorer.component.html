@@ -1,0 +1,6 @@
+<div class="tool-wrapper">
+  <h1 *ngIf="schemaName">{{schemaName}}</h1>
+  <!-- Using innerHTML to avoid <br> escaping -->
+  <p *ngIf="!loading" [innerHTML]="schema">
+  </p>
+</div>

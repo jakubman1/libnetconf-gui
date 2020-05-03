@@ -10,6 +10,19 @@ import yang
 
 log = logging.getLogger(__name__)
 
+def get_all_schema_names(username):
+    site_root = os.path.realpath(os.path.dirname(__file__))
+    return [
+        file for file in os.listdir(os.path.join(site_root, 'userfiles', username))
+            if os.path.splitext(file)[1] == '.yang' or os.path.splitext(file)[1] == '.yin'
+    ]
+
+def get_schema_detail(username, schema):
+    if os.path.splitext(schema)[1] == '.yang' or os.path.splitext(schema)[1] == '.yin':
+        site_root = os.path.realpath(os.path.dirname(__file__))
+        with open(os.path.join(site_root, 'userfiles', username, schema), 'r') as f:
+            return f.read()
+
 
 def get_schema(name, revision, submod_name, submod_revision, priv):
     global log

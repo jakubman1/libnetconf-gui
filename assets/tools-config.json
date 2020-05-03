@@ -4,5 +4,11 @@
     "path": "/assets/libnetconf/tools/example.js",
     "image": "/assets/libnetconf/tools/img/example.png",
     "description": "Does nothing... yet."
+  },
+  "yang-explorer": {
+    "name": "Yang Explorer",
+    "path": "/assets/libnetconf/tools/yang-explorer.js",
+    "image": "/assets/libnetconf/tools/img/example.png",
+    "description": "Browse uploaded yang schemas"
   }
 }

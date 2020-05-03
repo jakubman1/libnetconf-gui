@@ -5,7 +5,7 @@ import * as router from '@angular/router';
 import * as socketIo from 'socket.io-client';
 import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
-import * as http from "@angular/common/http";
+import * as http from '@angular/common/http';
 
 export const TOOL_EXTERNALS_MAP = {
     'ng.http': http,

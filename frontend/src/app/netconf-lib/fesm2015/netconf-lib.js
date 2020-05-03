@@ -593,6 +593,110 @@ PopupComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: lib/services/schemas.service.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class SchemasService {
+    /**
+     * @param {?} http
+     */
+    constructor(http) {
+        this.http = http;
+    }
+    /**
+     * @param {?} message
+     * @return {?}
+     */
+    static newlineToBr(message) {
+        /** @type {?} */
+        const entityMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            '\'': '&#39;',
+            '/': '&#x2F;'
+        };
+        return message.replace(/[&<>"'\/]/g, (/**
+         * @param {?} s
+         * @return {?}
+         */
+        s => entityMap[s])).replace(/\n/g, '<br>');
+    }
+    /**
+     * @return {?}
+     */
+    getSchemaNames() {
+        return this.http.get('/netconf/schemas');
+    }
+    /**
+     * @param {?} schemaName
+     * @return {?}
+     */
+    getSchema(schemaName) {
+        return this.http.get('/netconf/schema/' + schemaName);
+    }
+}
+SchemasService.decorators = [
+    { type: Injectable, args: [{
+                providedIn: 'root'
+            },] }
+];
+SchemasService.ctorParameters = () => [
+    { type: HttpClient }
+];
+/** @nocollapse */ SchemasService.ngInjectableDef = defineInjectable({ factory: function SchemasService_Factory() { return new SchemasService(inject(HttpClient)); }, token: SchemasService, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/components/schema-list/schema-list.component.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class SchemaListComponent {
+    /**
+     * @param {?} schemasService
+     */
+    constructor(schemasService) {
+        this.schemasService = schemasService;
+        this.loading = false;
+        this.error = '';
+        this.schemas = [];
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.loading = true;
+        this.schemasService.getSchemaNames().subscribe((/**
+         * @param {?} names
+         * @return {?}
+         */
+        names => {
+            this.schemas = names;
+            this.loading = false;
+        }), (/**
+         * @param {?} err
+         * @return {?}
+         */
+        err => {
+            this.error = err.message;
+            this.loading = false;
+        }));
+    }
+}
+SchemaListComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'lib-schema-list',
+                template: "<div *ngIf=\"!loading\">\n  <p class=\"text-danger\" *ngIf=\"error\">{{error}}</p>\n  <p>Click on schema name to view detail</p>\n  <ul>\n    <li *ngFor=\"let schema of schemas\">\n      <a class=\"schema-link\" title=\"View detail\"\n         [routerLink]=\"['..', 'tool','yang-explorer',{'schema': schema}]\">{{schema}}</a>\n    </li>\n  </ul>\n</div>\n",
+                styles: [".schema-link{font-family:\"JetBrains Mono\",\"Source Code Pro\",Consolas,monospace;color:#231f20;text-decoration:none}.schema-link:hover{text-decoration:underline;color:#0068a2}"]
+            }] }
+];
+SchemaListComponent.ctorParameters = () => [
+    { type: SchemasService }
+];
+
+/**
+ * @fileoverview added by tsickle
  * Generated from: lib/netconf-lib.module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
@@ -603,7 +707,8 @@ const sharedComponents = [
     DeviceSelectionComponent,
     DeviceSelectionItemComponent,
     ContentBoxComponent,
-    PopupComponent
+    PopupComponent,
+    SchemaListComponent
 ];
 class NetconfLibModule {
 }
@@ -634,6 +739,6 @@ NetconfLibModule.decorators = [
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { NetconfLibService, ConfigurationService, NetconfLibModule, SessionService, DeviceService, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
+export { NetconfLibService, ConfigurationService, NetconfLibModule, SessionService, DeviceService, SchemasService, ContentBoxComponent as ɵe, DeviceQuickswitchComponent as ɵb, DeviceSelectionComponent as ɵc, PopupComponent as ɵf, SchemaListComponent as ɵg, DeviceSelectionItemComponent as ɵd, NetconfLibComponent as ɵa };
 
 //# sourceMappingURL=netconf-lib.js.map

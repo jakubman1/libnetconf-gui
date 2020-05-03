@@ -63,6 +63,14 @@ const routes: Routes = [{
             }
         },
         {
+          path: 'tool/:tool',
+          component: ToolsComponent,
+          canActivate: [AuthGuard],
+          data: {
+            role: 10
+          }
+        },
+        {
             path: 'tool/:tool',
             component: ToolsComponent,
             canActivate: [AuthGuard],
@@ -134,7 +142,7 @@ const routes: Routes = [{
         PaginationPipe,
         ConnectionStatusPipe,
         PaginationComponent,
-        NowConnectingFormComponent
+        NowConnectingFormComponent,
     ],
     providers: [
         SafePipe,

@@ -9,9 +9,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "tsc -p builders/tsconfig.builders.json",
-    "build:tools": "npm run build:lib && npm run build:example",
+    "build:tools": "npm run build:lib && npm run build:example && npm run build:yang-explorer",
     "build:lib": "ng build netconf-lib && rm -rf src/app/netconf-lib && cp -rf dist/netconf-lib src/app/netconf-lib && ng build --project tools --prod --modulePath=netconf-lib#NetconfLibModule --pluginName=netconf-lib  --outputPath=../assets/tools",
-    "build:example": "ng build --project tools --prod --modulePath=./example/example.module#ExampleModule --pluginName=example --sharedLibs=netconf-lib --outputPath=../assets/tools"
+    "build:example": "ng build --project tools --prod --modulePath=./example/example.module#ExampleModule --pluginName=example --sharedLibs=netconf-lib --outputPath=../assets/tools",
+    "build:yang-explorer": "ng build --project tools --prod --modulePath=./yang-explorer/yang-explorer.module#YangExplorerModule --pluginName=yang-explorer --sharedLibs=netconf-lib --outputPath=../assets/tools"
   },
   "private": true,
   "dependencies": {

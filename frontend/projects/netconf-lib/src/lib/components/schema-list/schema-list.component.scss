@@ -1,0 +1,11 @@
+@import "../../../../../shared-styles/colors";
+
+.schema-link {
+  font-family: "JetBrains Mono", "Source Code Pro", Consolas, monospace;
+  color: $colorText;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: $colorLink;
+  }
+}

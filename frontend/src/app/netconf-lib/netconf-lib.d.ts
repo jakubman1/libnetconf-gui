@@ -6,5 +6,6 @@ export { ContentBoxComponent as ɵe } from './lib/components/content-box.compone
 export { DeviceQuickswitchComponent as ɵb } from './lib/components/device-quickswitch.component';
 export { DeviceSelectionComponent as ɵc } from './lib/components/device-selection.component';
 export { PopupComponent as ɵf } from './lib/components/popup.component';
+export { SchemaListComponent as ɵg } from './lib/components/schema-list/schema-list.component';
 export { DeviceSelectionItemComponent as ɵd } from './lib/components/subcomponents/device-selection-item.component';
 export { NetconfLibComponent as ɵa } from './lib/netconf-lib.component';

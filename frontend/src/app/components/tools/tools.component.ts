@@ -1,9 +1,7 @@
-// @ts-ignore
 import { Component, OnInit, Injector, ViewChild, ViewContainerRef } from '@angular/core';
-// @ts-ignore
-import { ActivatedRoute } from "@angular/router";
-import {ToolLoaderService} from "../../services/tool-loader/tool-loader.service";
-import {ToolConfigProvider} from "../../services/tool-config.provider";
+import { ActivatedRoute } from '@angular/router';
+import {ToolLoaderService} from '../../services/tool-loader/tool-loader.service';
+import {ToolConfigProvider} from '../../services/tool-config.provider';
 
 @Component({
     selector: 'nc-devices',
@@ -15,7 +13,7 @@ export class ToolsComponent implements OnInit {
     @ViewChild('targetRef', { read: ViewContainerRef }) vcRef: ViewContainerRef;
     config: any;
     activeTool: string;
-    error: string = "";
+    error = '';
 
     constructor(
         private injector: Injector,
@@ -27,12 +25,11 @@ export class ToolsComponent implements OnInit {
 
     ngOnInit() {
         this.config = this.configProvider.config;
-        // @ts-ignore
         this.route.paramMap.subscribe(
             params => {
-            this.activeTool = params.get("tool");
-            if(this.activeTool) {
-                this.loadTool(this.activeTool)
+            this.activeTool = params.get('tool');
+            if (this.activeTool) {
+                this.loadTool(this.activeTool);
             }
         });
     }
@@ -48,17 +45,15 @@ export class ToolsComponent implements OnInit {
                     );
                     this.vcRef.createComponent(compFactory);
                     this.error = '';
-                }
-                catch(e) {
+                } catch (e) {
                     this.error = 'Selected tool could not be loaded. Check the console for more details.';
                     console.log(e);
                     console.error(e.message);
                     this.activeTool = null;
                 }}
             );
-        }
-        catch(e) {
-            this.error = "Selected tool does not exist or crashed during launch.";
+        } catch (e) {
+            this.error = 'Selected tool does not exist or crashed during launch.';
             this.activeTool = null;
         }
     }

@@ -1,0 +1,10 @@
+<div *ngIf="!loading">
+  <p class="text-danger" *ngIf="error">{{error}}</p>
+  <p>Click on schema name to view detail</p>
+  <ul>
+    <li *ngFor="let schema of schemas">
+      <a class="schema-link" title="View detail"
+         [routerLink]="['..', 'tool','yang-explorer',{'schema': schema}]">{{schema}}</a>
+    </li>
+  </ul>
+</div>

@@ -4,6 +4,7 @@ import json
 
 from .profiles import *
 from .devices import *
+from .schemas import *
 
 
 """
@@ -96,3 +97,15 @@ def profile_set_connect_on_login():
         return json.dumps({'success': True, 'code': 200})
     else:
         return json.dumps({'success': False, 'code': 500})
+
+"""
+Schemas
+"""
+
+@auth.required()
+def schemas_get_all():
+    return json.dumps(get_all_schema_names(get_username_from_session()))
+
+@auth.required()
+def schema_get(name):
+    return json.dumps(get_schema_detail(get_username_from_session(), name))

@@ -15,7 +15,7 @@ export class DeviceSelectionComponent implements OnInit {
 
   errorMessage = '';
 
-  constructor(private sessionService: SessionService) {
+  constructor(public sessionService: SessionService) {
   }
 
   ngOnInit() {

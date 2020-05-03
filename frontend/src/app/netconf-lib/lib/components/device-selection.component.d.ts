@@ -2,7 +2,7 @@ import { OnInit, EventEmitter } from '@angular/core';
 import { SessionService } from '../services/session.service';
 import { Session } from '../classes/session';
 export declare class DeviceSelectionComponent implements OnInit {
-    private sessionService;
+    sessionService: SessionService;
     schemaFilter: string;
     devicesSelected: EventEmitter<Session[]>;
     compatibleDevices: {

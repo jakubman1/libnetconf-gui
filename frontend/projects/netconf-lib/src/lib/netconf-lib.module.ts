@@ -9,6 +9,7 @@ import {ContentBoxComponent} from './components/content-box.component';
 import {PopupComponent} from './components/popup.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DeviceService} from './services/device.service';
+import {SchemaListComponent} from './components/schema-list/schema-list.component';
 
 
 const sharedComponents = [
@@ -17,7 +18,8 @@ const sharedComponents = [
   DeviceSelectionComponent,
   DeviceSelectionItemComponent,
   ContentBoxComponent,
-  PopupComponent
+  PopupComponent,
+  SchemaListComponent
 ];
 
 @NgModule({
