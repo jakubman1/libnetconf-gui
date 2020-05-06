@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
-  selector: 'app-yang-explorer',
+  selector: 'nct-yang-explorer',
   templateUrl: './yang-explorer.component.html',
   styleUrls: ['./yang-explorer.component.scss']
 })

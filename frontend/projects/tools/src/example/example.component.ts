@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {NetconfLibService, SessionService} from 'netconf-lib';
-import {Device} from 'netconf-lib/lib/classes/device';
 import {Session} from 'netconf-lib/lib/classes/session';
 
 @Component({
-  selector: 'app-example-tool',
+  selector: 'nct-example-tool',
   templateUrl: './example.component.html',
   styleUrls: ['./example.component.scss']
 })
