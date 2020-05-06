@@ -38,7 +38,7 @@ export class NowConnectingFormComponent implements OnInit {
     constructor(private profileService: ProfileService,
                 private deviceService: DeviceService,
                 private socketService: SocketService,
-                private sessionService: SessionService) {
+                public sessionService: SessionService) {
     }
 
     ngOnInit() {
