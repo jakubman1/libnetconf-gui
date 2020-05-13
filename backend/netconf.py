@@ -9,7 +9,7 @@ from .sockets import *
 import os
 import yang
 from .schemas import get_schema
-from .devices import get_device_from_session_data
+from .devices import get_device_from_session_data, update_device
 
 
 sessions = {}
@@ -99,13 +99,49 @@ def auth_interactive(name, instruction, prompt, priv):
     sio_emit('device_auth', {'id': priv, 'type': name, 'msg': instruction, 'prompt': prompt})
     return auth_common(priv)
 
+
 def auth_password(username, hostname, priv):
     sio_emit('device_auth', {'id': priv, 'type': 'Password Authentication', 'msg': username + '@' + hostname})
     return auth_common(priv)
 
 
-def hostkey_check():
-    print("HOSTKEY CHECK CALLED")
+def hostkey_check(hostname, state, keytype, hexa, priv):
+    if 'fingerprint' in priv['device']:
+        # check according to the stored fingerprint from previous connection
+        if hexa == priv['device']['fingerprint']:
+            return True
+        elif state != 2:
+            log.error("Incorrect host key state")
+            state = 2
+
+        # ask frontend/user for hostkey check
+    params = {'id': priv['session']['session_id'], 'hostname': hostname, 'state': state, 'keytype': keytype,
+              'hexa': hexa}
+    sio_emit('hostcheck', params)
+
+    result = False
+    timeout = Timeout(30)
+    try:
+        # wait for response from the frontend
+        data = sio_wait(priv['session']['session_id'])
+        result = data['result']
+    except Timeout:
+        # no response received within the timeout
+        log.info("socketio: hostcheck timeout.")
+    except KeyError:
+        # invalid response
+        log.error("socketio: invalid hostcheck_result received.")
+    finally:
+        # we have the response
+        sio_clean(priv['session']['session_id'])
+        timeout.cancel()
+
+    if result:
+        # store confirmed fingerprint for future connections
+        priv['device']['fingerprint'] = hexa
+        update_device(priv['device']['id'], {'hostkey': hexa})
+
+    return result
 
 
 """ SESSION HANDLING """
