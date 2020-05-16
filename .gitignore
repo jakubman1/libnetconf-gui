@@ -52,4 +52,5 @@ Thumbs.db
 
 # Compiled tools
 /frontend/src/app/netconf-lib
-/assets/tools
+/assets/tools/*.js
+/assets/tools/index.html
