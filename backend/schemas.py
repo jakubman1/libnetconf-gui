@@ -28,6 +28,18 @@ def get_schema_detail(username, schema):
         with open(os.path.join(site_root, 'userfiles', username, schema), 'r') as f:
             return f.read()
 
+def remove_schema(username, schema):
+    site_root = os.path.realpath(os.path.dirname(__file__))
+    path = os.path.join(site_root, 'userfiles', username, schema)
+    if os.path.exists(path):
+        try:
+            os.remove(path)
+            return True
+        except Exception:
+            return false
+    else:
+        return False
+
 
 def get_schema(name, revision, submod_name, submod_revision, priv):
     global log

@@ -1,9 +1,9 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {GenericServerResponse} from '../classes/GenericServerResponse';
 import {Session} from '../classes/session';
 import {Device} from '../classes/device';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
 
@@ -13,20 +13,15 @@ import {tap} from 'rxjs/operators';
 export class SessionService {
 
   get sessions(): Session[] {
-    console.log('Getting sessions');
-    console.log(this._sessions);
     return this._sessions;
   }
 
   set sessions(value: Session[]) {
-    console.log('Setting sessions');
-    console.log(value);
     this._sessions = value;
     this.sessionsChanged.emit(value);
   }
 
   constructor(public http: HttpClient) {
-    console.log('CONSTRUCTOR OF SESSION SERVICE CALLED');
   }
 
   private _sessions: Session[] = [];
@@ -93,13 +88,30 @@ export class SessionService {
   }
 
   /**
-   * Filter is xpath (?)
+   * Path is xpath.
+   * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
    */
-  public getCompatibleDeviceSessions(filter: any): Session[] {
-    // TODO: Filter
-    console.log('Getting compatible sessions');
-    console.log(this.sessions);
-    return this.sessions;
+  public getCompatibleDeviceSessions(path: any): Observable<Session[]> {
+    if (this.sessions.length === 0) {
+      return this.loadOpenSessions();
+    } else {
+      return of(this.sessions);
+    }
+
+  }
+
+  /**
+   * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+   * When no path is provided, the whole tree is requested
+   */
+  public rpcGet(sessionKey: string, recursive: boolean, path?: string) {
+    const params = new HttpParams()
+      .append('key', sessionKey)
+      .append('recursive', recursive ? 'true' : 'false');
+    if (path) {
+      params.append('path', path);
+    }
+    return this.http.get('/netconf/session/rpcGet', {params});
   }
 
 }

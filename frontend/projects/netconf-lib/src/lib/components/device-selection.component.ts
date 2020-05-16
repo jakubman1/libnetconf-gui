@@ -56,8 +56,13 @@ export class DeviceSelectionComponent implements OnInit {
   }
 
   reload() {
-    // const sessions = this.sessionService.getCompatibleDeviceSessions('');
-    const sessions = this.sessionService.sessions;
+    this.sessionService.getCompatibleDeviceSessions('').subscribe(
+      ses => {
+        for (const s of ses) {
+          this.compatibleDevices.push({session: s, selected: true});
+        }
+      }
+    );
     this.sessionService.sessionsChanged.subscribe(
       ses => {
         for (const s of ses) {
@@ -65,9 +70,6 @@ export class DeviceSelectionComponent implements OnInit {
         }
       }
     );
-    for (const s of sessions) {
-      this.compatibleDevices.push({session: s, selected: true});
-    }
   }
 
 }
