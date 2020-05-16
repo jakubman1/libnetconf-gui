@@ -198,6 +198,7 @@ def session_destroy(key):
     else:
         return json.dumps({'success': False, 'code': 404, 'message': 'Session not found'})
 
+
 @auth.required()
 def session_destroy_all():
     global sessions
@@ -206,3 +207,46 @@ def session_destroy_all():
     if username in sessions:
         del sessions[username]
     return json.dumps({'success': True, 'code': 200})
+
+
+@auth.required()
+def session_rpc_get():
+    """
+    code 500: wrong argument
+    code 404: session invalid -> try reconnecting
+    code 410: connection gone -> remove session, try reconnecting
+    code 418: Error in processing netconf request (nothing to do with a teapot)
+    """
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+    req = request.args.to_dict()
+    if not 'key' in req:
+        return json.dumps({'success': False, 'code': 500, 'message': 'Missing session key.'})
+    if not 'recursive' in req:
+        return json.dumps({'success': False, 'code': 500, 'message': 'Missing recursive flag.'})
+
+    if not username in sessions:
+        sessions[username] = {}
+
+    key = req['key']
+    if not key in sessions[username]:
+        return json.dumps({'success': False, 'code': 404, 'message': 'Invalid session key.'})
+
+    try:
+        sessions[username][key]['data'] = sessions[username][key]['session'].rpcGet()
+    except ConnectionError as e:
+        del sessions[username][key]
+        return json.dumps({'success': False, 'code': 410, 'message': str(e)})
+    except nc.ReplyError as e:
+        err_list = []
+        for err in e.args[0]:
+            err_list.append(str(err))
+        return json.dumps({'success': False, 'code': 418, 'message': str(e)})
+
+    if not 'path' in req:
+        return data_info_roots(sessions[username][key]['data'], True if req['recursive'] == 'true' else False)
+    else:
+        return data_info_subtree(sessions[username][key]['data'], req['path'],
+                                True if req['recursive'] == 'true' else False)
+
