@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Injectable, Component, Input, Output, EventEmitter, NgModule, defineInjectable, inject } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpClientModule } from '@angular/common/http';
 
 /**
  * @fileoverview added by tsickle
@@ -232,14 +233,11 @@ class SessionService {
         this.http = http;
         this._sessions = [];
         this.sessionsChanged = new EventEmitter();
-        console.log('CONSTRUCTOR OF SESSION SERVICE CALLED');
     }
     /**
      * @return {?}
      */
     get sessions() {
-        console.log('Getting sessions');
-        console.log(this._sessions);
         return this._sessions;
     }
     /**
@@ -247,8 +245,6 @@ class SessionService {
      * @return {?}
      */
     set sessions(value) {
-        console.log('Setting sessions');
-        console.log(value);
         this._sessions = value;
         this.sessionsChanged.emit(value);
     }
@@ -336,15 +332,36 @@ class SessionService {
         s => s.key === key));
     }
     /**
-     * Filter is xpath (?)
-     * @param {?} filter
+     * Path is xpath.
+     * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+     * @param {?} path
      * @return {?}
      */
-    getCompatibleDeviceSessions(filter) {
-        // TODO: Filter
-        console.log('Getting compatible sessions');
-        console.log(this.sessions);
-        return this.sessions;
+    getCompatibleDeviceSessions(path) {
+        if (this.sessions.length === 0) {
+            return this.loadOpenSessions();
+        }
+        else {
+            return of(this.sessions);
+        }
+    }
+    /**
+     * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+     * When no path is provided, the whole tree is requested
+     * @param {?} sessionKey
+     * @param {?} recursive
+     * @param {?=} path
+     * @return {?}
+     */
+    rpcGet(sessionKey, recursive, path) {
+        /** @type {?} */
+        const params = new HttpParams()
+            .append('key', sessionKey)
+            .append('recursive', recursive ? 'true' : 'false');
+        if (path) {
+            params.append('path', path);
+        }
+        return this.http.get('/netconf/session/rpcGet', { params });
     }
 }
 SessionService.decorators = [
@@ -423,9 +440,15 @@ class DeviceSelectionComponent {
      * @return {?}
      */
     reload() {
-        // const sessions = this.sessionService.getCompatibleDeviceSessions('');
-        /** @type {?} */
-        const sessions = this.sessionService.sessions;
+        this.sessionService.getCompatibleDeviceSessions('').subscribe((/**
+         * @param {?} ses
+         * @return {?}
+         */
+        ses => {
+            for (const s of ses) {
+                this.compatibleDevices.push({ session: s, selected: true });
+            }
+        }));
         this.sessionService.sessionsChanged.subscribe((/**
          * @param {?} ses
          * @return {?}
@@ -435,9 +458,6 @@ class DeviceSelectionComponent {
                 this.compatibleDevices.push({ session: s, selected: true });
             }
         }));
-        for (const s of sessions) {
-            this.compatibleDevices.push({ session: s, selected: true });
-        }
     }
 }
 DeviceSelectionComponent.decorators = [
@@ -613,8 +633,6 @@ class SchemasService {
             '&': '&amp;',
             '<': '&lt;',
             '>': '&gt;',
-            // '"': '&quot;',
-            // '\'': '&#39;',
             '/': '&#x2F;'
         };
         return message.replace(/[&<>\/]/g, (/**

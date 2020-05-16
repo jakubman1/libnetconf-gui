@@ -23,6 +23,7 @@ netconf_bp.add_url_rule('/session/alive/<key>', view_func=session_alive, methods
 netconf_bp.add_url_rule('/session/<key>', view_func=session_destroy, methods=['DELETE'])
 netconf_bp.add_url_rule('/sessions', view_func=sessions_get_open, methods=['GET'])
 netconf_bp.add_url_rule('/sessions', view_func=sessions_get_open, methods=['DELETE'])
+netconf_bp.add_url_rule('/session/rpcGet', view_func=session_rpc_get, methods=['GET'])
 
 # Profiles
 netconf_bp.add_url_rule('/activateProfile', view_func=activate_profile, methods=['POST'])
@@ -37,3 +38,4 @@ netconf_bp.add_url_rule('/profileSet', view_func=profile_set, methods=['POST'])
 # Schemas
 netconf_bp.add_url_rule('/schemas', view_func=schemas_get_all, methods=['GET'])
 netconf_bp.add_url_rule('/schema/<name>', view_func=schema_get, methods=['GET'])
+netconf_bp.add_url_rule('/schema/<name>', view_func=schema_remove, methods=['DELETE'])

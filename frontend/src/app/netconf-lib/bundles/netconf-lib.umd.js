@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/router'), require('rxjs/operators'), require('@angular/core'), require('@angular/common/http')) :
-    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', '@angular/common', '@angular/router', 'rxjs/operators', '@angular/core', '@angular/common/http'], factory) :
-    (factory((global['netconf-lib'] = {}),global.ng.common,global.ng.router,global.rxjs.operators,global.ng.core,global.ng.common.http));
-}(this, (function (exports,common,router,operators,i0,i1) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/router'), require('rxjs'), require('rxjs/operators'), require('@angular/core'), require('@angular/common/http')) :
+    typeof define === 'function' && define.amd ? define('netconf-lib', ['exports', '@angular/common', '@angular/router', 'rxjs', 'rxjs/operators', '@angular/core', '@angular/common/http'], factory) :
+    (factory((global['netconf-lib'] = {}),global.ng.common,global.ng.router,global.rxjs,global.rxjs.operators,global.ng.core,global.ng.common.http));
+}(this, (function (exports,common,router,rxjs,operators,i0,i1) { 'use strict';
 
     /**
      * @fileoverview added by tsickle
@@ -342,22 +342,17 @@
             this.http = http;
             this._sessions = [];
             this.sessionsChanged = new i0.EventEmitter();
-            console.log('CONSTRUCTOR OF SESSION SERVICE CALLED');
         }
         Object.defineProperty(SessionService.prototype, "sessions", {
             get: /**
              * @return {?}
              */ function () {
-                console.log('Getting sessions');
-                console.log(this._sessions);
                 return this._sessions;
             },
             set: /**
              * @param {?} value
              * @return {?}
              */ function (value) {
-                console.log('Setting sessions');
-                console.log(value);
                 this._sessions = value;
                 this.sessionsChanged.emit(value);
             },
@@ -495,23 +490,58 @@
                  */function (s) { return s.key === key; }));
             };
         /**
-         * Filter is xpath (?)
+         * Path is xpath.
+         * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
          */
         /**
-         * Filter is xpath (?)
-         * @param {?} filter
+         * Path is xpath.
+         * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+         * @param {?} path
          * @return {?}
          */
         SessionService.prototype.getCompatibleDeviceSessions = /**
-         * Filter is xpath (?)
-         * @param {?} filter
+         * Path is xpath.
+         * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+         * @param {?} path
          * @return {?}
          */
-            function (filter) {
-                // TODO: Filter
-                console.log('Getting compatible sessions');
-                console.log(this.sessions);
-                return this.sessions;
+            function (path) {
+                if (this.sessions.length === 0) {
+                    return this.loadOpenSessions();
+                }
+                else {
+                    return rxjs.of(this.sessions);
+                }
+            };
+        /**
+         * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+         * When no path is provided, the whole tree is requested
+         */
+        /**
+         * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+         * When no path is provided, the whole tree is requested
+         * @param {?} sessionKey
+         * @param {?} recursive
+         * @param {?=} path
+         * @return {?}
+         */
+        SessionService.prototype.rpcGet = /**
+         * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+         * When no path is provided, the whole tree is requested
+         * @param {?} sessionKey
+         * @param {?} recursive
+         * @param {?=} path
+         * @return {?}
+         */
+            function (sessionKey, recursive, path) {
+                /** @type {?} */
+                var params = new i1.HttpParams()
+                    .append('key', sessionKey)
+                    .append('recursive', recursive ? 'true' : 'false');
+                if (path) {
+                    params.append('path', path);
+                }
+                return this.http.get('/netconf/session/rpcGet', { params: params });
             };
         SessionService.decorators = [
             { type: i0.Injectable, args: [{
@@ -662,18 +692,39 @@
          */
             function () {
                 var _this = this;
-                var e_4, _a;
-                // const sessions = this.sessionService.getCompatibleDeviceSessions('');
-                /** @type {?} */
-                var sessions = this.sessionService.sessions;
+                this.sessionService.getCompatibleDeviceSessions('').subscribe(( /**
+                 * @param {?} ses
+                 * @return {?}
+                 */function (ses) {
+                    var e_4, _a;
+                    try {
+                        for (var ses_1 = __values(ses), ses_1_1 = ses_1.next(); !ses_1_1.done; ses_1_1 = ses_1.next()) {
+                            var s = ses_1_1.value;
+                            _this.compatibleDevices.push({ session: s, selected: true });
+                        }
+                    }
+                    catch (e_4_1) {
+                        e_4 = { error: e_4_1 };
+                    }
+                    finally {
+                        try {
+                            if (ses_1_1 && !ses_1_1.done && (_a = ses_1.return))
+                                _a.call(ses_1);
+                        }
+                        finally {
+                            if (e_4)
+                                throw e_4.error;
+                        }
+                    }
+                }));
                 this.sessionService.sessionsChanged.subscribe(( /**
                  * @param {?} ses
                  * @return {?}
                  */function (ses) {
                     var e_5, _a;
                     try {
-                        for (var ses_1 = __values(ses), ses_1_1 = ses_1.next(); !ses_1_1.done; ses_1_1 = ses_1.next()) {
-                            var s = ses_1_1.value;
+                        for (var ses_2 = __values(ses), ses_2_1 = ses_2.next(); !ses_2_1.done; ses_2_1 = ses_2.next()) {
+                            var s = ses_2_1.value;
                             _this.compatibleDevices.push({ session: s, selected: true });
                         }
                     }
@@ -682,8 +733,8 @@
                     }
                     finally {
                         try {
-                            if (ses_1_1 && !ses_1_1.done && (_a = ses_1.return))
-                                _a.call(ses_1);
+                            if (ses_2_1 && !ses_2_1.done && (_a = ses_2.return))
+                                _a.call(ses_2);
                         }
                         finally {
                             if (e_5)
@@ -691,25 +742,6 @@
                         }
                     }
                 }));
-                try {
-                    for (var sessions_1 = __values(sessions), sessions_1_1 = sessions_1.next(); !sessions_1_1.done; sessions_1_1 = sessions_1.next()) {
-                        var s = sessions_1_1.value;
-                        this.compatibleDevices.push({ session: s, selected: true });
-                    }
-                }
-                catch (e_4_1) {
-                    e_4 = { error: e_4_1 };
-                }
-                finally {
-                    try {
-                        if (sessions_1_1 && !sessions_1_1.done && (_a = sessions_1.return))
-                            _a.call(sessions_1);
-                    }
-                    finally {
-                        if (e_4)
-                            throw e_4.error;
-                    }
-                }
             };
         DeviceSelectionComponent.decorators = [
             { type: i0.Component, args: [{
@@ -886,8 +918,6 @@
                     '&': '&amp;',
                     '<': '&lt;',
                     '>': '&gt;',
-                    // '"': '&quot;',
-                    // '\'': '&#39;',
                     '/': '&#x2F;'
                 };
                 return message.replace(/[&<>\/]/g, ( /**

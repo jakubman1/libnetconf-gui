@@ -109,3 +109,11 @@ def schemas_get_all():
 @auth.required()
 def schema_get(name):
     return json.dumps(get_schema_detail(get_username_from_session(), name))
+
+@auth.required()
+def schema_remove(name):
+    if remove_schema(get_username_from_session(), name):
+        return json.dumps({'success': True, 'code': 200})
+    else:
+        return json.dumps({'success': False, 'code': 404, 'message': 'Could not delete, file does not exist.'})
+

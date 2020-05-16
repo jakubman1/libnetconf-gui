@@ -21,7 +21,13 @@ export declare class SessionService {
     doesSessionExists(key: string): Boolean;
     findSessionIndex(key: string): number;
     /**
-     * Filter is xpath (?)
+     * Path is xpath.
+     * For more information see https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
      */
-    getCompatibleDeviceSessions(filter: any): Session[];
+    getCompatibleDeviceSessions(path: any): Observable<Session[]>;
+    /**
+     * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
+     * When no path is provided, the whole tree is requested
+     */
+    rpcGet(sessionKey: string, recursive: boolean, path?: string): Observable<Object>;
 }
