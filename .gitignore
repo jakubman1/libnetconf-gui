@@ -7,6 +7,7 @@
 
 # dependencies
 /node_modules
+/frontend/node_modules
 
 # IDEs and editors
 /.idea
@@ -42,10 +43,13 @@ Thumbs.db
 /frontend/_colors.scss
 
 # Devkit
-/frontend/node_modules
 /frontend/dist
 
 # Backend cache
 /backend/__pycache__
 # User configuration files
 /backend/userfiles
+
+# Compiled tools
+/frontend/src/app/netconf-lib
+/assets/tools
