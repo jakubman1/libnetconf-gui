@@ -43,18 +43,18 @@ def connect_device():
     path = os.path.join(site_root, 'userfiles', username)
     nc.setSearchpath(path)
     if 'password' in data and data['password'] != '':
-        ssh = nc.SSH(data['username'], password = data['password'])
+        ssh = nc.SSH(data['username'], password=data['password'])
     else:
         ssh = nc.SSH(data['username'])
         ssh.setAuthPasswordClb(auth_password, session['session_id'])
         ssh.setAuthInteractiveClb(auth_interactive, session['session_id'])
-    ssh.setAuthHostkeyCheckClb(hostkey_check, {'session': session, 'device' : data})
+    ssh.setAuthHostkeyCheckClb(hostkey_check, {'session': session, 'device': data})
 
     try:
         ncs = nc.Session(data['hostname'], int(data['port']), ssh)
     except Exception as e:
         nc.setSchemaCallback(None)
-        return json.dumps({'success': False, 'code': 500 ,'message': str(e)})
+        return json.dumps({'success': False, 'code': 500, 'message': str(e)})
     nc.setSchemaCallback(None)
 
     if not username in sessions:
@@ -96,12 +96,12 @@ def auth_common(session_id):
 
 
 def auth_interactive(name, instruction, prompt, priv):
-    sio_emit('device_auth', {'id': priv, 'type': name, 'msg': instruction, 'prompt': prompt})
+    socket_emit('device_auth', {'id': priv, 'type': name, 'msg': instruction, 'prompt': prompt})
     return auth_common(priv)
 
 
 def auth_password(username, hostname, priv):
-    sio_emit('device_auth', {'id': priv, 'type': 'Password Authentication', 'msg': username + '@' + hostname})
+    socket_emit('device_auth', {'id': priv, 'type': 'Password Authentication', 'msg': username + '@' + hostname})
     return auth_common(priv)
 
 
@@ -116,8 +116,8 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
 
         # ask frontend/user for hostkey check
     params = {'id': priv['session']['session_id'], 'hostname': hostname, 'state': state, 'keytype': keytype,
-              'hexa': hexa}
-    sio_emit('hostcheck', params)
+              'hexa': hexa, 'device': priv['device']}
+    socket_emit('hostcheck', params)
 
     result = False
     timeout = Timeout(30)
@@ -139,7 +139,7 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
     if result:
         # store confirmed fingerprint for future connections
         priv['device']['fingerprint'] = hexa
-        update_device(priv['device']['id'], {'hostkey': hexa})
+        update_device(priv['device']['id'], {'fingerprint': hexa})
 
     return result
 
