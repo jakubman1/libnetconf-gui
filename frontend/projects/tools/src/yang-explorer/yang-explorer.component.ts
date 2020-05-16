@@ -14,7 +14,7 @@ export class YangExplorerComponent implements OnInit {
   }
 
   schemaName = '';
-  schema: any;
+  schema: any = '';
   loading = true;
   error: string;
 
