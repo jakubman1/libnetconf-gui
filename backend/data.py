@@ -47,6 +47,13 @@ def info_built_in_type(base):
     }[base]
 
 
+def make_schema_key(module):
+    result = module.name()
+    if module.rev_size():
+        result = result + '@' + module.rev().date() + '.yang'
+    return result
+
+
 def schema_info_type(schema, info):
     info["datatype"] = schema.type().der().name()
     info["datatypebase"] = info_built_in_type(schema.type().base())
@@ -221,4 +228,4 @@ def data_info_roots(data, recursion=False):
             rootNode['subtreeRoot'] = True
         top["children"].append(root_node)
     _sort_children(top)
-    return json.dumps({'success': True, 'code': 200 ,'data': top["children"]})
+    return json.dumps({'success': True, 'code': 200, 'data': top["children"]})

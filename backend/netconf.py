@@ -10,6 +10,7 @@ import os
 import yang
 from .schemas import get_schema
 from .devices import get_device_from_session_data, update_device
+from .data import *
 
 
 sessions = {}
