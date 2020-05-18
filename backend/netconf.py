@@ -51,7 +51,7 @@ def connect_device():
     else:
         ssh = nc.SSH(data['username'])
         ssh.setAuthPasswordClb(auth_password, session['session_id'])
-        ssh.setAuthInteractiveClb(auth_interactive, session['session_id'])
+        ssh.setAuthInteractiveClb(auth_interactive, {'id': session['session_id'], 'device': data})
     ssh.setAuthHostkeyCheckClb(hostkey_check, {'session': session, 'device': data})
 
     try:
@@ -98,7 +98,7 @@ def auth_common(session_id):
 
 
 def auth_interactive(name, instruction, prompt, priv):
-    socket_emit('device_auth', {'id': priv, 'type': name, 'msg': instruction, 'prompt': prompt})
+    socket_emit('device_auth', {'id': priv['id'], 'type': name, 'msg': instruction, 'prompt': prompt, 'device': priv['device']})
     return auth_common(priv)
 
 
