@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { YangConfigureComponent } from './yang-configure.component';
+import { RouterModule } from '@angular/router';
+import { YangConfigureComponent } from './components/yang-configure.component';
 // @ts-ignore
 import {NetconfLibModule} from 'netconf-lib';
 import {HttpClientModule} from '@angular/common/http';
+import { YangSchemaNodeComponent } from './components/yang-schema-node/yang-schema-node.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    NetconfLibModule
+    NetconfLibModule,
+    RouterModule
   ],
-  declarations: [YangConfigureComponent],
+  declarations: [YangConfigureComponent, YangSchemaNodeComponent],
   entryComponents: [YangConfigureComponent]
 })
 export class YangConfigureModule {

@@ -1,8 +1,0 @@
-<div class="tool-wrapper">
-  <lib-device-selection (devicesSelected)="onDevicesSelected($event)" *ngIf="sessions.length === 0"></lib-device-selection>
-  <lib-content-box *ngIf="sessions.length > 0" title="Example tool">
-    <p class="error-text" *ngIf="error">{{error}}</p>
-  </lib-content-box>
-</div>
-
-

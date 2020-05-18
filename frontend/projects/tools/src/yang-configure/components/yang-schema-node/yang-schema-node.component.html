@@ -1,0 +1,31 @@
+<!-- Node -->
+<div class="node">
+  <!-- Tree controls-->
+  <i class="fa action-icon" [class.fa-sort-desc]="!showChildren" [class.fa-sort-up]="showChildren"
+     (click)="toggleChildren()" *ngIf="node['children']"></i>
+  <i class="fa fa-angle-double-down action-icon" (click)="toggleAllChildren()" *ngIf="node['children']"></i>
+
+  <!-- Node info -->
+  <span *ngIf="node['info']">{{node['info']['name']}}</span>
+
+  <!-- Node description -->
+  <i class="fa fa-info-circle action-icon"
+     (click)="showHelp = !showHelp"
+     *ngIf="node['info'] && node['info']['dsc']"
+      [title]="node['info']['dsc']"></i>
+  <span *ngIf="showHelp" class="description">{{node['info']['dsc']}}</span>
+
+  <span class="float-right">
+    <a [routerLink]="['/netconf', 'tool','yang-explorer',{'schema': node['info']['module'] + '.yang'}]" class="schema-link">
+      {{node['info']['module'].split('@')[0]}}
+    </a>
+  </span>
+</div>
+<!-- /Node -->
+
+<!-- Children -->
+<div class="ml-3 child-container" *ngIf="showChildren && node['children']">
+  <nct-yang-schema-node *ngFor="let child of node['children']" [node]="child"
+                        [showChildren]="showAllChildrenOnOpen"></nct-yang-schema-node>
+</div>
+<!-- /Children -->

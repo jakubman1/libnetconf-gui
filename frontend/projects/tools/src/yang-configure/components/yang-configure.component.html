@@ -1,0 +1,13 @@
+<div class="tool-wrapper">
+  <lib-device-selection (devicesSelected)="onDevicesSelected($event)"
+                        *ngIf="sessions.length === 0"></lib-device-selection>
+  <p class="error-text" *ngIf="error">{{error}}</p>
+  <div *ngIf="node_tmp.length !== 0" class="tree-wrapper">
+    <button class="btn btn-primary" (click)="toggleHelp()">Toggle description</button>
+    <nct-yang-schema-node *ngFor="let node of node_tmp"
+                          [node]="node"></nct-yang-schema-node>
+  </div>
+
+</div>
+
+
