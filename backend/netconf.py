@@ -1,4 +1,4 @@
-from liberouterapi import socketio, auth, db, config
+from liberouterapi import db, auth, config, socketio
 from liberouterapi.dbConnector import dbConnector
 import netconf2 as nc
 import json
@@ -9,13 +9,14 @@ from .sockets import *
 import os
 import yang
 from .schemas import get_schema
-from .devices import get_device_from_session_data, update_device
+from .devices import *
 from .data import *
 
 
 sessions = {}
 log = logging.getLogger(__name__)
-
+netconf_db = dbConnector('netconf', provider='mongodb', config={'database': config['netconf']['database']})
+netconf_coll = netconf_db.db[config['netconf']['collection']]
 
 """
 netconf session (ncs)
@@ -42,6 +43,8 @@ def connect_device():
     nc.setSchemaCallback(get_schema, session)
     site_root = os.path.realpath(os.path.dirname(__file__))
     path = os.path.join(site_root, 'userfiles', username)
+    if not os.path.exists(path):
+        os.makedirs(path)
     nc.setSearchpath(path)
     if 'password' in data and data['password'] != '':
         ssh = nc.SSH(data['username'], password=data['password'])
@@ -58,7 +61,7 @@ def connect_device():
         return json.dumps({'success': False, 'code': 500, 'message': str(e)})
     nc.setSchemaCallback(None)
 
-    if not username in sessions:
+    if username not in sessions:
         sessions[username] = {}
 
     # use key (as hostname:port:session-id) to store the created NETCONF session
@@ -70,8 +73,6 @@ def connect_device():
     # schemas_update(session)
 
     return json.dumps({'success': True, 'session-key': key})
-
-
 
 
 def auth_common(session_id):
@@ -139,8 +140,9 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
 
     if result:
         # store confirmed fingerprint for future connections
+
         priv['device']['fingerprint'] = hexa
-        update_device(priv['device']['id'], {'fingerprint': hexa})
+        update_hexa(priv['device']['id'], hexa, netconf_coll)
 
     return result
 
@@ -155,8 +157,6 @@ def sessions_get_open():
     global sessions
     session = auth.lookup(request.headers.get('lgui-Authorization', None))
     username = str(session['user'].username)
-    netconf_db = dbConnector('netconf', provider='mongodb', config={'database': config['netconf']['database']})
-    netconf_coll = netconf_db.db[config['netconf']['collection']]
 
     if username in sessions:
         result = []
@@ -222,16 +222,16 @@ def session_rpc_get():
     session = auth.lookup(request.headers.get('lgui-Authorization', None))
     username = str(session['user'].username)
     req = request.args.to_dict()
-    if not 'key' in req:
+    if 'key' not in req:
         return json.dumps({'success': False, 'code': 500, 'message': 'Missing session key.'})
-    if not 'recursive' in req:
+    if 'recursive' not in req:
         return json.dumps({'success': False, 'code': 500, 'message': 'Missing recursive flag.'})
 
-    if not username in sessions:
+    if username not in sessions:
         sessions[username] = {}
 
     key = req['key']
-    if not key in sessions[username]:
+    if key not in sessions[username]:
         return json.dumps({'success': False, 'code': 404, 'message': 'Invalid session key.'})
 
     try:
@@ -245,7 +245,7 @@ def session_rpc_get():
             err_list.append(str(err))
         return json.dumps({'success': False, 'code': 418, 'message': str(e)})
 
-    if not 'path' in req:
+    if 'path' not in req:
         return data_info_roots(sessions[username][key]['data'], True if req['recursive'] == 'true' else False)
     else:
         return data_info_subtree(sessions[username][key]['data'], req['path'],

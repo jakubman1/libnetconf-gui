@@ -27,8 +27,11 @@ def get_device_by_id(device_id: str, db_coll):
     device['id'] = str(device['_id'])
     return device
 
-def update_device(device_id: str, update_dict, db_coll):
+def update_device(device_id, update_dict, db_coll):
     db_coll.update_one({'_id': ObjectId(device_id)}, {'$set': update_dict})
+
+def update_hexa(device_id, new_hexa, db_coll):
+    db_coll.update_one({'_id': ObjectId(device_id)}, {'$set': {'fingerprint': new_hexa}})
 
 def get_device_from_session_data(host, port, owner, username, db_coll):
     print(host)

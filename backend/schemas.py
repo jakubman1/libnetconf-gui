@@ -25,8 +25,14 @@ def get_all_schema_names(username):
 def get_schema_detail(username, schema):
     if os.path.splitext(schema)[1] == '.yang' or os.path.splitext(schema)[1] == '.yin':
         site_root = os.path.realpath(os.path.dirname(__file__))
-        with open(os.path.join(site_root, 'userfiles', username, schema), 'r') as f:
-            return f.read()
+        try:
+            with open(os.path.join(site_root, 'userfiles', username, schema), 'r') as f:
+                return f.read()
+        except FileNotFoundError:
+            return "Requested schema not found"
+    else:
+        return "Only files with .yang or .yin extension can be displayed"
+
 
 def remove_schema(username, schema):
     site_root = os.path.realpath(os.path.dirname(__file__))
