@@ -78,7 +78,7 @@ export class NowConnectingFormComponent implements OnInit {
   loadOnLoginProfile() {
     this.profileService.getOnLoginProfile().subscribe(
       res => {
-        if (res.connectOnLogin) {
+        if (res.connectOnLogin && res.devices && res.devices.length > 0) {
           for (let dev of res.devices) {
             this.devices.push({...dev, status: ConnectionStatus.WAITING_FOR_CONNECTION});
           }
