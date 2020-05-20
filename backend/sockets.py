@@ -9,8 +9,8 @@ You may obtain a copy of the License at
    http://www.apache.org/licenses/LICENSE-2.0
 """
 
-from liberouterapi import socketio
 from eventlet import event
+from liberouterapi import socketio
 
 
 sio_data = {}
@@ -24,8 +24,8 @@ def sio_send(data):
         pass
 
 
-def socket_emit(name, params):
-    socketio.emit(name, params, callback = sio_send)
+def sio_emit(name, params):
+    socketio.emit(name, params, callback=sio_send)
 
 
 def sio_wait(id):

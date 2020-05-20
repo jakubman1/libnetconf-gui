@@ -1,18 +1,20 @@
 <!-- Node -->
 <div class="node">
-  <!-- Tree controls-->
+  <!-- Icon controls -->
+  <i class="fa fa-info-circle action-icon"
+     (click)="showHelp = !showHelp"
+     *ngIf="node['info'] && node['info']['dsc']"
+     [title]="node['info']['dsc']"></i>
   <i class="fa action-icon" [class.fa-sort-desc]="!showChildren" [class.fa-sort-up]="showChildren"
      (click)="toggleChildren()" *ngIf="node['children']"></i>
-  <i class="fa fa-angle-double-down action-icon" (click)="toggleAllChildren()" *ngIf="node['children']"></i>
+  <i class="fa fa-angle-double-down action-icon" [class.fa-rotate-180]="showAllChildrenOnOpen"
+     (click)="toggleAllChildren()" *ngIf="node['children']"></i>
 
   <!-- Node info -->
   <span *ngIf="node['info']">{{node['info']['name']}}</span>
 
   <!-- Node description -->
-  <i class="fa fa-info-circle action-icon"
-     (click)="showHelp = !showHelp"
-     *ngIf="node['info'] && node['info']['dsc']"
-      [title]="node['info']['dsc']"></i>
+
   <span *ngIf="showHelp" class="description">{{node['info']['dsc']}}</span>
 
   <span class="float-right">

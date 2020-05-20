@@ -8,7 +8,7 @@
   "yang-explorer": {
     "name": "Yang Explorer",
     "path": "/assets/libnetconf/tools/yang-explorer.js",
-    "image": "/assets/libnetconf/tools/img/configure.png",
+    "image": "/assets/libnetconf/tools/img/explorer.png",
     "description": "Browse uploaded yang schemas"
   },
   "example": {

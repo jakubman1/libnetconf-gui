@@ -1,0 +1,33 @@
+@import "../../../../../shared-styles/colors";
+.quickswitch-container {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid transparentize($colorText, 0.5);
+}
+
+.quickswitch-item {
+  display: inline-block;
+  border: 1px solid transparentize($colorText, 0.5);
+  border-radius: 0;
+  color: $colorText;
+  background: $colorItemBackground;
+  font-size: 13px;
+  padding: 5px;
+  cursor: pointer;
+  &.selected {
+    color: $colorTextInverse;
+    background: $colorSelected;
+  }
+  &:hover {
+    color: $colorText;
+    background: darken($colorItemBackground, 5%);
+  }
+  &:first-child {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+  &:last-child {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+}

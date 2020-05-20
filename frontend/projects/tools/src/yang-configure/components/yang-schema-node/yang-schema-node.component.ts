@@ -17,7 +17,7 @@ export class YangSchemaNodeComponent implements OnInit {
   showHelp = false;
 
   ngOnInit() {
-    //this.showChildren = this.showChildrenOnInit;
+    this.showAllChildrenOnOpen = this.showChildren;
     this.nodeControlService.performNodeAction.subscribe(
       action => {
         this.performGlobalAction(action);
@@ -31,7 +31,7 @@ export class YangSchemaNodeComponent implements OnInit {
   }
 
   toggleAllChildren() {
-    this.showAllChildrenOnOpen = true;
+    this.showAllChildrenOnOpen = ! this.showAllChildrenOnOpen;
     this.showChildren = !this.showChildren;
   }
 

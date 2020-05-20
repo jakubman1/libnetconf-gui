@@ -173,8 +173,7 @@ export class NowConnectingFormComponent implements OnInit {
   }
 
   handleAuthRequest(message) {
-    alert("AUTH REQUIRED!");
-    console.log(message);
+    this.socketService.send('device_auth_password', {'id': message['id'], 'password': prompt("Enter password")});
   }
 
   handleHostkeyCheck(message) {

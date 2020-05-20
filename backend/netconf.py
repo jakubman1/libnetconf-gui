@@ -11,7 +11,7 @@ import yang
 from .schemas import get_schema
 from .devices import *
 from .data import *
-
+import pprint
 
 sessions = {}
 log = logging.getLogger(__name__)
@@ -32,47 +32,6 @@ static PyGetSetDef ncSessionGetSetters[] = {
     {NULL} /* Sentinel */
 };
 """
-
-@auth.required()
-def connect_device():
-    global sessions
-    session = auth.lookup(request.headers.get('lgui-Authorization', None))
-    username = str(session['user'].username)
-    data = request.get_json()
-
-    nc.setSchemaCallback(get_schema, session)
-    site_root = os.path.realpath(os.path.dirname(__file__))
-    path = os.path.join(site_root, 'userfiles', username)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    nc.setSearchpath(path)
-    if 'password' in data and data['password'] != '':
-        ssh = nc.SSH(data['username'], password=data['password'])
-    else:
-        ssh = nc.SSH(data['username'])
-        ssh.setAuthPasswordClb(auth_password, session['session_id'])
-        ssh.setAuthInteractiveClb(auth_interactive, {'id': session['session_id'], 'device': data})
-    ssh.setAuthHostkeyCheckClb(hostkey_check, {'session': session, 'device': data})
-
-    try:
-        ncs = nc.Session(data['hostname'], int(data['port']), ssh)
-    except Exception as e:
-        nc.setSchemaCallback(None)
-        return json.dumps({'success': False, 'code': 500, 'message': str(e)})
-    nc.setSchemaCallback(None)
-
-    if username not in sessions:
-        sessions[username] = {}
-
-    # use key (as hostname:port:session-id) to store the created NETCONF session
-    key = ncs.host + ":" + str(ncs.port) + ":" + ncs.id
-    sessions[username][key] = {}
-    sessions[username][key]['session'] = ncs
-
-    # update inventory's list of schemas
-    # schemas_update(session)
-
-    return json.dumps({'success': True, 'session-key': key})
 
 
 def auth_common(session_id):
@@ -98,13 +57,62 @@ def auth_common(session_id):
 
 
 def auth_interactive(name, instruction, prompt, priv):
-    socket_emit('device_auth', {'id': priv['id'], 'type': name, 'msg': instruction, 'prompt': prompt, 'device': priv['device']})
-    return auth_common(priv)
+    try:
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(priv)
+        params = {'id': priv['id'], 'type': name, 'msg': instruction, 'prompt': prompt, 'device': priv['device']}
+        sio_emit('device_auth', params)
+        return auth_common(priv)
+    except Exception as e:
+        print(e)
 
 
 def auth_password(username, hostname, priv):
-    socket_emit('device_auth', {'id': priv, 'type': 'Password Authentication', 'msg': username + '@' + hostname})
+    sio_emit('device_auth', {'id': priv, 'type': 'Password Authentication', 'msg': username + '@' + hostname})
     return auth_common(priv)
+
+
+@auth.required()
+def connect_device():
+    global sessions
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    username = str(session['user'].username)
+    data = request.get_json()
+
+    nc.setSchemaCallback(get_schema, session)
+    site_root = os.path.realpath(os.path.dirname(__file__))
+    path = os.path.join(site_root, 'userfiles', username)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    nc.setSearchpath(path)
+    if 'password' in data and data['password'] != '':
+        ssh = nc.SSH(data['username'], password=data['password'])
+    else:
+        ssh = nc.SSH(data['username'])
+        ssh.setAuthPasswordClb(auth_password, session['session_id'])
+        ssh.setAuthInteractiveClb(func=auth_interactive, priv={'id': session['session_id'], 'device': data})
+
+    ssh.setAuthHostkeyCheckClb(hostkey_check, {'session': session, 'device': data})
+
+    try:
+        ncs = nc.Session(data['hostname'], int(data['port']), ssh)
+    except Exception as e:
+        nc.setSchemaCallback(None)
+        return json.dumps({'success': False, 'code': 500, 'message': str(e)})
+    nc.setSchemaCallback(None)
+
+    if username not in sessions:
+        sessions[username] = {}
+
+    # use key (as hostname:port:session-id) to store the created NETCONF session
+    key = ncs.host + ":" + str(ncs.port) + ":" + ncs.id
+    sessions[username][key] = {}
+    sessions[username][key]['session'] = ncs
+
+    # update inventory's list of schemas
+    # schemas_update(session)
+
+    return json.dumps({'success': True, 'session-key': key})
 
 
 def hostkey_check(hostname, state, keytype, hexa, priv):
@@ -119,7 +127,7 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
         # ask frontend/user for hostkey check
     params = {'id': priv['session']['session_id'], 'hostname': hostname, 'state': state, 'keytype': keytype,
               'hexa': hexa, 'device': priv['device']}
-    socket_emit('hostcheck', params)
+    sio_emit('hostcheck', params)
 
     result = False
     timeout = Timeout(30)
@@ -148,6 +156,8 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
 
 
 """ SESSION HANDLING """
+
+
 @auth.required()
 def sessions_get_open():
     """
@@ -249,5 +259,4 @@ def session_rpc_get():
         return data_info_roots(sessions[username][key]['data'], True if req['recursive'] == 'true' else False)
     else:
         return data_info_subtree(sessions[username][key]['data'], req['path'],
-                                True if req['recursive'] == 'true' else False)
-
+                                 True if req['recursive'] == 'true' else False)
