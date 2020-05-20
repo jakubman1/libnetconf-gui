@@ -23,8 +23,9 @@ def add_device(username, device, db_coll):
 
 def get_device_by_id(device_id: str, db_coll):
     device = db_coll.find_one({'_id': ObjectId(device_id)})
-    device['_id'] = str(device['_id'])
-    device['id'] = str(device['_id'])
+    if device is not None:
+        device['_id'] = str(device['_id'])
+        device['id'] = str(device['_id'])
     return device
 
 def update_device(device_id, update_dict, db_coll):
