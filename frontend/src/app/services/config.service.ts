@@ -15,8 +15,7 @@ export class ConfigService {
 
     getConfig(): Observable<object> {
         return of({
-            allowPasswordSaving: false,
-            connectOnLogin: true
+            allowPasswordSaving: false
         });
     }
 

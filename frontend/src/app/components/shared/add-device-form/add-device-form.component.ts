@@ -27,7 +27,18 @@ export class AddDeviceFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.deviceForm.value);
+    if(this.deviceForm.value.connectToDevice) {
+      this.deviceService.createConnectionRequest([
+        {
+          id: '',
+          port: this.deviceForm.value.port,
+          username: this.deviceForm.value.username,
+          name: this.deviceForm.value.deviceName,
+          hostname: this.deviceForm.value.hostname,
+          password: this.deviceForm.value.password
+        }
+      ])
+    }
     if(this.deviceForm.value.saveDevice) {
       this.deviceService.saveDevice(this.deviceForm.value.hostname,
           this.deviceForm.value.port,

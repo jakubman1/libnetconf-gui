@@ -6,6 +6,8 @@ import * as socketIo from 'socket.io-client';
 import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
 import * as http from '@angular/common/http';
+// @ts-ignore
+import * as socketService from 'app/services/socket.service';
 
 export const TOOL_EXTERNALS_MAP = {
     'ng.http': http,
@@ -15,6 +17,7 @@ export const TOOL_EXTERNALS_MAP = {
     'ng.router': router,
     rxjs,
     tslib,
-    socketIo,
-    netconf_lib: '/assets/libnetconf/tools/netconf-lib.js'
+    'socket.io-client': socketIo,
+    netconf_lib: '/assets/libnetconf/tools/netconf-lib.js',
+    socketService
 };

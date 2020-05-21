@@ -92,7 +92,8 @@ export default class PluginBuilder extends BrowserBuilder {
       '@angular/forms': 'ng.forms',
       '@angular/router': 'ng.router',
       tslib: 'tslib',
-      socketIo: 'socketIo'
+      'socket.io-client': 'socket.io-client',
+      // socketService: 'socketService'
       // put here other common dependencies
     };
 

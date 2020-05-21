@@ -10,7 +10,8 @@ import {PopupComponent} from './components/popup.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DeviceService} from './services/device.service';
 import {SchemaListComponent} from './components/schema-list/schema-list.component';
-
+import {NowConnectingFormComponent} from "./components/now-connecting-form/now-connecting-form.component";
+import {ConnectionStatusPipe} from "./pipes/connectionStatus.pipe";
 
 const sharedComponents = [
   NetconfLibComponent,
@@ -19,7 +20,9 @@ const sharedComponents = [
   DeviceSelectionItemComponent,
   ContentBoxComponent,
   PopupComponent,
-  SchemaListComponent
+  SchemaListComponent,
+  NowConnectingFormComponent,
+  ConnectionStatusPipe
 ];
 
 @NgModule({

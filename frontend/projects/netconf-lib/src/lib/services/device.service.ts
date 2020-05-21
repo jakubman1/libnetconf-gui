@@ -1,36 +1,23 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {GenericServerResponse} from '../classes/GenericServerResponse';
-import {Session} from '../classes/session';
+import {ConnectionStatus} from "../classes/ConnectionStatus";
+import {DeviceWithStatus} from "../classes/DeviceWithStatus";
+
 
 @Injectable()
 export class DeviceService {
   constructor(public http: HttpClient) {
   }
 
-  get connectedDevices(): Device[] {
-    return this._connectedDevices;
-  }
 
-  set connectedDevices(value: Device[]) {
-    this._connectedDevices = value;
-    this.connectedDevicesChanged.emit(value);
-  }
-
-  private _connectedDevices: Device[] = [];
-
-  public connectedDevicesChanged: EventEmitter<Device[]> = new EventEmitter<Device[]>();
-
-  public getConnectedDevices(): Device[] {
-    return this.connectedDevices;
-  }
+  public nowConnectingDevices: DeviceWithStatus[] = [];
+  public newDevicesShouldBeConnected: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public getSavedDevices(): Observable<Device[]> {
     return this.http.get<Device[]>('/netconf/devices');
   }
-
 
   public saveDevice(hostname: string,
                     port: number,
@@ -49,10 +36,18 @@ export class DeviceService {
     };
 
     if (connect) {
-      this.connectToDevice(dev).subscribe(); // TODO: Show 'now connecting' modal window
+      this.createConnectionRequest([dev]);
     }
     return this.http.post<object>('/netconf/device', {device: dev});
   }
+
+  public createConnectionRequest(devices: Device[]) {
+    for(let device of devices) {
+      this.nowConnectingDevices.push({device: device, status: ConnectionStatus.WAITING_FOR_CONNECTION});
+    }
+    this.newDevicesShouldBeConnected.emit(true);
+  }
+
 
   public connectToDevice(device: Device) {
     const body = {
@@ -64,13 +59,5 @@ export class DeviceService {
     };
     return this.http.post('/netconf/connect', body);
   }
-
-  /**
-   * Filter is xpath (?)
-   */
-  public getCompatibleDevices(filter: any): Device[] {
-    return this.connectedDevices;
-  }
-
 
 }

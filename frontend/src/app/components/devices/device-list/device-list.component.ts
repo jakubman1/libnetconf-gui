@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Component, OnInit } from '@angular/core';
 import {SessionService} from '../../../netconf-lib';
 import {Session} from '../../../netconf-lib/lib/classes/session';

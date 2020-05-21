@@ -54,8 +54,7 @@ class PluginBuilder extends build_angular_1.BrowserBuilder {
             '@angular/forms': 'ng.forms',
             '@angular/router': 'ng.router',
             tslib: 'tslib',
-            socketIo: 'socketIo'
-            // put here other common dependencies
+            'socket.io-client': 'socket.io-client',
         };
         if (sharedLibs) {
             config.externals = [config.externals];

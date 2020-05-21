@@ -15,7 +15,7 @@
                 <i class="fa fa-trash" aria-hidden="true"></i> Remove this profile</a>
             </p>
             <input type="checkbox" id="connectOnLogin" [ngModel]="connectOnLogin" [disabled]="connectOnLoginChangeLoading" (change)="setShouldConnectOnLogin($event)">
-            <label for="connectOnLogin">Connect to all devices on log in <i *ngIf="connectOnLoginChangeLoading"
+            <label for="connectOnLogin">Connect to this profile on login <i *ngIf="connectOnLoginChangeLoading"
                                                                             class="fa fa-spinner fa-pulse fa-fw"></i></label>
             <p class="text-bold">Active profile: {{activeProfile}} <i *ngIf="activationLoading"
                                                                       class="fa fa-spinner fa-pulse fa-fw"></i>
