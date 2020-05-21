@@ -31,7 +31,6 @@ import {ProfileEditComponent} from './components/profiles/profile-edit.component
 import {DeviceFilterPipe} from './pipes/device-filter.pipe';
 import {PaginationPipe} from './pipes/pagination.pipe';
 import {PaginationComponent} from './components/shared/pagination/pagination.component';
-import {NowConnectingFormComponent} from './components/shared/now-connecting-form/now-connecting-form.component';
 import {ConnectionStatusPipe} from './pipes/connectionStatus.pipe';
 
 
@@ -142,7 +141,6 @@ const routes: Routes = [{
         PaginationPipe,
         ConnectionStatusPipe,
         PaginationComponent,
-        NowConnectingFormComponent,
     ],
     providers: [
         SafePipe,
