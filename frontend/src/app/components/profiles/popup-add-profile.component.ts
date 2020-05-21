@@ -28,7 +28,6 @@ export class PopupAddProfileComponent implements OnInit {
             this.loading = true;
             this.profileService.addProfile(this.inputVal).subscribe(
                 _ => {
-                    // TODO: Check for name duplicates
                     this.saved.emit(this.inputVal);
                     this.loading = false;
                     this.inputVal = '';

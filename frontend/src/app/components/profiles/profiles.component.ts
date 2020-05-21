@@ -27,6 +27,7 @@ export class ProfilesComponent implements OnInit {
     error = '';
 
     addNewProfileShown = false;
+    connectProfileShown = false;
 
     ngOnInit() {
         this.loading = true;
@@ -120,5 +121,11 @@ export class ProfilesComponent implements OnInit {
             }
         )
     }
+
+    showConnectProfileDialog() {
+      this.connectProfileShown = true;
+    }
+
+
 
 }

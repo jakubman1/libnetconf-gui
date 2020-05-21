@@ -35,6 +35,7 @@ import {ConnectionStatusPipe} from './pipes/connectionStatus.pipe';
 
 
 import {NetconfLibModule} from './netconf-lib';
+import {PopupConnectProfileComponent} from "./components/profiles/popup-connect-profile.component";
 
 
 const routes: Routes = [{
@@ -141,6 +142,7 @@ const routes: Routes = [{
         PaginationPipe,
         ConnectionStatusPipe,
         PaginationComponent,
+        PopupConnectProfileComponent
     ],
     providers: [
         SafePipe,
