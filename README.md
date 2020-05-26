@@ -6,7 +6,7 @@ A GUI for the libnetconf2 library
 To install the NetconfGUI, follow these steps:
 
 1. Follow the instructions in the [libyang repository](https://github.com/CESNET/libyang) and install libyang
-2. Follow the instructions in the [libnetconf2 repository](https://github.com/CESNET/libnetconf2) and install libnetconf2 with the python bindings (Option -DENABLE_PYTHON=on when using cmake)
+2. Follow the instructions in the [libnetconf2 repository](https://github.com/CESNET/libnetconf2) and install libnetconf2 with the python bindings (Option `-DENABLE_PYTHON=on` when using cmake)
 3. Follow the quick start guide in the [liberouter GUI repository](https://github.com/CESNET/liberouter-gui). On step two, copy the NetconfGUI repository to liberouter GUI `modules` folder.
 4. Start the liberouter GUI and navigate to `http://localhost:4200` in your browser
 
@@ -24,7 +24,7 @@ To stop the virtual machine, use the `vagrang halt` command. To connect to the v
 
 You can connect to the GUI in the virtual machine just as if it was running on your machine. Just type `vagrant port` to check, which port in your system is the port 4200 from the virtual machine mapped to.
 
-```sh
+```
 $ vagrant port
 The forwarded ports for the machine are listed below. Please note that
 these values may differ from values configured in the Vagrantfile if the
