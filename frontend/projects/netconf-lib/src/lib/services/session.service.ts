@@ -148,13 +148,15 @@ export class SessionService {
       'original': node['value'],
       'value': newValue
     };
-    console.log(this.sessions[idx].modifications)
     // this.modificationAdded.emit(this.sessions[idx]);
   }
 
   discardModifications(sessionKey: string) {
     const idx = this.findSessionIndex(sessionKey);
-    this.sessions[idx].modifications = {};
+    if(idx > 0) {
+      this.sessions[idx].modifications = {};
+    }
+
   }
 
 }
