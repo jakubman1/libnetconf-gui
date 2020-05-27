@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Displays a list of saved devices that can be added to a profile
+ */
+
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {Router} from '@angular/router';

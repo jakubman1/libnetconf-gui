@@ -1,3 +1,10 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Example tool component
+ * Edit this component to start developing a your tool
+ * After the onDevicesSelected function is called, you can call rpc_get on the sessions
+ */
+
 import {Component, OnInit} from '@angular/core';
 import {NetconfLibService, SessionService} from 'netconf-lib';
 import {Session} from 'netconf-lib/lib/classes/session';
@@ -18,8 +25,6 @@ export class ExampleComponent implements OnInit {
 
   ngOnInit(): void {
     this.serviceText = this.libService.provideExample();
-    console.log('FROM EXAMPLE COMPONENT');
-    // console.log(this.sessionService.sessions);
   }
 
   onDevicesSelected(sessions: Session[]) {

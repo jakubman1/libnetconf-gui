@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Handle web socket communication
+ */
+
 import { Injectable } from '@angular/core';
 import * as socketIo from 'socket.io-client';
 import {Observable} from 'rxjs';

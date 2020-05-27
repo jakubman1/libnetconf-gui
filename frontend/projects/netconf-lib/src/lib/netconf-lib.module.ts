@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A module for the netconf library
+ * Should be imported by modules, that want to use the library components
+ */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';

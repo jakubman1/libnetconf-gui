@@ -1,3 +1,9 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A list of connected devices with checkboxes next to each device
+ * Outputs a list of selected devices when user clicks the submit button
+ */
+
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {SessionService} from '../services/session.service';
 import {Session} from '../classes/session';

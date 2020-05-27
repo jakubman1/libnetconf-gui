@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Popup shown to the user before connecting to all devices from the profiles tab
+ */
+
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {DeviceService, SessionService} from "../../netconf-lib";
 import {ProfileDevice} from "../../classes/ProfileDevice";

@@ -1,8 +1,10 @@
 /***
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A simple universal pagination
+ *
  * Based on article by Ben Tedder
  * http://www.bentedder.com/create-a-pagination-component-in-angular-4/
  */
-// @ts-ignore
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({

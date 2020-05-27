@@ -1,3 +1,9 @@
+/*
+* Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+* Popup shown to the user when clicking on the "add profile" button
+*/
+
+
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 

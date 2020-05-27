@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * States of device connection
+ */
 export enum ConnectionStatus {
   WAITING_FOR_CONNECTION = -2,
   CONNECTING,

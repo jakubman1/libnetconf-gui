@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Container for notifications in the bottom-right corner of the screen
+ */
 import {Component, OnInit} from '@angular/core';
 import {NotificationService} from "../../../services/notification.service";
 import {Notification} from "../../../classes/Notification";

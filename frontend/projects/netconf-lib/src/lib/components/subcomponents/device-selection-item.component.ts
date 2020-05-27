@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A single device box for the device selection component
+ */
+
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Device} from '../../classes/device';
 

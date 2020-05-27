@@ -1,4 +1,7 @@
-// @ts-ignore
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Translating a connection status number to human readable status text
+ */
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({

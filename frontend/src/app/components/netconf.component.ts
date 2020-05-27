@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Container for the whole module
+ */
+
 import {Component, OnInit} from '@angular/core';
 import {ConfigService} from "../services/config.service";
 import {ProfileService} from "../services/profile.service";

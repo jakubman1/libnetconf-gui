@@ -1,4 +1,7 @@
-// @ts-ignore
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Implementation of the search input in device selection for profiles
+ */
 import { Pipe, PipeTransform } from '@angular/core';
 import {Device} from '../netconf-lib/lib/classes/device';
 

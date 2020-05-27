@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Quickly switch between selected devices
+ */
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DeviceService} from '../../services/device.service';
 import {Device} from '../../classes/device';
@@ -11,7 +15,7 @@ import {Session} from "../../classes/session";
 export class DeviceQuickswitchComponent implements OnInit {
 
   @Input() sessions: Session[];
-  @Input() vertical = false;
+  // @Input() vertical = false;
   @Input() multiSelect = true;
 
   @Output() selectionChanged: EventEmitter<Session[]> = new EventEmitter<Session[]>();

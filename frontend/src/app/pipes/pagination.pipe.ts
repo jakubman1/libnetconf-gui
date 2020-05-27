@@ -1,4 +1,7 @@
-// @ts-ignore
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Pipe implementing a sliding window for pagination
+ */
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({

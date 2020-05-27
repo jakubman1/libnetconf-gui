@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Loads and renders a schema based on the 'schema' path parameter
+ */
 import {Component, OnInit} from '@angular/core';
 // @ts-ignore
 import {SchemasService} from 'netconf-lib';

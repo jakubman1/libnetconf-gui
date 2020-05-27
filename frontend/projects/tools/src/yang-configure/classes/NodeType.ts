@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Node types from the libyang library
+ */
 export enum NodeType {
   LYS_UNKNOWN = 0x0000,        /**< uninitialized unknown statement node */
   LYS_CONTAINER = 0x0001,      /**< container statement node */

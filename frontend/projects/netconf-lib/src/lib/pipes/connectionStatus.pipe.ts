@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Translate device state to human readable string
+ */
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

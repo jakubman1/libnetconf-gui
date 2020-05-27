@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A form for connecting to new devices and adding them to the database
+ */
+
 import { Component, OnInit } from '@angular/core';
 import {DeviceService} from '../../../netconf-lib';
 import { FormGroup, FormControl } from '@angular/forms';

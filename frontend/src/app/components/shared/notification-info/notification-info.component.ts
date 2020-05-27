@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Content of a single notification
+ */
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {NotificationService} from "../../../services/notification.service";
 import {Notification} from "../../../classes/Notification";

@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Service for loading and displaying notifications
+ */
 import {EventEmitter, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Notification} from "../classes/Notification";

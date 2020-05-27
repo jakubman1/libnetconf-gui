@@ -1,4 +1,5 @@
 /**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
  * NodeControlService is responsible for performing operations on all nodes.
  * All yang tree nodes listen to the performNodeAction event emitter.
  */

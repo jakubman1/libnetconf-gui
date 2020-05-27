@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Container for the tools tab and caller of the tool loader
+ */
 import {Component, OnInit, Injector, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ToolLoaderService} from '../../services/tool-loader/tool-loader.service';

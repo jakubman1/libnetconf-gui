@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Container for the notifications tab
+ */
 import { Component, OnInit } from '@angular/core';
 
 @Component({

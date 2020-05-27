@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Base component for the YANG Configure tool
+ * Loads configuration and switches between devices
+ */
 import {Component, OnInit} from '@angular/core';
 import {DeviceService, SessionService} from 'netconf-lib';
 import {Session} from 'netconf-lib/lib/classes/session';

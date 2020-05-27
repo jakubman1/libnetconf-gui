@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A dialog shown when connecting to devices
+ */
 import {Component, OnInit} from '@angular/core';
 import {DeviceService} from '../../services/device.service';
 import {SessionService} from '../../services/session.service';

@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Universal content container with a header
+ */
 import {Component, OnInit, Input} from '@angular/core';
 
 @Component({

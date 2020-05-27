@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Container for the profiles tab
+ */
+
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {ProfileDevice} from "../../classes/ProfileDevice";

@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A node of the configuration tree
+ * This is a recursive component - renders all its children
+ */
 import { Component, OnInit, Input } from '@angular/core';
 import {NodeControlService} from "../../services/node-control.service";
 

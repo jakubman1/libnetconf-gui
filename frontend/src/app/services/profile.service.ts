@@ -1,8 +1,9 @@
-// @ts-ignore
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Service for handling profile operations
+ */
 import { Injectable } from '@angular/core';
-// @ts-ignore
 import { HttpClient, HttpParams } from '@angular/common/http';
-// @ts-ignore
 import { Observable } from 'rxjs';
 import { ProfileDevice } from "../classes/ProfileDevice";
 import {ProfileItem} from '../classes/ProfileItem';

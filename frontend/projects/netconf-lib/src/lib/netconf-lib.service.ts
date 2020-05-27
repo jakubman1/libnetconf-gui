@@ -1,10 +1,11 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Demo service for testing the library
+ */
+
 import {Injectable} from '@angular/core';
-import {Device} from './classes/device';
-import {Session} from './classes/session';
 
 export * from './services/configuration.service';
-// export * from './services/device.service';
-// export * from './services/session.service';
 
 
 @Injectable({

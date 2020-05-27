@@ -1,3 +1,7 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A list of upladed schemas with links to the YANG Explorer tool
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {SchemasService} from '../../services/schemas.service';
 

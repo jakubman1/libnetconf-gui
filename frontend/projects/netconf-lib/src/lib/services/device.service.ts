@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * Handling device connecting, saving and loading
+ */
+
 import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
 import {Observable} from 'rxjs';

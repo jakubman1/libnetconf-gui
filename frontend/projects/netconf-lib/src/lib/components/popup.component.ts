@@ -1,3 +1,8 @@
+/**
+ * Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+ * A universal container for popups
+ */
+
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
