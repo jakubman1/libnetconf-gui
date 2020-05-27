@@ -3,7 +3,7 @@
               submitBtnText="Continue"
               [toolbox]="!connecting"
               (submitted)="close()"
-              (canceled)="close()">
+              (canceled)="cancel()">
   <div *ngIf="schemasRequired.length !== 0" class="mb-4 text-center">
     <h2 class="text-error">Missing YANG schemas</h2>
     <div *ngFor="let schema of schemasRequired">

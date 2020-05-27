@@ -65,4 +65,8 @@ export class DeviceService {
     return this.http.post('/netconf/connect', body);
   }
 
+  public clearWaitList() {
+    this.nowConnectingDevices = [];
+  }
+
 }

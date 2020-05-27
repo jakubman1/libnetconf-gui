@@ -101,6 +101,7 @@ export class NowConnectingFormComponent implements OnInit {
         if (alive['success']) {
           this.updateDeviceStatus(device, ConnectionStatus.CONNECTED);
           if (this.shouldCloseSelf()) {
+            this.deviceService.clearWaitList();
             this.close();
           }
         } else {
@@ -137,8 +138,9 @@ export class NowConnectingFormComponent implements OnInit {
   cancel() {
     this.sessionService.destroyAllSessions().subscribe(
       _ => {
-        this.deviceService.nowConnectingDevices = [];
         this.sessionService.sessions = [];
+        this.deviceService.clearWaitList();
+        alert("Connecting canceled!");
       },
       err => {
         this.error = err.message;
@@ -217,5 +219,6 @@ export class NowConnectingFormComponent implements OnInit {
         e.device.name === name
     );
   }
+
 
 }
