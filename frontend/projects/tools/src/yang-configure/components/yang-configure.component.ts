@@ -37,6 +37,7 @@ export class YangConfigureComponent implements OnInit {
     this.sessionService.modificationAdded.subscribe(
       session => {
         if (session.key === this.selectedSession.key) {
+          this.selectedSession = session; // Update selected session value
           this.commitChangesShown = true;
         }
       }

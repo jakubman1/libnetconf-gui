@@ -22,6 +22,7 @@ export class ConfirmCommitComponent implements OnInit {
               public sessionService: SessionService) { }
 
   ngOnInit() {
+    console.log(this.session);
   }
 
   commitChanges() {
