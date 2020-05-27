@@ -135,14 +135,20 @@ export class SessionService {
   createChangeModification(sessionKey: string, path: string, node: object, newValue: string) {
     if (node['value'] == newValue) {
       // No change
+      console.log('Value did not change')
       return;
     }
     const idx = this.findSessionIndex(sessionKey);
+    if(idx < 0) {
+      console.warn('Session "' + sessionKey + '" not found');
+      return;
+    }
     this.sessions[idx].modifications[path] = {
       'type': ModificationType.Change,
       'original': node['value'],
       'value': newValue
     };
+    console.log(this.sessions[idx].modifications)
     // this.modificationAdded.emit(this.sessions[idx]);
   }
 

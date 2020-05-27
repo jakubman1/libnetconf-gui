@@ -31,6 +31,7 @@ export class ConfirmCommitComponent implements OnInit {
           this.error = success.message;
         }
         else {
+          this.error = '';
           this.shouldClose.emit(true);
         }
       },

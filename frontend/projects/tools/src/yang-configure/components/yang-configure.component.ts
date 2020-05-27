@@ -36,8 +36,6 @@ export class YangConfigureComponent implements OnInit {
   ngOnInit(): void {
     this.sessionService.modificationAdded.subscribe(
       session => {
-        console.log("Event catched");
-        console.log(session);
         if (session.key === this.selectedSession.key) {
           this.commitChangesShown = true;
         }
