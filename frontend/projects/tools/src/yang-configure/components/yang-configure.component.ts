@@ -34,6 +34,11 @@ export class YangConfigureComponent implements OnInit {
   commitChangesShown = false;
 
   ngOnInit(): void {
+    this.sessionService.loadOpenSessions().subscribe(
+      sessions => {
+        this.sessionService.sessions = sessions;
+      }
+    );
     this.sessionService.modificationAdded.subscribe(
       session => {
         if (session.key === this.selectedSession.key) {
