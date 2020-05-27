@@ -25,6 +25,9 @@ export class PopupConnectProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.sessionService.sessions == []) {
+      this.connect();
+    }
   }
 
   public connectProfile(purge: boolean) {

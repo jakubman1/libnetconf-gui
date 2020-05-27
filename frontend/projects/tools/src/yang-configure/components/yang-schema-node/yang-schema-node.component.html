@@ -10,8 +10,21 @@
   <i class="fa fa-angle-double-down action-icon" [class.fa-rotate-180]="showAllChildrenOnOpen"
      (click)="toggleAllChildren()" *ngIf="node['children']"></i>
 
+
+  <ng-container *ngIf="(node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)) && node['info']['key']">
+      <i class="fa fa-key" aria-hidden="true"></i>
+  </ng-container>
+
   <!-- Node info -->
   <span *ngIf="node['info']">{{node['info']['name']}}</span>
+
+  <!-- Node is a leaf -->
+  <ng-container *ngIf="node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)">
+
+  </ng-container>
+
+  <!-- Node has a value -->
+  <span class="value" *ngIf="node['value']">: {{node['value']}}</span>
 
   <!-- Node description -->
 
