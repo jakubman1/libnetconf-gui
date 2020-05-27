@@ -113,7 +113,11 @@ export class SessionService {
    */
   public rpcGet(sessionKey: string, recursive: boolean, path?: string, forceReload = false) {
     const idx = this.findSessionIndex(sessionKey);
-    if(!forceReload && idx >= 0 && this.sessions[idx] && this.sessions[idx].data && this.sessions[idx].data.length > 0 && !path) {
+    if (!forceReload && idx >= 0
+      && this.sessions[idx]
+      && this.sessions[idx].data
+      && Object.keys(this.sessions[idx].data).length > 0
+      && !path) {
       // TODO: Find path
       return of(this.sessions[idx].data)
     } else {
@@ -129,7 +133,7 @@ export class SessionService {
   }
 
   createChangeModification(sessionKey: string, path: string, node: object, newValue: string) {
-    if(node['value'] == newValue) {
+    if (node['value'] == newValue) {
       // No change
       return;
     }
