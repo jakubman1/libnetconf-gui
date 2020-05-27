@@ -5,7 +5,6 @@
 import {Injectable} from '@angular/core';
 import {Session} from "../classes/session";
 import {HttpClient} from "@angular/common/http";
-import {GenericServerResponse} from "../classes/GenericServerResponse";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -16,12 +15,8 @@ export class ConfigurationService {
   constructor(public http: HttpClient) {
   }
 
-  public commitChanges(session: Session): Observable<GenericServerResponse> {
-    return this.http.post<GenericServerResponse>('/netconf/session/commit',
-      {
-        'key': session.key,
-        'modifications': session.modifications
-      });
+  public commitChanges(session: Session): Observable<any> {
+    return this.http.post<any>('/netconf/session/commit', {'key': session.key, 'modifications': session.modifications});
   }
 
 }
