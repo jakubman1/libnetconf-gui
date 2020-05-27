@@ -10,6 +10,7 @@ import {Session} from '../classes/session';
 import {Device} from '../classes/device';
 import {Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {ModificationType} from "../classes/ModificationType";
 
 
 @Injectable({
@@ -32,12 +33,13 @@ export class SessionService {
   private _sessions: Session[] = [];
 
   public sessionsChanged: EventEmitter<Session[]> = new EventEmitter<Session[]>();
+  public modificationAdded: EventEmitter<Session> = new EventEmitter<Session>();
 
   addSession(key: string, device: Device) {
     if (!this.doesSessionExists(key)) {
       const sessions = this.sessions;
       sessions.push({
-        key, device
+        key, device, modifications: {}
       });
       this.sessions = sessions;
     } else {
@@ -111,7 +113,8 @@ export class SessionService {
    */
   public rpcGet(sessionKey: string, recursive: boolean, path?: string, forceReload = false) {
     const idx = this.findSessionIndex(sessionKey);
-    if(!forceReload && this.sessions[idx].data && this.sessions[idx].data.length > 0) {
+    if(!forceReload && this.sessions[idx].data && this.sessions[idx].data.length > 0 && !path) {
+      // TODO: Find path
       return of(this.sessions[idx].data)
     } else {
       const params = new HttpParams()
@@ -123,6 +126,25 @@ export class SessionService {
       return this.http.get('/netconf/session/rpcGet', {params});
     }
 
+  }
+
+  createChangeModification(sessionKey: string, path: string, node: object, newValue: string) {
+    if(node['value'] == newValue) {
+      // No change
+      return;
+    }
+    const idx = this.findSessionIndex(sessionKey);
+    this.sessions[idx].modifications[path] = {
+      'type': ModificationType.Change,
+      'original': node['value'],
+      'value': newValue
+    };
+    this.modificationAdded.emit(this.sessions[idx]);
+  }
+
+  discardModifications(sessionKey: string) {
+    const idx = this.findSessionIndex(sessionKey);
+    this.sessions[idx].modifications = {};
   }
 
 }

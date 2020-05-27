@@ -4,18 +4,20 @@
  */
 import {Injectable} from '@angular/core';
 import {Device} from '../classes/device';
+import {Session} from "../classes/session";
+import {HttpClient} from "@angular/common/http";
+import {GenericServerResponse} from "../classes/GenericServerResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationService {
 
-  public editConfig(device: Device, target: string, config: object) {
-    return;
+  constructor(public http: HttpClient) {
   }
 
-  public commitChanges(device: Device) {
-    return;
+  public commitChanges(session: Session) {
+    return this.http.post<GenericServerResponse>('/netconf/session/commit', {'key': session.key, 'modifications': session.modifications});
   }
 
 }

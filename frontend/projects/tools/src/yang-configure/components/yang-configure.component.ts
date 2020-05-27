@@ -4,7 +4,8 @@
  * Loads configuration and switches between devices
  */
 import {Component, OnInit} from '@angular/core';
-import {DeviceService, SessionService} from 'netconf-lib';
+// @ts-ignore
+import {ConfigurationService, DeviceService, SessionService} from 'netconf-lib';
 import {Session} from 'netconf-lib/lib/classes/session';
 import {NodeControlService} from "../services/node-control.service";
 import {Device} from "netconf-lib/lib/classes/device";
@@ -18,7 +19,8 @@ export class YangConfigureComponent implements OnInit {
   constructor(
     private sessionService: SessionService,
     public nodeControlService: NodeControlService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private configurationService: ConfigurationService
   ) {
   }
 
@@ -28,16 +30,28 @@ export class YangConfigureComponent implements OnInit {
 
   selected_data = [];
   loading = false;
+  selectedSession: Session;
+
+  commitChangesShown = false;
 
   ngOnInit(): void {
+    this.sessionService.modificationAdded.subscribe(
+      session => {
+        if (session.key === this.selectedSession.key) {
+          this.commitChangesShown = true;
+        }
+      }
+    );
   }
 
   changeSelectedSession(session: Session) {
+    this.selectedSession = session;
     this.loadSessionRpc(session, false);
   }
 
   onDevicesSelected(sessions: Session[]) {
     this.sessions = sessions;
+    this.selectedSession = sessions[0];
     /* for (const session of this.sessions) {
     } */
   }
@@ -89,4 +103,5 @@ export class YangConfigureComponent implements OnInit {
   reconnectDevice(device: Device) {
     this.deviceService.connectToDevice(device).subscribe();
   }
+
 }

@@ -5,6 +5,9 @@
  */
 import { Component, OnInit, Input } from '@angular/core';
 import {NodeControlService} from "../../services/node-control.service";
+// @ts-ignore
+import {ConfigurationService, SessionService} from "netconf-lib";
+import {Session} from "netconf-lib/lib/classes/session";
 
 @Component({
   selector: 'nct-yang-schema-node',
@@ -13,11 +16,13 @@ import {NodeControlService} from "../../services/node-control.service";
 })
 export class YangSchemaNodeComponent implements OnInit {
 
-  constructor(public nodeControlService: NodeControlService) { }
+  constructor(public nodeControlService: NodeControlService,
+              public configurationService: ConfigurationService,
+              public sessionService: SessionService) { }
 
   @Input() node: object;
   @Input() showChildren = false;
-  //showChildren = false;
+  @Input() activeSession: Session;
   showAllChildrenOnOpen = false;
   showHelp = false;
   editing = false;
@@ -70,6 +75,7 @@ export class YangSchemaNodeComponent implements OnInit {
     console.log(this.editingValue);
     this.node['value'] = this.editingValue;
     this.editing = false;
+    this.sessionService.createChangeModification(this.activeSession.key, this.node['info']['path'], this.node, this.editingValue);
   }
 
 }

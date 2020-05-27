@@ -8,7 +8,8 @@
   <div *ngIf="selected_data.length !== 0" class="tree-wrapper">
     <!--<button class="btn btn-primary" (click)="toggleHelp()">Toggle description</button>-->
     <nct-yang-schema-node *ngFor="let node of selected_data"
-                          [node]="node"></nct-yang-schema-node>
+                          [node]="node" [activeSession]="selectedSession"></nct-yang-schema-node>
   </div>
 
 </div>
+<nct-confirm-commit [session]="selectedSession" (shouldClose)="this.commitChangesShown = false"></nct-confirm-commit>

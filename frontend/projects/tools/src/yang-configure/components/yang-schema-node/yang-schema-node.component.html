@@ -55,6 +55,6 @@
 <!-- Children -->
 <div class="ml-3 child-container" *ngIf="showChildren && node['children']">
   <nct-yang-schema-node *ngFor="let child of node['children']" [node]="child"
-                        [showChildren]="showAllChildrenOnOpen"></nct-yang-schema-node>
+                        [showChildren]="showAllChildrenOnOpen" [activeSession]="activeSession"></nct-yang-schema-node>
 </div>
 <!-- /Children -->
