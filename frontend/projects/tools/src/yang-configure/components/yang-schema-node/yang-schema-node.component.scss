@@ -4,6 +4,10 @@
 
 }
 
+.hidden {
+  display: none;
+}
+
 .disabled {
   color: transparentize($colorText, 0.3);
 }
