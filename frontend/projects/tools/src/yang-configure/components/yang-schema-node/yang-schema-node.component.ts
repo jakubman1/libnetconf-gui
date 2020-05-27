@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {NodeControlService} from "../../services/node-control.service";
 // @ts-ignore
 import {ConfigurationService, SessionService} from "netconf-lib";
-import {Session} from "netconf-lib/lib/classes/session";
+import {Session} from "netconf-lib";
 
 @Component({
   selector: 'nct-yang-schema-node',
