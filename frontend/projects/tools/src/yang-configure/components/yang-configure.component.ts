@@ -17,10 +17,9 @@ import {Device} from "netconf-lib/lib/classes/device";
 })
 export class YangConfigureComponent implements OnInit {
   constructor(
-    private sessionService: SessionService,
+    public sessionService: SessionService,
     public nodeControlService: NodeControlService,
-    private deviceService: DeviceService,
-    private configurationService: ConfigurationService
+    private deviceService: DeviceService
   ) {
   }
 

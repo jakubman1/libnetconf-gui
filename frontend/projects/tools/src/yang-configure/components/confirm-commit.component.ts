@@ -18,7 +18,7 @@ export class ConfirmCommitComponent implements OnInit {
 
   error: string = '';
 
-  constructor(private configurationService: ConfigurationService,
+  constructor(public configurationService: ConfigurationService,
               public sessionService: SessionService) { }
 
   ngOnInit() {

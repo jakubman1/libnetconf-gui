@@ -139,7 +139,7 @@ export class SessionService {
       'original': node['value'],
       'value': newValue
     };
-    this.modificationAdded.emit(this.sessions[idx]);
+    // this.modificationAdded.emit(this.sessions[idx]);
   }
 
   discardModifications(sessionKey: string) {
