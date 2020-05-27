@@ -4,7 +4,6 @@
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Session} from "../../classes/session";
 import {ConfigurationService, SessionService} from "netconf-lib";
 
 @Component({
@@ -14,7 +13,7 @@ import {ConfigurationService, SessionService} from "netconf-lib";
 })
 export class ConfirmCommitComponent implements OnInit {
 
-  @Input() session: Session
+  @Input() session;
   @Output() shouldClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   error: string = '';

@@ -4,10 +4,9 @@
  * This is a recursive component - renders all its children
  */
 import { Component, OnInit, Input } from '@angular/core';
-import {NodeControlService} from "../../services/node-control.service";
+import {NodeControlService} from "../services/node-control.service";
 // @ts-ignore
 import {ConfigurationService, SessionService} from "netconf-lib";
-import {Session} from "../../classes/session";
 
 @Component({
   selector: 'nct-yang-schema-node',
@@ -22,7 +21,7 @@ export class YangSchemaNodeComponent implements OnInit {
 
   @Input() node: object;
   @Input() showChildren = false;
-  @Input() activeSession: Session;
+  @Input() activeSession;
   showAllChildrenOnOpen = false;
   showHelp = false;
   editing = false;

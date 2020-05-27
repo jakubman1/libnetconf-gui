@@ -6,7 +6,7 @@
 import {Component, OnInit} from '@angular/core';
 // @ts-ignore
 import {ConfigurationService, DeviceService, SessionService} from 'netconf-lib';
-import {Session} from "../classes/session";
+import {Session} from 'netconf-lib/lib/classes/session';
 import {NodeControlService} from "../services/node-control.service";
 import {Device} from "netconf-lib/lib/classes/device";
 

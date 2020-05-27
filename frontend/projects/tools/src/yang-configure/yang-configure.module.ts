@@ -9,9 +9,9 @@ import { YangConfigureComponent } from './components/yang-configure.component';
 // @ts-ignore
 import {NetconfLibModule} from 'netconf-lib';
 import {HttpClientModule} from '@angular/common/http';
-import { YangSchemaNodeComponent } from './components/yang-schema-node/yang-schema-node.component';
+import { YangSchemaNodeComponent } from './components/yang-schema-node.component';
 import {FormsModule} from "@angular/forms";
-import { ConfirmCommitComponent } from './components/confirm-commit/confirm-commit.component';
+import { ConfirmCommitComponent } from './components/confirm-commit.component';
 
 
 @NgModule({
