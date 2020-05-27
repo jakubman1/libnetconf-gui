@@ -4,7 +4,7 @@
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Session} from 'netconf-lib';
+import {Session} from "../../classes/session";
 import {ConfigurationService, SessionService} from "netconf-lib";
 
 @Component({
