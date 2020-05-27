@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 
+"""
+Unit tests for the devices.py and the profiles.py files
+File: runtest.py
+Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+"""
+
 import pymongo
 import unittest
 import os

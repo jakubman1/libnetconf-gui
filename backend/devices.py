@@ -1,4 +1,8 @@
-# from liberouterapi import socketio
+"""
+Device database manipulation
+File: devices.py
+Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+"""
 
 import json
 from flask import request

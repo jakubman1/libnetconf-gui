@@ -1,3 +1,9 @@
+"""
+HTTP request handling
+File: connections.py
+Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+"""
+
 from liberouterapi import db, auth, config, socketio
 from liberouterapi.dbConnector import dbConnector
 import json
