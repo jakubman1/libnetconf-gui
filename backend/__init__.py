@@ -1,3 +1,9 @@
+"""
+Liberouter GUI module setup and HTTP path setup
+File: init.py
+Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+"""
+
 from liberouterapi import config
 from liberouterapi.dbConnector import dbConnector
 from liberouterapi.modules.module import Module
@@ -24,6 +30,7 @@ netconf_bp.add_url_rule('/session/<key>', view_func=session_destroy, methods=['D
 netconf_bp.add_url_rule('/sessions', view_func=sessions_get_open, methods=['GET'])
 netconf_bp.add_url_rule('/sessions', view_func=session_destroy_all, methods=['DELETE'])
 netconf_bp.add_url_rule('/session/rpcGet', view_func=session_rpc_get, methods=['GET'])
+netconf_bp.add_url_rule('/session/commit', view_func=session_commit, methods=['POST'])
 
 # Profiles
 netconf_bp.add_url_rule('/activateProfile', view_func=activate_profile, methods=['POST'])

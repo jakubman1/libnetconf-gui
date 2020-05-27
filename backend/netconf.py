@@ -366,7 +366,7 @@ def session_commit():
                 parent.insert(node)
             else:
                 root.insert_sibling(node)
-        except:
+        except Exception as e:
             if root:
                 root.new_path(ctx, move['node'], None, 0, 0)
             else:
