@@ -1,6 +1,15 @@
 @import "projects/shared-styles/colors";
 
 .node {
+
+}
+
+.disabled {
+  color: transparentize($colorText, 0.3);
+}
+
+.key {
+  padding: 0 5px;
 }
 
 .action-icon {

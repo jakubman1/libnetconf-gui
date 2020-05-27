@@ -16,7 +16,7 @@
   </ng-container>
 
   <!-- Node info -->
-  <span *ngIf="node['info']">{{node['info']['name']}}</span>
+  <span *ngIf="node['info']" [class.disabled]="!node['info']['config']">{{node['info']['name']}}</span>
 
   <!-- Node is a leaf -->
   <ng-container *ngIf="node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)">
