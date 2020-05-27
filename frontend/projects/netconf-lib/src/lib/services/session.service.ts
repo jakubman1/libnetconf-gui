@@ -23,6 +23,8 @@ export class SessionService {
   }
 
   set sessions(value: Session[]) {
+    console.log("Sessions changed!")
+    console.log(value);
     this._sessions = value;
     this.sessionsChanged.emit(value);
   }
@@ -142,6 +144,9 @@ export class SessionService {
     if(idx < 0) {
       console.warn('Session "' + sessionKey + '" not found');
       return;
+    }
+    if(!this.sessions[idx].modifications) {
+      this.sessions[idx].modifications = {};
     }
     this.sessions[idx].modifications[path] = {
       'type': ModificationType.Change,

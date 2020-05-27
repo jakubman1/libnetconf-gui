@@ -36,6 +36,7 @@ export class YangConfigureComponent implements OnInit {
   ngOnInit(): void {
     this.sessionService.loadOpenSessions().subscribe(
       sessions => {
+        console.log(sessions);
         this.sessionService.sessions = sessions;
       }
     );
