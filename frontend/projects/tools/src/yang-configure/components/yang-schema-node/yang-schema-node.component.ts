@@ -22,6 +22,7 @@ export class YangSchemaNodeComponent implements OnInit {
   showHelp = false;
   editing = false;
   originalValue = '';
+  editingValue = '';
 
   ngOnInit() {
     this.showAllChildrenOnOpen = this.showChildren;
@@ -32,6 +33,7 @@ export class YangSchemaNodeComponent implements OnInit {
     );
     if(this.node['value']) {
       this.originalValue = this.node['value'];
+      this.editingValue = this.node['value'];
     }
   }
 
@@ -62,6 +64,11 @@ export class YangSchemaNodeComponent implements OnInit {
         this.showAllChildrenOnOpen = false;
         break;
     }
+  }
+
+  confirmEdit() {
+    this.node['value'] = this.editingValue;
+    this.editing = false;
   }
 
 }
