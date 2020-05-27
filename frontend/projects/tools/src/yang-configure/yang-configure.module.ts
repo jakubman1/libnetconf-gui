@@ -10,6 +10,7 @@ import { YangConfigureComponent } from './components/yang-configure.component';
 import {NetconfLibModule} from 'netconf-lib';
 import {HttpClientModule} from '@angular/common/http';
 import { YangSchemaNodeComponent } from './components/yang-schema-node/yang-schema-node.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { YangSchemaNodeComponent } from './components/yang-schema-node/yang-sche
     CommonModule,
     HttpClientModule,
     NetconfLibModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   declarations: [YangConfigureComponent, YangSchemaNodeComponent],
   entryComponents: [YangConfigureComponent]

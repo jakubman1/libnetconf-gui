@@ -20,18 +20,21 @@
   <span *ngIf="node['info']" [class.disabled]="!node['info']['config']">{{node['info']['name']}}</span>
 
   <!-- Node is a leaf -->
+
+
+  <!-- Node has a value -->
+  <span class="value" *ngIf="node['value']">: {{node['value']}}</span>
   <ng-container *ngIf="node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)">
     <ng-container
       *ngIf="node['info']['config'] &&
             !node['deleted'] &&
             (!node['info']['key'] || node['new'])
             && node['info']['datatypebase'] != 'empty'">
-      <i class="fa fa-pencil action-icon" aria-hidden="true"></i>
+      <i class="fa fa-pencil action-icon" aria-hidden="true" (click)="toggleEdit()"></i>
+      <input [class.hidden]="!editing" type="text" [ngModel]="node['value']">
+      <span class="disabled" [class.hidden]="!editing || node['value'] == originalValue"></span>
     </ng-container>
   </ng-container>
-
-  <!-- Node has a value -->
-  <span class="value" *ngIf="node['value']">: {{node['value']}}</span>
 
   <!-- Node description -->
 
