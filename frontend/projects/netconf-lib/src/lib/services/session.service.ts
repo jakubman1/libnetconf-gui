@@ -109,14 +109,20 @@ export class SessionService {
    * Format of path is described in detail here: https://netopeer.liberouter.org/doc/libyang/devel/howtoxpath.html
    * When no path is provided, the whole tree is requested
    */
-  public rpcGet(sessionKey: string, recursive: boolean, path?: string) {
-    const params = new HttpParams()
-      .append('key', sessionKey)
-      .append('recursive', recursive ? 'true' : 'false');
-    if (path) {
-      params.append('path', path);
+  public rpcGet(sessionKey: string, recursive: boolean, path?: string, forceReload = false) {
+    const idx = this.findSessionIndex(sessionKey);
+    if(!forceReload && this.sessions[idx].data && this.sessions[idx].data.length > 0) {
+      return of(this.sessions[idx].data)
+    } else {
+      const params = new HttpParams()
+        .append('key', sessionKey)
+        .append('recursive', recursive ? 'true' : 'false');
+      if (path) {
+        params.append('path', path);
+      }
+      return this.http.get('/netconf/session/rpcGet', {params});
     }
-    return this.http.get('/netconf/session/rpcGet', {params});
+
   }
 
 }
