@@ -71,7 +71,6 @@ export class YangSchemaNodeComponent implements OnInit {
   }
 
   confirmEdit() {
-    console.log(this.editingValue);
     this.editing = false;
     this.sessionService.createChangeModification(this.activeSession.key, this.node['info']['path'], this.node, this.editingValue);
     this.sessionService.modificationAdded.emit(this.activeSession);

@@ -151,7 +151,8 @@ export class SessionService {
     this.sessions[idx].modifications[path] = {
       'type': ModificationType.Change,
       'original': node['value'],
-      'value': newValue
+      'value': newValue,
+      'data': node
     };
     // this.modificationAdded.emit(this.sessions[idx]);
   }
