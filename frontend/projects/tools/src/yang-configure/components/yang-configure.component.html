@@ -12,4 +12,6 @@
   </div>
 
 </div>
-<nct-confirm-commit [session]="selectedSession" (shouldClose)="this.commitChangesShown = false"></nct-confirm-commit>
+<nct-confirm-commit *ngIf="commitChangesShown"
+                    [session]="selectedSession"
+                    (shouldClose)="this.commitChangesShown = false"></nct-confirm-commit>
