@@ -31,9 +31,10 @@
             (!node['info']['key'] || node['new'])
             && node['info']['datatypebase'] != 'empty'">
       <i class="fa fa-pencil action-icon" aria-hidden="true" [class.hidden]="editing" (click)="toggleEdit()"></i>
+
+      <input [class.hidden]="!editing" type="text" [ngModel]="editingValue">
       <i class="fa fa-times action-icon text-danger" aria-hidden="true" [class.hidden]="!editing" (click)="toggleEdit()"></i>
       <i class="fa fa-check action-icon text-success" aria-hidden="true" [class.hidden]="!editing" (click)="confirmEdit()"></i>
-      <input [class.hidden]="!editing" type="text" [ngModel]="node['value']">
       <span title="Current value" class="disabled" [class.hidden]="!editing || editingValue == originalValue"></span>
     </ng-container>
   </ng-container>

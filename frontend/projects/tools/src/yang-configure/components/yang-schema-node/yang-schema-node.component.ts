@@ -67,6 +67,7 @@ export class YangSchemaNodeComponent implements OnInit {
   }
 
   confirmEdit() {
+    console.log(this.editingValue);
     this.node['value'] = this.editingValue;
     this.editing = false;
   }
