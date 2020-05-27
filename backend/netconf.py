@@ -1,3 +1,28 @@
+# coding=utf-8
+"""
+Netconf session operations
+File: netconf.py
+Author: Jakub Man <xmanja00@stud.fit.vutbr.cz>
+
+
+Parts of this file was taken from the Netopeer2GUI project by Radek Krejčí
+Available here: https://github.com/CESNET/Netopeer2GUI
+
+  Copyright 2017 Radek Krejčí
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+"""
+
 from liberouterapi import db, auth, config, socketio
 from liberouterapi.dbConnector import dbConnector
 import netconf2 as nc
@@ -260,3 +285,124 @@ def session_rpc_get():
     else:
         return data_info_subtree(sessions[username][key]['data'], req['path'],
                                  True if req['recursive'] == 'true' else False)
+
+
+@auth.required()
+def session_commit():
+    session = auth.lookup(request.headers.get('lgui-Authorization', None))
+    user = session['user']
+
+    req = request.get_json(keep_order=True)
+    if 'key' not in req:
+        return json.dumps({'success': False, 'code': 500, 'message': 'Missing session key.'})
+    if 'modifications' not in req:
+        return json.dumps({'success': False, 'code': 500, 'error-msg': 'Missing modifications.'})
+
+    mods = req['modifications']
+    ctx = sessions[user.username][req['key']]['session'].context
+    root = None
+    reorders = []
+    for key in mods:
+        recursion = False
+        # get correct path and value if needed
+        path = key
+        value = None
+        if mods[key]['type'] == 'change':
+            value = mods[key]['value']
+        elif mods[key]['type'] == 'create' or mods[key]['type'] == 'replace':
+            if mods[key]['data']['info']['type'] == 1:
+                # creating/replacing container
+                recursion = True
+            elif mods[key]['data']['info']['type'] == 4:
+                # creating/replacing leaf
+                value = mods[key]['data']['value']
+            elif mods[key]['data']['info']['type'] == 8:
+                # creating/replacing leaf-list
+                value = mods[key]['data']['value'][0]
+                path = mods[key]['data']['path']
+            elif mods[key]['data']['info']['type'] == 16:
+                recursion = True
+                path = mods[key]['data']['path']
+        elif mods[key]['type'] == 'reorder':
+            # postpone reorders
+            reorders.extend(mods[key]['transactions'])
+            continue
+
+        # create node
+        # print("creating " + path)
+        # print("value " + str(value))
+        if root:
+            root.new_path(ctx, path, value, 0, 0)
+        else:
+            root = yang.Data_Node(ctx, path, value, 0, 0)
+        node = root.find_path(path).data()[0];
+
+        # set operation attribute and add additional data if any
+        if mods[key]['type'] == 'change':
+            node.insert_attr(None, 'ietf-netconf:operation', 'merge')
+        elif mods[key]['type'] == 'delete':
+            node.insert_attr(None, 'ietf-netconf:operation', 'delete')
+        elif mods[key]['type'] == 'create':
+            node.insert_attr(None, 'ietf-netconf:operation', 'create')
+        elif mods[key]['type'] == 'replace':
+            node.insert_attr(None, 'ietf-netconf:operation', 'replace')
+        else:
+            return json.dumps({'success': False, 'error-msg': 'Invalid modification ' + key})
+
+        if recursion and 'children' in mods[key]['data']:
+            for child in mods[key]['data']['children']:
+                if 'key' in child['info'] and child['info']['key']:
+                    continue
+                _create_child(ctx, node, child)
+
+    # finally process reorders which must be last since they may refer newly created nodes
+    # and they do not reflect removed nodes
+    for move in reorders:
+        try:
+            node = root.find_path(move['node']).data()[0];
+            parent = node.parent()
+            node.unlink()
+            if parent:
+                parent.insert(node)
+            else:
+                root.insert_sibling(node)
+        except:
+            if root:
+                root.new_path(ctx, move['node'], None, 0, 0)
+            else:
+                root = yang.Data_Node(ctx, move['node'], None, 0, 0)
+            node = root.find_path(move['node']).data()[0];
+        node.insert_attr(None, 'yang:insert', move['insert'])
+        if move['insert'] == 'after' or move['insert'] == 'before':
+            if 'key' in move:
+                node.insert_attr(None, 'yang:key', move['key'])
+            elif 'value' in move:
+                node.insert_attr(None, 'yang:value', move['value'])
+
+    # print(root.print_mem(yang.LYD_XML, yang.LYP_FORMAT))
+    try:
+        sessions[user.username][req['key']]['session'].rpcEditConfig(nc.DATASTORE_RUNNING, root)
+    except nc.ReplyError as e:
+        reply = {'success': False, 'code': 500, 'message': '[]'}
+        for err in e.args[0]:
+            reply['message'] += json.loads(str(err)) + '; '
+        return json.dumps(reply)
+
+    return json.dumps({'success': True})
+
+
+def _create_child(ctx, parent, child_def):
+    at = child_def['info']['module'].find('@')
+    if at == -1:
+        module = ctx.get_module(child_def['info']['module'])
+    else:
+        module = ctx.get_module(child_def['info']['module'][:at], child_def['info']['module'][at + 1:])
+    if child_def['info']['type'] == 4:
+        yang.Data_Node(parent, module, child_def['info']['name'], child_def['value'])
+    elif child_def['info']['type'] == 8:
+        yang.Data_Node(parent, module, child_def['info']['name'], child_def['value'][0])
+    else:
+        child = yang.Data_Node(parent, module, child_def['info']['name'])
+        if 'children' in child_def:
+            for grandchild in child_def['children']:
+                _create_child(ctx, child, grandchild)
