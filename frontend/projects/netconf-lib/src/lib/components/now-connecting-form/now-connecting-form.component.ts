@@ -47,6 +47,9 @@ export class NowConnectingFormComponent implements OnInit {
           this.connectToAllWaiting();
           this.connecting = true;
         }
+        else {
+          this.show = false;
+        }
       }
     );
 
