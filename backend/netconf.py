@@ -296,7 +296,7 @@ def session_commit():
     if 'key' not in req:
         return json.dumps({'success': False, 'code': 500, 'message': 'Missing session key.'})
     if 'modifications' not in req:
-        return json.dumps({'success': False, 'code': 500, 'error-msg': 'Missing modifications.'})
+        return json.dumps({'success': False, 'code': 500, 'message': 'Missing modifications.'})
 
     mods = req['modifications']
     ctx = sessions[user.username][req['key']]['session'].context
@@ -334,8 +334,11 @@ def session_commit():
         if root:
             root.new_path(ctx, path, value, 0, 0)
         else:
-            root = yang.Data_Node(ctx, path, value, 0, 0)
-        node = root.find_path(path).data()[0];
+            try:
+                root = yang.Data_Node(ctx, '/', value, 0, 0)
+            except:
+                return json.dumps({'success': False, 'code': 404, 'message': 'Path not found in session context.'})
+        node = root.find_path(path).data()[0]
 
         # set operation attribute and add additional data if any
         if mods[key]['type'] == 'change':
