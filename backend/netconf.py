@@ -335,7 +335,7 @@ def session_commit():
             root.new_path(ctx, path, value, 0, 0)
         else:
             try:
-                root = yang.Data_Node(ctx, '/', value, 0, 0)
+                root = yang.Data_Node(ctx, path, value, 0, 0)
             except Exception as e:
                 print(e)
                 return json.dumps({'success': False, 'code': 404, 'message': 'Path not found in session context.'})
