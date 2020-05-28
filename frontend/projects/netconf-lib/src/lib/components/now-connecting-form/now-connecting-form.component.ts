@@ -144,6 +144,7 @@ export class NowConnectingFormComponent implements OnInit {
         this.sessionService.sessions = [];
         this.deviceService.clearWaitList();
         alert("Connecting canceled!");
+        this.close();
       },
       err => {
         this.error = err.message;
