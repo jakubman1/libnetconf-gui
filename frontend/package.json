@@ -32,7 +32,7 @@
     "socket.io-client": "^2.0.0",
     "acorn": ">=5.7.4",
     "minimist": ">=1.2.2",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=3.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
