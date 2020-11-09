@@ -6,8 +6,8 @@ import {Component, OnInit} from '@angular/core';
 import {DeviceService} from '../../services/device.service';
 import {SessionService} from '../../services/session.service';
 import {SocketService} from '../../services/socket.service';
-import {ConnectionStatus} from "../../classes/ConnectionStatus";
-import {DeviceWithStatus} from "../../classes/DeviceWithStatus";
+import {ConnectionStatus} from '../../classes/ConnectionStatus';
+import {DeviceWithStatus} from '../../classes/DeviceWithStatus';
 
 
 enum ssh_hostcheck_status {
@@ -46,8 +46,7 @@ export class NowConnectingFormComponent implements OnInit {
           this.show = true;
           this.connectToAllWaiting();
           this.connecting = true;
-        }
-        else {
+        } else {
           this.show = false;
         }
       }
@@ -66,7 +65,7 @@ export class NowConnectingFormComponent implements OnInit {
   }
 
   connectToAllWaiting() {
-    for (let dev of this.deviceService.nowConnectingDevices) {
+    for (const dev of this.deviceService.nowConnectingDevices) {
       if (dev.status === ConnectionStatus.WAITING_FOR_CONNECTION) {
         this.connectToDevice(dev);
       }
@@ -126,7 +125,7 @@ export class NowConnectingFormComponent implements OnInit {
 
 
   shouldCloseSelf() {
-    for (let device of this.deviceService.nowConnectingDevices) {
+    for (const device of this.deviceService.nowConnectingDevices) {
       if (device.status !== ConnectionStatus.CONNECTED) {
         return false;
       }
@@ -143,26 +142,26 @@ export class NowConnectingFormComponent implements OnInit {
       _ => {
         this.sessionService.sessions = [];
         this.deviceService.clearWaitList();
-        alert("Connecting canceled!");
+        alert('Connecting canceled!');
         this.close();
       },
       err => {
         this.error = err.message;
       }
-    )
+    );
   }
 
   handleAuthRequest(message) {
-    this.socketService.send('device_auth_password', {'id': message['id'], 'password': prompt("Enter password")});
+    this.socketService.send('device_auth_password', {'id': message['id'], 'password': prompt('Enter password')});
   }
 
   handleHostkeyCheck(message) {
     switch (message['state']) {
       case ssh_hostcheck_status.SSH_SERVER_KNOWN_CHANGED:
-        message['msg'] = "Server has changed.";
+        message['msg'] = 'Server has changed.';
         break;
       case ssh_hostcheck_status.SSH_SERVER_NOT_KNOWN:
-        message['msg'] = "Server not known.";
+        message['msg'] = 'Server not known.';
         break;
     }
     const device = this.findDeviceByData(
@@ -176,21 +175,22 @@ export class NowConnectingFormComponent implements OnInit {
       this.deviceService.nowConnectingDevices[idx].status = ConnectionStatus.ERR_HOSTCHECK_CONFIRMATION;
       this.deviceService.nowConnectingDevices[idx].hostcheckMessageId = message['id'];
       this.deviceService.nowConnectingDevices[idx].hostcheckMessage = message['msg'];
-      this.deviceService.nowConnectingDevices[idx].device.fingerprint = message['hexa']
+      this.deviceService.nowConnectingDevices[idx].device.fingerprint = message['hexa'];
     }
 
   }
 
   confirmHostkeyCheck(messageId, value: boolean) {
+    console.log('sending hoskey check request with ID ' + messageId);
     this.socketService.send('hostcheck_result', {'id': messageId, 'result': value});
   }
 
   uploadSchema(fileInput: FileList, schema: any) {
     if (fileInput && fileInput.item(0)) {
-      let idx = this.schemasRequired.indexOf(schema);
+      const idx = this.schemasRequired.indexOf(schema);
       this.schemasRequired[idx]['status'] = 1;
-      let reader = new FileReader();
-      let file: File = fileInput[0];
+      const reader = new FileReader();
+      const file: File = fileInput[0];
       reader.onloadend = (e) => {
         this.socketService.send('getschema_result', {
           'id': schema['id'],
@@ -198,14 +198,14 @@ export class NowConnectingFormComponent implements OnInit {
           'data': reader.result
         });
         this.schemasRequired[idx]['status'] = 2;
-      }
+      };
       reader.readAsText(file);
 
     }
   }
 
   skipSchemaUpload() {
-    for (let schema of this.schemasRequired) {
+    for (const schema of this.schemasRequired) {
       this.socketService.send('getschema_result', {'id': schema['id'], 'filename': '', 'data': ''});
     }
     this.schemasRequired = [];

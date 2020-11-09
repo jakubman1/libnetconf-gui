@@ -7,8 +7,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Device} from '../classes/device';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ConnectionStatus} from "../classes/ConnectionStatus";
-import {DeviceWithStatus} from "../classes/DeviceWithStatus";
+import {ConnectionStatus} from '../classes/ConnectionStatus';
+import {DeviceWithStatus} from '../classes/DeviceWithStatus';
 
 
 @Injectable()
@@ -47,7 +47,7 @@ export class DeviceService {
   }
 
   public createConnectionRequest(devices: Device[]) {
-    for(let device of devices) {
+    for (const device of devices) {
       this.nowConnectingDevices.push({device: device, status: ConnectionStatus.WAITING_FOR_CONNECTION});
     }
     this.newDevicesShouldBeConnected.emit(true);
