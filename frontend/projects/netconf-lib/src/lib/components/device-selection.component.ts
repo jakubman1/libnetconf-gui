@@ -64,6 +64,7 @@ export class DeviceSelectionComponent implements OnInit {
   reload() {
     this.sessionService.getCompatibleDeviceSessions('').subscribe(
       ses => {
+        this.compatibleDevices = [];
         for (const s of ses) {
           this.compatibleDevices.push({session: s, selected: true});
         }

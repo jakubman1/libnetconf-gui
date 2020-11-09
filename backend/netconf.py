@@ -174,7 +174,10 @@ def hostkey_check(hostname, state, keytype, hexa, priv):
     if result:
         # store confirmed fingerprint for future connections
         priv['device']['fingerprint'] = hexa
-        update_hexa(priv['device'], hexa, netconf_coll)
+        if 'id' in priv['device'].keys():
+            update_hexa(priv['device']['id'], hexa, netconf_coll)
+        else:
+            update_hexa_by_device(priv['device'], hexa, netconf_coll)
     return result
 
 

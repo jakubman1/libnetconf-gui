@@ -39,7 +39,11 @@ def update_device(device_id, update_dict, db_coll):
     db_coll.update_one({'_id': ObjectId(device_id)}, {'$set': update_dict})
 
 
-def update_hexa(device, new_hexa, db_coll):
+def update_hexa(device_id, new_hexa, db_coll):
+    db_coll.update_one({'_id': ObjectId(device_id)}, {'$set': {'fingerprint': new_hexa}})
+
+
+def update_hexa_by_device(device, new_hexa, db_coll):
     db_coll.update_one({'hostname': device['hostname'], 'port': device['port'], 'username': device['username']},
                        {'$set': {'fingerprint': new_hexa}})
 
