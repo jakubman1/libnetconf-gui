@@ -12,7 +12,6 @@ from .profiles import *
 from .devices import *
 from .schemas import *
 
-
 """
 DB connection setup
 """
@@ -22,17 +21,23 @@ netconf_coll = netconf_db.db[config['netconf']['collection']]
 """
 Helpers
 """
+
+
 @auth.required()
 def get_username_from_session():
     session = auth.lookup(request.headers.get('lgui-Authorization', None))
     return session['user'].username
 
+
 """
 Devices
 """
+
+
 @auth.required()
 def devices_get():
     return json.dumps(get_saved_devices(get_username_from_session(), netconf_coll))
+
 
 @auth.required()
 def device_add():
@@ -45,6 +50,7 @@ def device_add():
 Profiles
 """
 
+
 @auth.required()
 def activate_profile():
     data = request.json
@@ -54,9 +60,11 @@ def activate_profile():
     else:
         return json.dumps({'success': False, 'code': 500})
 
+
 @auth.required()
 def profiles():
     return json.dumps(get_profile_names(get_username_from_session()))
+
 
 @auth.required()
 def profile_add():
@@ -96,7 +104,8 @@ def profile_set():
     if set_profile_devices(get_username_from_session(), profile, val):
         return json.dumps({'success': True, 'code': 200})
     else:
-        return json.dumps({'success': False, 'code': 500})\
+        return json.dumps({'success': False, 'code': 500})
+
 
 @auth.required()
 def profile_set_connect_on_login():
@@ -108,13 +117,16 @@ def profile_set_connect_on_login():
     else:
         return json.dumps({'success': False, 'code': 500})
 
+
 """
 Schemas
 """
 
+
 @auth.required()
 def schemas_get_all():
     return json.dumps(get_all_schema_names(get_username_from_session()))
+
 
 @auth.required()
 def schema_get(name):
