@@ -4,9 +4,9 @@
  * This is a recursive component - renders all its children
  */
 import { Component, OnInit, Input } from '@angular/core';
-import {NodeControlService} from "../services/node-control.service";
+import {NodeControlService} from '../services/node-control.service';
 // @ts-ignore
-import {ConfigurationService, SessionService} from "netconf-lib";
+import {ConfigurationService, SessionService} from 'netconf-lib';
 
 @Component({
   selector: 'nct-yang-schema-node',
@@ -35,7 +35,7 @@ export class YangSchemaNodeComponent implements OnInit {
         this.performGlobalAction(action);
       }
     );
-    if(this.node['value']) {
+    if (this.node['value']) {
       this.originalValue = this.node['value'];
       this.editingValue = this.node['value'];
     }
@@ -56,16 +56,19 @@ export class YangSchemaNodeComponent implements OnInit {
   }
 
   performGlobalAction(action: string) {
-    switch(action) {
-      case "hideHelp":
+    switch (action) {
+      case 'hideHelp':
         this.showHelp = false;
         break;
-      case "showHelp":
+      case 'showHelp':
         this.showHelp = true;
         break;
-      case "close":
+      case 'close':
         this.showChildren = false;
         this.showAllChildrenOnOpen = false;
+        break;
+      case 'discardChanges':
+        this.restoreOriginal();
         break;
     }
   }
@@ -75,6 +78,11 @@ export class YangSchemaNodeComponent implements OnInit {
     this.sessionService.createChangeModification(this.activeSession.key, this.node['info']['path'], this.node, this.editingValue);
     this.sessionService.modificationAdded.emit(this.activeSession);
     this.node['value'] = this.editingValue;
+  }
+
+  restoreOriginal() {
+    this.editingValue = this.originalValue;
+    this.node['value'] = this.originalValue;
   }
 
 }

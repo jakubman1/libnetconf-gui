@@ -39,7 +39,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let device of deviceService.nowConnectingDevices">
+    <tr *ngFor="let device of deviceService.nowConnectingDevices; let i = index" [attr.data-index]="i">
       <td>{{device.device.name ? device.device.name : ""}}</td>
       <td>{{device.device.hostname}}:{{device.device.port}}</td>
       <td>{{device.device.username}}</td>
@@ -51,9 +51,9 @@
       <td>
         <p *ngIf="device.status === 4">{{device['hostcheckMessage']}} Continue connecting?</p>
         <button class="btn btn-danger" *ngIf="device.status == 4"
-                (click)="confirmHostkeyCheck(device['hostcheckMessageId'], false)">Cancel</button>
+                (click)="confirmHostkeyCheck(device['hostcheckMessageId'], false, i)">Cancel</button>
         <button class="btn btn-primary ml-1" *ngIf="device.status == 4"
-                (click)="confirmHostkeyCheck(device['hostcheckMessageId'], true)">Connect</button>
+                (click)="confirmHostkeyCheck(device['hostcheckMessageId'], true, i)">Connect</button>
         <button class="btn btn-danger"
                 *ngIf="(device.status > 1 && device.status !== 3 && device.status !== 4) || isString(device.status)"
                 (click)="connectToDevice(device)">Retry

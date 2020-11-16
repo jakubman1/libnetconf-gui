@@ -180,8 +180,8 @@ export class NowConnectingFormComponent implements OnInit {
 
   }
 
-  confirmHostkeyCheck(messageId, value: boolean) {
-    console.log('sending hoskey check request with ID ' + messageId);
+  confirmHostkeyCheck(messageId, value: boolean, deviceIdx: number) {
+    this.deviceService.nowConnectingDevices[deviceIdx].status = ConnectionStatus.WAITING_FOR_DEVICE;
     this.socketService.send('hostcheck_result', {'id': messageId, 'result': value});
   }
 

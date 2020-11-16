@@ -7,8 +7,8 @@ import {Component, OnInit} from '@angular/core';
 // @ts-ignore
 import {ConfigurationService, DeviceService, SessionService} from 'netconf-lib';
 import {Session} from 'netconf-lib/lib/classes/session';
-import {NodeControlService} from "../services/node-control.service";
-import {Device} from "netconf-lib/lib/classes/device";
+import {NodeControlService} from '../services/node-control.service';
+import {Device} from 'netconf-lib/lib/classes/device';
 
 @Component({
   selector: 'nct-yang-configure',
@@ -43,7 +43,9 @@ export class YangConfigureComponent implements OnInit {
     this.sessionService.modificationAdded.subscribe(
       session => {
         if (session.key === this.selectedSession.key) {
-          this.selectedSession = session; // Update selected session value
+          console.log('Got modification event');
+          console.log(session.modifications);
+          this.selectedSession.modifications = session.modifications; // Update selected session value
           this.commitChangesShown = true;
         }
       }
@@ -74,18 +76,22 @@ export class YangConfigureComponent implements OnInit {
               this.error = '';
               this.selected_data = response['data'];
               this.sessions[idx].data = response['data'];
+              this.loading = false;
               break;
             case 410:
               this.error = 'Connection failed: ' + response['message'];
+              this.loading = false;
               break;
             case 418:
               this.error = 'NETCONF error: ' + response['message'];
+              this.loading = false;
               break;
             default:
               console.error('Invalid response code!');
+              this.loading = false;
               break;
           }
-          this.loading = false;
+          // this.loading = false;
         },
         err => {
           this.error = 'HTTP error: ' + err.message;

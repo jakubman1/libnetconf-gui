@@ -10,7 +10,7 @@ import {Session} from '../classes/session';
 import {Device} from '../classes/device';
 import {Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {ModificationType} from "../classes/ModificationType";
+import {ModificationType} from '../classes/ModificationType';
 
 
 @Injectable({
@@ -23,7 +23,7 @@ export class SessionService {
   }
 
   set sessions(value: Session[]) {
-    console.log("Sessions changed!")
+    console.log('Sessions changed!');
     console.log(value);
     this._sessions = value;
     this.sessionsChanged.emit(value);
@@ -121,7 +121,7 @@ export class SessionService {
       && Object.keys(this.sessions[idx].data).length > 0
       && !path) {
       // TODO: Find path
-      return of(this.sessions[idx].data)
+      return of(this.sessions[idx].data);
     } else {
       const params = new HttpParams()
         .append('key', sessionKey)
@@ -137,15 +137,15 @@ export class SessionService {
   createChangeModification(sessionKey: string, path: string, node: object, newValue: string) {
     if (node['value'] == newValue) {
       // No change
-      console.log('Value did not change')
+      console.log('Value did not change');
       return;
     }
     const idx = this.findSessionIndex(sessionKey);
-    if(idx < 0) {
+    if (idx < 0) {
       console.warn('Session "' + sessionKey + '" not found');
       return;
     }
-    if(!this.sessions[idx].modifications) {
+    if (!this.sessions[idx].modifications) {
       this.sessions[idx].modifications = {};
     }
     this.sessions[idx].modifications[path] = {
@@ -154,12 +154,14 @@ export class SessionService {
       'value': newValue,
       'data': node
     };
-    // this.modificationAdded.emit(this.sessions[idx]);
+    console.log('from session service');
+    console.log(this.sessions[idx].modifications);
+    this.modificationAdded.emit(this.sessions[idx]);
   }
 
   discardModifications(sessionKey: string) {
     const idx = this.findSessionIndex(sessionKey);
-    if(idx > 0) {
+    if (idx > 0) {
       this.sessions[idx].modifications = {};
     }
 

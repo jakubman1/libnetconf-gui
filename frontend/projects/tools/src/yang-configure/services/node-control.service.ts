@@ -22,15 +22,19 @@ export class NodeControlService {
   public performNodeAction: EventEmitter<string> = new EventEmitter<string>();
 
   hideHelpOnAll() {
-    this.performNodeAction.emit("hideHelp");
+    this.performNodeAction.emit('hideHelp');
   }
 
   showHelpOnAll() {
-    this.performNodeAction.emit("showHelp");
+    this.performNodeAction.emit('showHelp');
   }
 
   closeAll() {
-    this.performNodeAction.emit("close");
+    this.performNodeAction.emit('close');
+  }
+
+  restoreOriginalValuesOnAll() {
+    this.performNodeAction.emit('discardChanges');
   }
 
 

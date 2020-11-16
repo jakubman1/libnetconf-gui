@@ -13,7 +13,7 @@
 
   <ng-container
     *ngIf="(node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)) && node['info']['key']">
-    <i class="fa fa-key" aria-hidden="true"></i>
+    <i class="fa fa-key key" aria-hidden="true" title="This node is a key value"></i>
   </ng-container>
 
   <!-- Node info -->
@@ -23,14 +23,17 @@
 
 
   <!-- Node has a value -->
-  <span class="value" *ngIf="node['value']">: {{node['value']}}</span>
+  <span *ngIf="node['value']">:</span>
+  <span class="value" *ngIf="node['value']">{{node['value']}}</span>
   <ng-container *ngIf="node['info']['type'] == 4 || (node['new'] && node['info']['type'] == 8)">
     <ng-container
       *ngIf="node['info']['config'] &&
             !node['deleted'] &&
             (!node['info']['key'] || node['new'])
             && node['info']['datatypebase'] != 'empty'">
-      <i class="fa fa-pencil action-icon" aria-hidden="true" [class.hidden]="editing" (click)="toggleEdit()"></i>
+      <i class="fa fa-pencil action-icon" aria-hidden="true" [class.hidden]="editing"
+         (click)="toggleEdit()"
+         title="Edit value"></i>
 
       <input [class.hidden]="!editing" type="text" [(ngModel)]="editingValue">
       <i class="fa fa-times action-icon text-danger" aria-hidden="true" [class.hidden]="!editing" (click)="toggleEdit()"></i>
